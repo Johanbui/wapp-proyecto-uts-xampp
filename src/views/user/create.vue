@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-form ref="userEditForm" :model="userEditForm" :rules="userEditRules" class="login-form" auto-complete="on" label-position="left">
+    <el-form ref="userCreateForm" :model="userCreateForm" :rules="userEditRules" class="login-form" auto-complete="on" label-position="left">
 
       <div class="title-container">
         <h3 class="title">User Edit</h3>
@@ -11,7 +11,7 @@
           <el-form-item label="Name" prop="name">
             <el-input
               ref="name"
-              v-model="userEditForm.name"
+              v-model="userCreateForm.name"
               placeholder="Name"
               name="name"
               type="text"
@@ -25,7 +25,7 @@
           <el-form-item prop="last_name" label="Last Name">
             <el-input
               ref="last_name"
-              v-model="userEditForm.last_name"
+              v-model="userCreateForm.last_name"
               placeholder="Last Name"
               name="last_name"
               type="text"
@@ -39,7 +39,7 @@
       <el-row :gutter="30">
         <el-col :span="12">
           <el-form-item label="Gender" prop="gender">
-            <el-select v-model="userEditForm.gender" placeholder="please select your gender">
+            <el-select v-model="userCreateForm.gender" placeholder="please select your gender">
               <el-option label="Male" value="1" />
               <el-option label="Female" value="2" />
             </el-select>
@@ -48,7 +48,7 @@
 
         <el-col :span="12">
           <el-form-item prop="enable" label="Enable/Disable">
-            <el-switch v-model="userEditForm.enable" />
+            <el-switch v-model="userCreateForm.enable" />
           </el-form-item>
         </el-col>
       </el-row>
@@ -58,7 +58,7 @@
           <el-form-item prop="email" label="E-mail">
             <el-input
               ref="email"
-              v-model="userEditForm.email"
+              v-model="userCreateForm.email"
               placeholder="Email"
               name="email"
               type="text"
@@ -74,7 +74,7 @@
           <el-form-item prop="avatar" label="Avatar">
             <el-input
               ref="avatar"
-              v-model="userEditForm.avatar"
+              v-model="userCreateForm.avatar"
               placeholder="avatar"
               name="avatar"
               type="text"
@@ -90,7 +90,7 @@
           <el-form-item label="Pasword" prop="password">
             <el-input
               ref="password"
-              v-model="userEditForm.password"
+              v-model="userCreateForm.password"
               placeholder="password"
               name="password"
               type="password"
@@ -104,7 +104,7 @@
           <el-form-item prop="repassword" label="Re-Password">
             <el-input
               ref="repassword"
-              v-model="userEditForm.repassword"
+              v-model="userCreateForm.repassword"
               placeholder="Re-Password"
               name="repassword"
               type="password"
@@ -142,7 +142,16 @@ export default {
     return {
       // id: 0,
       pageLoading: true,
-      userEditForm: { },
+      userCreateForm: {
+        name: '',
+        last_name: '',
+        gender: 1,
+        enable: 1,
+        email: '',
+        avatar: '',
+        password: '',
+        repassword: ''
+      },
       userEditRules: {
         email: [{ required: true, trigger: 'blur', validator: validateEmail }],
         name: [{ required: true }],
@@ -167,7 +176,7 @@ export default {
   methods: {
 
     onSubmit() {
-      const params = { ...this.userEditForm }
+      const params = { ...this.userCreateForm }
       params.enable = (params.enable) ? 1 : 0
 
       create(params).then(response => {
