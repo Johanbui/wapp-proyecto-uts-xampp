@@ -69,8 +69,8 @@ export default {
     }
     return {
       loginForm: {
-        username: 'admin',
-        password: '111111'
+        username: 'jahiranova@uts.edu.co',
+        password: 'Uts2022'
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],
