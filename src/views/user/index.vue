@@ -35,25 +35,25 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="Name">
+      <el-table-column label="Name" style="width: 20%">
         <template slot-scope="scope">
           {{ scope.row.name }}
         </template>
       </el-table-column>
 
-      <el-table-column label="Last Name" align="center">
+      <el-table-column label="Last Name" align="center" style="width: 20%">
         <template slot-scope="scope">
           <span>{{ scope.row.last_name }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column label="E-mail" align="center">
+      <el-table-column label="E-mail" align="center" style="width: 30%">
         <template slot-scope="scope">
           <span>{{ scope.row.email }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column label="Avatar" align="center" width="100">
+      <el-table-column label="Avatar" align="center" style="width: 20%">
         <template slot-scope="scope">
           <img class="row_avatar" :src=" scope.row.avatar">
         </template>
@@ -62,6 +62,8 @@
       <el-table-column
         align="center"
         label="Actions"
+        fixed="right"
+        style="width: 10%"
       >
         <template slot-scope="scope">
           <div class="td-actions">

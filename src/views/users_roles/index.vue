@@ -90,7 +90,9 @@ export default {
       search: '',
       currentPage: 1,
       numberItems: 5,
-      countItems: 0
+      countItems: 0,
+      userId: 0
+
     }
   },
   computed: {
@@ -101,6 +103,12 @@ export default {
   watch: {
     search() {
       this.fetchData()
+    },
+    $route: {
+      handler: function(route) {
+        this.userId = route.params.user_id && route.params.user_id
+      },
+      immediate: true
     }
   },
   created() {
@@ -113,7 +121,7 @@ export default {
         limit: this.numberItems,
         page: this.currentPage,
         search: this.search,
-        userId: this.user_id
+        userId: this.userId
       }
       console.log(params)
       getAll(params).then(response => {
@@ -136,7 +144,7 @@ export default {
     },
     handleActivate(index, row) {
       const params = {
-        userId: this.user_id,
+        userId: this.userId,
         rolId: row.id,
         enable: (row.activate) ? 1 : 0
       }

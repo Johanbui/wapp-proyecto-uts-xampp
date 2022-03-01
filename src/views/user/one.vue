@@ -88,11 +88,6 @@
           </el-form-item>
         </el-col>
       </el-row>
-
-      <el-form-item>
-        <el-button @click="onBack">Back</el-button>
-      </el-form-item>
-
     </el-form>
 
   </div>
@@ -147,12 +142,6 @@ export default {
         this.pageLoading = false
         this.userEditForm = { ...response.data }
       })
-    },
-    onSubmit() {
-
-    },
-    onBack() {
-      this.$router.push({ path: '/user/index' })
     }
   }
 }

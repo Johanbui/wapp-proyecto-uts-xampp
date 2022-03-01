@@ -72,9 +72,23 @@ td{
 .td-actions{
   display: flex;
   flex-direction: row;
-  flex-wrap: nowrap;
+  flex-wrap: wrap;
   align-content: center;
   justify-content: center;
   align-items: center;
   column-gap: 20px;
+  row-gap: 20px;
+
+  .el-switch{
+    display: contents;
+  }
+}
+
+
+.block{
+  margin-top: 30px;
+  display: grid;
+  justify-content: end;
+  margin-right: 0;
+  padding-right: 0;
 }
