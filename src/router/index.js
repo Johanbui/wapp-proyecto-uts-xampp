@@ -108,6 +108,21 @@ export const constantRoutes = [
   },
 
   {
+    path: '/rol',
+    component: Layout,
+    meta: { title: 'Rol', icon: 'el-icon-setting', code: 'USER-INDEX' },
+    children: [
+      {
+        path: '',
+        name: 'Index',
+        component: () => import('@/views/roles/index'),
+        meta: { title: 'Roles', icon: 'el-icon-setting', code: 'ROL-INDEX' }
+
+      }
+    ]
+  },
+
+  {
     path: '/form',
     component: Layout,
     children: [
