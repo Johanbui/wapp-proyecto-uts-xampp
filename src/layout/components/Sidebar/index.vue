@@ -38,7 +38,7 @@ export default {
   computed: {
     ...mapGetters([
       'sidebar',
-      'users_rols'
+      'users_roles'
     ]),
     routes() {
       return this.$router.options.routes
@@ -69,7 +69,7 @@ export default {
   methods: {
     validNav(navRoute) {
       const navCode = (navRoute?.meta?.code) ? navRoute.meta.code : ''
-      const user_rols = this.users_rols
+      const user_rols = this.users_roles
       const found = user_rols.find(element => element.code === navCode)
 
       if (typeof found === 'object' || navCode === '') {

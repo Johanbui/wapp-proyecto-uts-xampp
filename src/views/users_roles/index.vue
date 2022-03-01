@@ -48,7 +48,7 @@
 
         <template slot-scope="scope">
           <div class="td-actions">
-            <div>
+            <div v-if="findPermission('USERS-ROLES-TOGGLE')">
               <el-switch
                 v-model="scope.row.activate"
                 active-color="#13ce66"
@@ -97,7 +97,8 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'user_id'
+      'user_id',
+      'users_roles'
     ])
   },
   watch: {
@@ -149,6 +150,14 @@ export default {
         enable: (row.activate) ? 1 : 0
       }
       toggleEnable(params)
+    },
+    findPermission(permission) {
+      const user_rols = this.users_roles
+      const found = user_rols.find(element => element.code === permission)
+      if (typeof found === 'object' || permission === '') {
+        return true
+      }
+      return false
     }
   }
 }

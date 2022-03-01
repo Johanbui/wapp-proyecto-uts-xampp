@@ -68,7 +68,7 @@
         <template slot-scope="scope">
           <div class="td-actions">
 
-            <div>
+            <div v-if="findPermission('USERS-ROLES-INDEX')">
               <el-button
                 size="mini"
                 @click="handleUsersRoles(scope.$index, scope.row)"
@@ -77,7 +77,7 @@
               </el-button>
             </div>
 
-            <div>
+            <div v-if="findPermission('USER-ONE')">
               <el-button
                 size="mini"
                 @click="handleConsult(scope.$index, scope.row)"
@@ -86,7 +86,7 @@
               </el-button>
             </div>
 
-            <div>
+            <div v-if="findPermission('USER-EDIT')">
               <el-button
                 size="mini"
                 @click="handleEdit(scope.$index, scope.row)"
@@ -95,7 +95,7 @@
               </el-button>
             </div>
 
-            <div>
+            <div v-if="findPermission('USER-KEY')">
               <el-button
                 size="mini"
                 @click="handleKey(scope.$index, scope.row)"
@@ -104,7 +104,7 @@
               </el-button>
             </div>
 
-            <div>
+            <div v-if="findPermission('USER-TOGGLE')">
               <el-switch
                 v-model="scope.row.enable"
                 active-color="#13ce66"
@@ -136,6 +136,7 @@
 
 <script>
 import { getAll, toggleEnable } from '@/api/user'
+import { mapGetters } from 'vuex'
 
 export default {
   data() {
@@ -148,6 +149,12 @@ export default {
       countItems: 0
     }
   },
+  computed: {
+    ...mapGetters([
+      'users_roles'
+    ])
+  },
+
   watch: {
     search() {
       this.fetchData()
@@ -202,7 +209,16 @@ export default {
     handleCurrentChange(val) {
       this.currentPage = val
       this.fetchData()
+    },
+    findPermission(permission) {
+      const user_rols = this.users_roles
+      const found = user_rols.find(element => element.code === permission)
+      if (typeof found === 'object' || permission === '') {
+        return true
+      }
+      return false
     }
+
   }
 }
 </script>
