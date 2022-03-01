@@ -12,7 +12,16 @@
         :collapse-transition="false"
         mode="vertical"
       >
-        <sidebar-item v-for="route in routes" :key="route.path" :item="route" :base-path="route.path" />
+        <template
+          v-for="route in routes"
+        >
+          <sidebar-item
+            v-if="validNav(route)"
+            :key="route.path"
+            :item="route"
+            :base-path="route.path"
+          />
+        </template>
       </el-menu>
     </el-scrollbar>
   </div>
@@ -28,11 +37,13 @@ export default {
   components: { SidebarItem, Logo },
   computed: {
     ...mapGetters([
-      'sidebar'
+      'sidebar',
+      'users_rols'
     ]),
     routes() {
       return this.$router.options.routes
     },
+
     activeMenu() {
       const route = this.$route
       const { meta, path } = route
@@ -50,6 +61,22 @@ export default {
     },
     isCollapse() {
       return !this.sidebar.opened
+    },
+    rout() {
+      return this.$router
+    }
+  },
+  methods: {
+    validNav(navRoute) {
+      const navCode = (navRoute?.meta?.code) ? navRoute.meta.code : ''
+      const user_rols = this.users_rols
+      const found = user_rols.find(element => element.code === navCode)
+
+      if (typeof found === 'object' || navCode === '') {
+        return true
+      }
+
+      return false
     }
   }
 }

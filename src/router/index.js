@@ -52,37 +52,57 @@ export const constantRoutes = [
       meta: { title: 'Dashboard', icon: 'dashboard' }
     }]
   },
-
   {
     path: '/user',
     component: Layout,
+    meta: { title: 'User', icon: 'user', code: 'USER-INDEX' },
     children: [
       {
-        path: 'index',
+        path: '',
         name: 'Index',
         component: () => import('@/views/user/index'),
-        meta: { title: 'User', icon: 'table' }
-      },
-      {
-        path: 'edit/:id',
-        name: 'User Edit',
-        component: () => import('@/views/user/edit'),
-        meta: { title: 'Edit', icon: 'table' },
-        hidden: true
-      },
-      {
-        path: 'key/:id',
-        name: 'User Change Password',
-        component: () => import('@/views/user/key'),
-        meta: { title: 'Change Password', icon: 'table' },
-        hidden: true
+        meta: { title: 'User', icon: 'user', code: 'USER-INDEX' }
+
       },
       {
         path: 'create',
         name: 'Create',
         component: () => import('@/views/user/create'),
-        meta: { title: 'Create', icon: 'table' },
+        meta: { title: 'Create', icon: 'user', code: 'USER-CREATE' },
         hidden: true
+
+      },
+      {
+        path: 'edit/:id',
+        name: 'User Edit',
+        component: () => import('@/views/user/edit'),
+        meta: { title: 'Edit', icon: 'user', code: 'USER-EDIT' },
+        hidden: true
+
+      },
+      {
+        path: 'index/:id',
+        name: 'User',
+        component: () => import('@/views/user/one'),
+        meta: { title: 'User', icon: 'user', code: 'USER-ONE' },
+        hidden: true
+
+      },
+      {
+        path: 'key/:id',
+        name: 'User Change Password',
+        component: () => import('@/views/user/key'),
+        meta: { title: 'Change Password', icon: 'user', code: 'USER-KEY' },
+        hidden: true
+
+      },
+      {
+        path: 'user_roles/:user_id',
+        name: 'User Roles',
+        component: () => import('@/views/users_roles/index'),
+        meta: { title: 'Rol', icon: 'el-icon-open', code: 'USERS-ROLES-INDEX' },
+        hidden: true
+
       }
     ]
   },
