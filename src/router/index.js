@@ -134,6 +134,20 @@ export const constantRoutes = [
       }
     ]
   },
+
+  {
+    path: '/trabajodegrado',
+    component: Layout,
+    children: [
+      {
+        path: 'index',
+        name: 'Trabajo de Grado',
+        component: () => import('@/views/trabajodegrado/index'),
+        meta: { title: 'trabajodegrado', icon: 'form' }
+      }
+    ]
+  },
+
   // 404 page must be placed at the end !!!
   { path: '*', redirect: '/404', hidden: true }
 ]
