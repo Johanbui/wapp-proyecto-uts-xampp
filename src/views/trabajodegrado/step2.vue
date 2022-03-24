@@ -37,6 +37,21 @@
           />
         </el-select>
       </el-form-item>
+
+
+      <el-form-item label="CO-Director de Trabajo de Grado">
+
+        <el-select v-model="value" filterable placeholder="Select">
+          <el-option
+            v-for="item in options"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          />
+        </el-select>
+      </el-form-item>
+
+
       <el-button-group>
         <el-button type="primary" @click="atras">Atras</el-button>
         <el-button type="primary" @click="continuar">Continuar</el-button>

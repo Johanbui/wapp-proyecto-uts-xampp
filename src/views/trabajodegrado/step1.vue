@@ -4,7 +4,7 @@
     <el-row :gutter="30">
 
       <el-col :span="22">
-
+        {{ search }}
         <el-input
           v-model="search"
           size="mini"

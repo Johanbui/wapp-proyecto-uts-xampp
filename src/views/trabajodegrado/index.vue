@@ -5,9 +5,11 @@
       <el-col :span="24">
         <el-steps :active="active" finish-status="success">
           <el-step title="Banco de Ideas" icon="el-icon-tickets" @click="alert()" />
-          <el-step title="Pago Modalidad" icon="el-icon-wallet" />
+          <el-step title="Aprobacion de Idea" icon="el-icon-wallet" />
           <el-step title="Propuesta Trabajo de Grado" icon="el-icon-document" />
+          <el-step title="Evaluacion Propuesta" icon="el-icon-wallet" />
           <el-step title="Informe Final" icon="el-icon-folder-opened" />
+          <el-step title="Evaluacion Informe Final" icon="el-icon-folder-opened" />
           <el-step title="Resultado" icon="el-icon-star-on" />
         </el-steps>
       </el-col>
@@ -25,20 +27,33 @@
       </el-col>
     </el-row>
 
-    <el-row>
-      <el-col v-if="active == 2" :span="24">
+    <el-row v-if="active == 2">
+      <el-col :span="24">
         <step-3 @continuar="continuar" @atras="atras" />
       </el-col>
     </el-row>
 
     <el-row>
       <el-col v-if="active == 3" :span="24">
-        <step-4 @continuar="continuar" @atras="atras" />
+        <step-3 @continuar="continuar" @atras="atras" />
+        <!-- este step debe ser el del profesor con : Observaciones generales, Concepto Final, Y nuevo FDC-124-->
       </el-col>
     </el-row>
 
     <el-row>
       <el-col v-if="active == 4" :span="24">
+        <step-4 @continuar="continuar" @atras="atras" />
+      </el-col>
+    </el-row>
+
+    <el-row>
+      <el-col v-if="active == 5" :span="24">
+        <step-4 @continuar="continuar" @atras="atras" />
+      </el-col>
+    </el-row>
+
+    <el-row>
+      <el-col v-if="active == 6" :span="24">
         <step-5 @continuar="continuar" @atras="atras" />
       </el-col>
     </el-row>
