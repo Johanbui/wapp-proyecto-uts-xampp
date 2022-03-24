@@ -1,35 +1,47 @@
 <template>
   <div class="app-container">
 
-    <el-tabs v-model="activeName" type="border-card" @tab-click="handleClick">
+    <el-row>
+      <el-col :span="24">
+        <el-steps :active="active" finish-status="success">
+          <el-step title="Banco de Ideas" icon="el-icon-tickets" @click="alert()" />
+          <el-step title="Pago Modalidad" icon="el-icon-wallet" />
+          <el-step title="Propuesta Trabajo de Grado" icon="el-icon-document" />
+          <el-step title="Informe Final" icon="el-icon-folder-opened" />
+          <el-step title="Resultado" icon="el-icon-star-on" />
+        </el-steps>
+      </el-col>
+    </el-row>
 
-      <el-tab-pane>
-        <span slot="label"><i class="el-icon-tickets" /> Banco de Ideas</span>
+    <el-row v-if="active == 0">
+      <el-col :span="24">
         <step-1 @continuar="continuar" @atras="atras" />
-      </el-tab-pane>
+      </el-col>
+    </el-row>
 
-      <el-tab-pane>
-        <span slot="label"><i class="el-icon-wallet" />Pago Modalidad</span>
+    <el-row v-if="active == 1">
+      <el-col :span="24">
         <step-2 @continuar="continuar" @atras="atras" />
-      </el-tab-pane>
+      </el-col>
+    </el-row>
 
-      <el-tab-pane>
-        <span slot="label"><i class="el-icon-document" /> Propuesta Trabajo de Grado</span>
+    <el-row>
+      <el-col v-if="active == 2" :span="24">
         <step-3 @continuar="continuar" @atras="atras" />
-      </el-tab-pane>
+      </el-col>
+    </el-row>
 
-      <el-tab-pane>
-        <span slot="label"><i class="el-icon-folder-opened" />Informe Final</span>
+    <el-row>
+      <el-col v-if="active == 3" :span="24">
         <step-4 @continuar="continuar" @atras="atras" />
-      </el-tab-pane>
+      </el-col>
+    </el-row>
 
-      <el-tab-pane>
-        <span slot="label"><i class="el-icon-star-on" /> Resultado</span>
-        Resultado
-      </el-tab-pane>
-
-    </el-tabs>
-
+    <el-row>
+      <el-col v-if="active == 4" :span="24">
+        <step-5 @continuar="continuar" @atras="atras" />
+      </el-col>
+    </el-row>
   </div>
 </template>
 
@@ -39,36 +51,73 @@ import step1 from './step1.vue'
 import step2 from './step2.vue'
 import step3 from './step3.vue'
 import step4 from './step4.vue'
+import step5 from './step5.vue'
 
 export default {
   components: {
     step1,
     step2,
     step3,
-    step4
+    step4,
+    step5
   },
   data() {
     return {
-      activeName: '0'
+      // activeName: '0',
+      active: 0
+
     }
   },
   methods: {
     continuar() {
-      const active = parseInt(this.activeName)
-      this.activeName = (active + 1).toString()
+      const active = parseInt(this.active)
+      // this.activeName = (active + 1).toString()
+      this.active = active + 1
     },
     atras() {
-      const active = parseInt(this.activeName)
-      this.activeName = (active - 1).toString()
+      const active = parseInt(this.active)
+      // this.activeName = (active - 1).toString()
+      this.active = active - 1
     }
 
   }
 }
 </script>
 
-<style scoped>
-.line{
-  text-align: center;
-}
+<style lang="scss">
+  .line{
+    text-align: center;
+  }
+
+  .el-row {
+    margin-bottom: 20px;
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+  .el-col {
+    border-radius: 4px;
+  }
+  .bg-purple-dark {
+    background: #99a9bf;
+  }
+  .bg-purple {
+    background: #d3dce6;
+  }
+  .bg-purple-light {
+    background: #e5e9f2;
+  }
+  .grid-content {
+    border-radius: 4px;
+    min-height: 36px;
+  }
+  .row-bg {
+    padding: 10px 0;
+    background-color: #f9fafc;
+  }
+  .el-step__icon-inner{
+    font-size: 35px !important;
+  }
+
 </style>
 

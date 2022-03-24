@@ -1,5 +1,5 @@
 <template>
-  <div class="app-step3">
+  <div class="app-step4">
     <el-form ref="form" :model="form" label-width="130px">
 
       <el-form-item label="Informe Final Trabajo de Grado F-DC-125">

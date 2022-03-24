@@ -121,7 +121,7 @@ export const constantRoutes = [
       }
     ]
   },
-
+  /*
   {
     path: '/form',
     component: Layout,
@@ -134,6 +134,7 @@ export const constantRoutes = [
       }
     ]
   },
+  */
 
   {
     path: '/trabajodegrado',
