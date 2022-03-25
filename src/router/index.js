@@ -95,14 +95,6 @@ export const constantRoutes = [
         meta: { title: 'Change Password', icon: 'user', code: 'USER-KEY' },
         hidden: true
 
-      },
-      {
-        path: 'user_roles/:user_id',
-        name: 'User Roles',
-        component: () => import('@/views/users_roles/index'),
-        meta: { title: 'Rol', icon: 'el-icon-open', code: 'USERS-ROLES-INDEX' },
-        hidden: true
-
       }
     ]
   },
@@ -117,6 +109,38 @@ export const constantRoutes = [
         name: 'Index',
         component: () => import('@/views/roles/index'),
         meta: { title: 'Roles', icon: 'el-icon-setting', code: 'ROL-INDEX' }
+
+      },
+      {
+        path: 'create',
+        name: 'Rol Create',
+        component: () => import('@/views/roles/create'),
+        meta: { title: 'Create', icon: 'el-icon-setting', code: 'ROL-CREATE' },
+        hidden: true
+
+      },
+      {
+        path: 'edit/:id',
+        name: 'Rol Edit',
+        component: () => import('@/views/roles/edit'),
+        meta: { title: 'Edit', icon: 'el-icon-setting', code: 'ROL-EDIT' },
+        hidden: true
+
+      },
+      {
+        path: ':id',
+        name: 'Rol',
+        component: () => import('@/views/roles/one'),
+        meta: { title: 'Rol', icon: 'el-icon-setting', code: 'ROL-ONE' },
+        hidden: true
+
+      },
+      {
+        path: ':id/permissions',
+        name: 'Rol - Permisos',
+        component: () => import('@/views/roles/permissions'),
+        meta: { title: 'Roles Permissions', icon: 'el-icon-setting', code: 'ROLES-PERMISSIONS' },
+        hidden: true
 
       }
     ]

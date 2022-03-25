@@ -134,3 +134,30 @@ td{
 .el-select .el-input.is-focus .el-input__inner{
   border-color: #C3D730;
 }
+
+
+.el-button--primary.is-disabled, .el-button--primary.is-disabled:active, .el-button--primary.is-disabled:focus, .el-button--primary.is-disabled:hover{
+  background-color: #C3D730;
+  border-color: #C3D730;
+  opacity: 0.8;
+}
+
+
+.el-checkbox__input.is-checked+.el-checkbox__label{
+  color: #C3D730;
+}
+
+.el-transfer-panel__item:hover{
+  color: #C3D730;
+
+}
+
+.el-checkbox__input.is-checked .el-checkbox__inner, .el-checkbox__input.is-indeterminate .el-checkbox__inner {
+  background-color: #C3D730;
+  border-color: #C3D730;
+}
+
+
+.el-select .el-input__inner:focus{
+  border-color: #C3D730;
+}

@@ -68,15 +68,6 @@
         <template slot-scope="scope">
           <div class="td-actions">
 
-            <div v-if="findPermission('USERS-ROLES-INDEX')">
-              <el-button
-                size="mini"
-                @click="handleUsersRoles(scope.$index, scope.row)"
-              >
-                <i class="el-icon-setting" />
-              </el-button>
-            </div>
-
             <div v-if="findPermission('USER-ONE')">
               <el-button
                 size="mini"

@@ -3,7 +3,7 @@
     <el-form ref="userEditForm" :model="userEditForm" :rules="userEditRules" class="login-form" auto-complete="on" label-position="left">
 
       <div class="title-container">
-        <h3 class="title">User Edit</h3>
+        <h3 class="title">User</h3>
       </div>
 
       <el-row :gutter="30">
@@ -56,6 +56,19 @@
       </el-row>
 
       <el-row :gutter="30">
+        <el-col :span="12">
+          <el-form-item label="Rol" prop="rol">
+            <el-select v-model="userEditForm.rol_id" placeholder="please select your Rol" disabled>
+              <template v-for="rol in roles">
+                <el-option :label="rol.name" :value="rol.id" />
+              </template>
+            </el-select>
+          </el-form-item>
+        </el-col>
+
+      </el-row>
+
+      <el-row :gutter="30">
         <el-col :span="24">
           <el-form-item prop="email" label="E-mail">
             <el-input
@@ -96,6 +109,7 @@
 <script>
 import { getOne } from '@/api/user'
 import { validEmail } from '@/utils/validate'
+import { getAll } from '@/api/rol'
 
 export default {
   data() {
@@ -130,13 +144,28 @@ export default {
       immediate: true
     }
   },
-  created() {
-    this.fetchData()
+  async created() {
+    await this.getRoles()
+    await this.fetchData()
   },
   methods: {
-    fetchData() {
+    async getRoles() {
+      this.listLoading = true
+      const params = {
+        limit: this.numberItems,
+        page: this.currentPage
+      }
+      await getAll(params).then(response => {
+        this.roles = response.data.map(function(x) {
+          x.enable = (x.enable === 1)
+          return x
+        })
+        this.listLoading = false
+      })
+    },
+    async fetchData() {
       this.pageLoading = true
-      getOne(this.id).then(response => {
+      await getOne(this.id).then(response => {
         response.data.enable = (response.data.enable === 1)
         // this.user = response.data
         this.pageLoading = false

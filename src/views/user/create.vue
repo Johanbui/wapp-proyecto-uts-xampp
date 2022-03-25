@@ -54,6 +54,17 @@
       </el-row>
 
       <el-row :gutter="30">
+        <el-col :span="12">
+          <el-form-item label="Rol" prop="rol">
+            <el-select v-model="userCreateForm.rol_id" placeholder="please select your Rol">
+              <el-option v-for="rol in roles" :label="rol.name" :value="rol.id" />
+            </el-select>
+          </el-form-item>
+        </el-col>
+
+      </el-row>
+
+      <el-row :gutter="30">
         <el-col :span="24">
           <el-form-item prop="email" label="E-mail">
             <el-input
@@ -127,6 +138,7 @@
 
 <script>
 import { create } from '@/api/user'
+import { getAll } from '@/api/rol'
 import { validEmail } from '@/utils/validate'
 
 export default {
@@ -142,6 +154,7 @@ export default {
     return {
       // id: 0,
       pageLoading: true,
+      roles: [],
       userCreateForm: {
         name: '',
         last_name: '',
@@ -150,7 +163,8 @@ export default {
         email: '',
         avatar: '',
         password: '',
-        repassword: ''
+        repassword: '',
+        rol_id: ''
       },
       userEditRules: {
         email: [{ required: true, trigger: 'blur', validator: validateEmail }],
@@ -172,9 +186,23 @@ export default {
     }
   },
   created() {
+    this.getRoles()
   },
   methods: {
-
+    getRoles() {
+      this.listLoading = true
+      const params = {
+        limit: this.numberItems,
+        page: this.currentPage
+      }
+      getAll(params).then(response => {
+        this.roles = response.data.map(function(x) {
+          x.enable = (x.enable === 1)
+          return x
+        })
+        this.listLoading = false
+      })
+    },
     onSubmit() {
       const params = { ...this.userCreateForm }
       params.enable = (params.enable) ? 1 : 0
@@ -188,12 +216,12 @@ export default {
           }
         )
         if (response.type === 'success') {
-          this.$router.push({ path: '/user/index' })
+          this.$router.push({ path: '/user' })
         }
       })
     },
     onCancel() {
-      this.$router.push({ path: '/user/index' })
+      this.$router.push({ path: '/user' })
     }
   }
 }

@@ -11,7 +11,13 @@
           placeholder="Type to search"
         />
       </el-col>
-
+      <el-col :span="2">
+        <el-button
+          v-if="findPermission('ROLES-CREATE')"
+          type="primary"
+          @click="handleCreate()"
+        >Create</el-button>
+      </el-col>
     </el-row>
 
     <el-table
@@ -48,7 +54,35 @@
 
         <template slot-scope="scope">
           <div class="td-actions">
-            <div v-if="findPermission('ROL-TOGGLE')">
+
+            <div v-if="findPermission('ROLES-ONE')">
+              <el-button
+                size="mini"
+                @click="handleConsult(scope.$index, scope.row)"
+              >
+                <i class="el-icon-view" />
+              </el-button>
+            </div>
+
+            <div v-if="findPermission('ROLES-EDIT')">
+              <el-button
+                size="mini"
+                @click="handleEdit(scope.$index, scope.row)"
+              >
+                <i class="el-icon-edit" />
+              </el-button>
+            </div>
+
+            <div v-if="findPermission('ROLES-PERMISSIONS')">
+              <el-button
+                size="mini"
+                @click="handlePermissions(scope.$index, scope.row)"
+              >
+                <i class="el-icon-key" />
+              </el-button>
+            </div>
+
+            <div v-if="findPermission('ROLES-TOGGLE')">
               <el-switch
                 v-model="scope.row.enable"
                 active-color="#13ce66"
@@ -157,6 +191,18 @@ export default {
         return true
       }
       return false
+    },
+    handleCreate() {
+      this.$router.push({ path: '/rol/create' })
+    },
+    handleEdit(index, row) {
+      this.$router.push({ path: '/rol/edit/' + row.id })
+    },
+    handleConsult(index, row) {
+      this.$router.push({ path: '/rol/' + row.id })
+    },
+    handlePermissions(index, row) {
+      this.$router.push({ path: '/rol/' + row.id + '/permissions' })
     }
   }
 }
