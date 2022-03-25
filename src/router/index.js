@@ -45,11 +45,12 @@ export const constantRoutes = [
     path: '/',
     component: Layout,
     redirect: '/dashboard',
+    meta: { title: 'Dashboard', icon: 'dashboard', code: 'DASHBOARD-ADMIN' },
     children: [{
       path: 'dashboard',
       name: 'Dashboard',
       component: () => import('@/views/dashboard/index'),
-      meta: { title: 'Dashboard', icon: 'dashboard' }
+      meta: { title: 'Dashboard', icon: 'dashboard', code: 'DASHBOARD-ADMIN' }
     }]
   },
   {
@@ -102,7 +103,7 @@ export const constantRoutes = [
   {
     path: '/rol',
     component: Layout,
-    meta: { title: 'Rol', icon: 'el-icon-setting', code: 'USER-INDEX' },
+    meta: { title: 'Rol', icon: 'el-icon-setting', code: 'ROL-INDEX' },
     children: [
       {
         path: '',
@@ -139,36 +140,22 @@ export const constantRoutes = [
         path: ':id/permissions',
         name: 'Rol - Permisos',
         component: () => import('@/views/roles/permissions'),
-        meta: { title: 'Roles Permissions', icon: 'el-icon-setting', code: 'ROLES-PERMISSIONS' },
+        meta: { title: 'Roles Permissions', icon: 'el-icon-setting', code: 'ROL-PERMISSION' },
         hidden: true
 
       }
     ]
   },
-  /*
-  {
-    path: '/form',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        name: 'Form',
-        component: () => import('@/views/form/index'),
-        meta: { title: 'Form', icon: 'form' }
-      }
-    ]
-  },
-  */
-
   {
     path: '/trabajodegrado',
     component: Layout,
+    meta: { title: 'trabajodegrado', icon: 'form', code: 'TRABAJOGRADO-INDEX' },
     children: [
       {
         path: 'index',
         name: 'Trabajo de Grado',
         component: () => import('@/views/trabajodegrado/index'),
-        meta: { title: 'trabajodegrado', icon: 'form' }
+        meta: { title: 'trabajodegrado', icon: 'form', code: 'TRABAJOGRADO-INDEX' }
       }
     ]
   },

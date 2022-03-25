@@ -13,7 +13,7 @@
       </el-col>
       <el-col :span="2">
         <el-button
-          v-if="findPermission('ROLES-CREATE')"
+          v-if="findPermission('ROL-CREATE')"
           type="primary"
           @click="handleCreate()"
         >Create</el-button>
@@ -55,7 +55,7 @@
         <template slot-scope="scope">
           <div class="td-actions">
 
-            <div v-if="findPermission('ROLES-ONE')">
+            <div v-if="findPermission('ROL-ONE')">
               <el-button
                 size="mini"
                 @click="handleConsult(scope.$index, scope.row)"
@@ -64,7 +64,7 @@
               </el-button>
             </div>
 
-            <div v-if="findPermission('ROLES-EDIT')">
+            <div v-if="findPermission('ROL-EDIT')">
               <el-button
                 size="mini"
                 @click="handleEdit(scope.$index, scope.row)"
@@ -73,7 +73,7 @@
               </el-button>
             </div>
 
-            <div v-if="findPermission('ROLES-PERMISSIONS')">
+            <div v-if="findPermission('ROL-PERMISSIONS')">
               <el-button
                 size="mini"
                 @click="handlePermissions(scope.$index, scope.row)"
@@ -82,7 +82,7 @@
               </el-button>
             </div>
 
-            <div v-if="findPermission('ROLES-TOGGLE')">
+            <div v-if="findPermission('ROL-TOGGLE')">
               <el-switch
                 v-model="scope.row.enable"
                 active-color="#13ce66"

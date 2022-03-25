@@ -58,7 +58,7 @@
           <el-form-item label="Rol" prop="rol">
             <el-select v-model="userEditForm.rol_id" placeholder="please select your Rol">
               <template v-for="rol in roles">
-                <el-option :label="rol.name" :value="rol.id" />
+                <el-option :key="rol.id" :label="rol.name" :value="rol.id" />
               </template>
             </el-select>
           </el-form-item>

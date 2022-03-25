@@ -57,7 +57,7 @@
         <el-col :span="12">
           <el-form-item label="Rol" prop="rol">
             <el-select v-model="userCreateForm.rol_id" placeholder="please select your Rol">
-              <el-option v-for="rol in roles" :label="rol.name" :value="rol.id" />
+              <el-option v-for="rol in roles" :key="rol.id" :label="rol.name" :value="rol.id" />
             </el-select>
           </el-form-item>
         </el-col>
