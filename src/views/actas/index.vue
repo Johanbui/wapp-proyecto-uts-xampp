@@ -13,7 +13,7 @@
       </el-col>
       <el-col :span="2">
         <el-button
-          v-if="findPermission('ROL-CREATE')"
+          v-if="findPermission('ACTA-CREATE')"
           type="primary"
           @click="handleCreate()"
         >Create</el-button>
@@ -35,15 +35,15 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="Code">
+      <el-table-column label="Codigo">
         <template slot-scope="scope">
-          {{ scope.row.code }}
+          {{ scope.row.codigo }}
         </template>
       </el-table-column>
 
-      <el-table-column label="Name" align="center">
+      <el-table-column label="Url Archivo" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.name }}</span>
+          <span>{{ scope.row.url_archivo }}</span>
         </template>
       </el-table-column>
 
@@ -55,7 +55,7 @@
         <template slot-scope="scope">
           <div class="td-actions">
 
-            <div v-if="findPermission('ROL-ONE')">
+            <div v-if="findPermission('ACTA-ONE')">
               <el-button
                 size="mini"
                 @click="handleConsult(scope.$index, scope.row)"
@@ -64,31 +64,13 @@
               </el-button>
             </div>
 
-            <div v-if="findPermission('ROL-EDIT')">
+            <div v-if="findPermission('ACTA-EDIT')">
               <el-button
                 size="mini"
                 @click="handleEdit(scope.$index, scope.row)"
               >
                 <i class="el-icon-edit" />
               </el-button>
-            </div>
-
-            <div v-if="findPermission('ROL-PERMISSION')">
-              <el-button
-                size="mini"
-                @click="handlePermissions(scope.$index, scope.row)"
-              >
-                <i class="el-icon-key" />
-              </el-button>
-            </div>
-
-            <div v-if="findPermission('ROL-TOGGLE')">
-              <el-switch
-                v-model="scope.row.enable"
-                active-color="#13ce66"
-                inactive-color="#ff4949"
-                @change="handleEnable(scope.$index, scope.row)"
-              />
             </div>
 
           </div>
@@ -113,7 +95,7 @@
 </template>
 
 <script>
-import { getAll, toggleEnable } from '@/api/rol'
+import { getAll } from '@/api/acta'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -124,9 +106,7 @@ export default {
       search: '',
       currentPage: 1,
       numberItems: 5,
-      countItems: 0,
-      userId: 0
-
+      countItems: 0
     }
   },
   computed: {
@@ -142,7 +122,7 @@ export default {
     },
     $route: {
       handler: function(route) {
-        this.userId = route.params.user_id && route.params.user_id
+        // this.userId = route.params.user_id && route.params.user_id
       },
       immediate: true
     }
@@ -177,13 +157,7 @@ export default {
       this.currentPage = val
       this.fetchData()
     },
-    handleEnable(index, row) {
-      const params = {
-        id: row.id,
-        enable: (row.enable) ? 1 : 0
-      }
-      toggleEnable(params)
-    },
+
     findPermission(permission) {
       const user_rols = this.users_roles
       const found = user_rols.find(element => element.code === permission)
@@ -193,16 +167,16 @@ export default {
       return false
     },
     handleCreate() {
-      this.$router.push({ path: '/rol/create' })
+      this.$router.push({ path: '/acta/create' })
     },
     handleEdit(index, row) {
-      this.$router.push({ path: '/rol/edit/' + row.id })
+      this.$router.push({ path: '/acta/edit/' + row.id })
     },
     handleConsult(index, row) {
-      this.$router.push({ path: '/rol/' + row.id })
+      this.$router.push({ path: '/acta/' + row.id })
     },
     handlePermissions(index, row) {
-      this.$router.push({ path: '/rol/' + row.id + '/permissions' })
+      this.$router.push({ path: '/acta/' + row.id + '/permissions' })
     }
   }
 }

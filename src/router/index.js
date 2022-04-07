@@ -146,6 +146,46 @@ export const constantRoutes = [
       }
     ]
   },
+
+  {
+    path: '/acta',
+    component: Layout,
+    meta: { title: 'Actas', icon: 'el-icon-setting', code: 'ACTA-INDEX' },
+    children: [
+      {
+        path: '',
+        name: 'Index',
+        component: () => import('@/views/actas/index'),
+        meta: { title: 'Actas', icon: 'el-icon-setting', code: 'ACTA-INDEX' }
+
+      },
+      {
+        path: 'create',
+        name: 'Acta Create',
+        component: () => import('@/views/actas/create'),
+        meta: { title: 'Create', icon: 'el-icon-setting', code: 'ACTA-CREATE' },
+        hidden: true
+
+      },
+      {
+        path: 'edit/:id',
+        name: 'Acta Edit',
+        component: () => import('@/views/actas/edit'),
+        meta: { title: 'Edit', icon: 'el-icon-setting', code: 'ACTA-EDIT' },
+        hidden: true
+
+      },
+      {
+        path: ':id',
+        name: 'Acta',
+        component: () => import('@/views/actas/one'),
+        meta: { title: 'Acta', icon: 'el-icon-setting', code: 'ACTA-ONE' },
+        hidden: true
+
+      }
+    ]
+  },
+
   {
     path: '/trabajodegrado',
     component: Layout,
