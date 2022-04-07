@@ -43,9 +43,12 @@
 
       <el-table-column label="Url Archivo" align="center">
         <template slot-scope="scope">
-          <span>{{ scope.row.url_archivo }}</span>
+          <a class="link" @click.stop.prevent="hrefFile(scope.row)">
+            {{ scope.row.file.name }}
+          </a>
         </template>
       </el-table-column>
+
 
       <el-table-column
         align="center"
@@ -148,7 +151,6 @@ export default {
         this.listLoading = false
       })
     },
-
     handleSizeChange(val) {
       this.numberItems = val
       this.fetchData()
@@ -177,11 +179,14 @@ export default {
     },
     handlePermissions(index, row) {
       this.$router.push({ path: '/acta/' + row.id + '/permissions' })
+    },
+    hrefFile(obj){
+      window.open(obj.file.url)
     }
   }
 }
 </script>
-<style scoped>
+<style scoped lang="scss">
 img.row_avatar{
   width: 35px;
   border-radius: 50%;
@@ -190,4 +195,10 @@ img.row_avatar{
   height: 70px;
   margin-top: 50px;
 }
+
+a.link{
+  color: #C3D730;
+  opacity: 0.8;
+}
+
 </style>

@@ -1,9 +1,15 @@
 <template>
   <div class="app-container">
-    <el-form ref="actaForm" :model="actaForm" :rules="actaRules" class="login-form" auto-complete="on" label-position="left">
-
+    <el-form
+      ref="actaForm"
+      :model="actaForm"
+      :rules="actaRules"
+      class="login-form"
+      auto-complete="on"
+      label-position="left"
+    >
       <div class="title-container">
-        <h3 class="title">User </h3>
+        <h3 class="title">User</h3>
       </div>
 
       <el-row :gutter="30">
@@ -25,34 +31,33 @@
 
       <el-row :gutter="30">
         <el-col :span="24">
-          <el-form-item prop="url_archivo" label="url_archivo">
-            <el-upload
-              class="upload-demo"
-              drag
-              action="https://jsonplaceholder.typicode.com/posts/"
-              :on-preview="handlePreview"
-              :on-remove="handleRemove"
-              :file-list="fileList"
-              :on-exceed="handleExceed"
+          <el-form-item prop="Archivo" label="Archivo">
+            <el-input
+              @click="hrefFile(actaForm)"
+              ref="codigo"
+              v-model="actaForm.file.name"
+              placeholder="Archivo"
+              name="archivo"
+              type="text"
+              tabindex="1"
+              auto-complete="on"
               disabled
+              class="input-with-select"
             >
-              <i class="el-icon-upload" />
-              <div class="el-upload__text">
-                Suelta tu archivo aquí o <em>haz clic para cargar</em>
-              </div>
-              <div slot="tip" class="el-upload__tip">
-                Solo archivos jpg/png con un tamaño menor de 500kb
-              </div>
-            </el-upload>
+
+            </el-input>
+              <el-button type="primary" @click="hrefFile(actaForm)"
+                >Descargar</el-button>
           </el-form-item>
         </el-col>
+
       </el-row>
     </el-form>
   </div>
 </template>
 
 <script>
-import { getOne } from '@/api/acta'
+import { getOne } from "@/api/acta";
 
 export default {
   data() {
@@ -60,41 +65,48 @@ export default {
       id: 0,
       pageLoading: true,
       actaForm: {
-        nombre: '',
-        codigo: ''
+        nombre: "",
+        codigo: "",
+        file: {
+          url:'',
+          name: ''
+        }
       },
       actaRules: {
         nombre: [{ required: true }],
-        codigo: [{ required: true }]
-      }
-    }
+        codigo: [{ required: true }],
+      },
+    };
   },
   watch: {
     $route: {
-      handler: function(route) {
-        this.id = route.params.id && route.params.id
+      handler: function (route) {
+        this.id = route.params.id && route.params.id;
       },
-      immediate: true
-    }
+      immediate: true,
+    },
   },
   created() {
-    this.fetchData()
+    this.fetchData();
   },
   methods: {
     fetchData() {
-      this.pageLoading = true
-      getOne(this.id).then(response => {
-        response.data.enable = (response.data.enable === 1)
+      this.pageLoading = true;
+      getOne(this.id).then((response) => {
+        response.data.enable = response.data.enable === 1;
         // this.user = response.data
-        this.pageLoading = false
-        this.actaForm = { ...response.data }
-      })
-    }
-  }
-}
+        this.pageLoading = false;
+        this.actaForm = { ...response.data };
+      });
+    },
+    hrefFile(obj) {
+      window.open(obj.file.url);
+    },
+  },
+};
 </script>
 <style scoped>
-img.row_avatar{
+img.row_avatar {
   width: 35px;
   border-radius: 50%;
 }

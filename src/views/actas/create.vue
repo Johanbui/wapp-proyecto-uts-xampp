@@ -34,10 +34,13 @@
             <el-upload
               class="upload-demo"
               drag
-              action="https://jsonplaceholder.typicode.com/posts/"
+              action="http://apiproyectouts.local/api/files/push"
               :on-preview="handlePreview"
               :on-remove="handleRemove"
               :file-list="fileList"
+              :before-upload="beforeUpload"
+              :on-success="handleSuccess"
+              :limit="1"
             >
               <i class="el-icon-upload" />
               <div class="el-upload__text">
@@ -60,7 +63,7 @@
 </template>
 
 <script>
-import { create } from '@/api/acta'
+import { create } from "@/api/acta";
 
 export default {
   data() {
@@ -68,60 +71,74 @@ export default {
       // id: 0,
       pageLoading: true,
       actaCreateForm: {
-        codigo: '',
-        url_archivo: ''
+        codigo: "",
+        file_id: 0
       },
       fileList: [],
       actaRules: {
         codigo: [{ required: true }],
-        fileList: [{ required: true }]
-      }
-    }
+        file_id: [{ required: true }],
+      },
+    };
   },
   watch: {
     $route: {
-      handler: function(route) {
+      handler: function (route) {
         // this.id = route.params.id && route.params.id
       },
-      immediate: true
-    }
+      immediate: true,
+    },
   },
   created() {},
   methods: {
     onSubmit() {
-      const params = { ...this.actaCreateForm }
-      params.enable = params.enable ? 1 : 0
+      const params = { ...this.actaCreateForm };
 
       create(params).then((response) => {
         this.$message({
           showClose: true,
           message: response.message,
-          type: response.type
-        })
-        if (response.type === 'success') {
-          this.$router.push({ path: '/rol' })
+          type: response.type,
+        });
+        if (response.type === "success") {
+          this.$router.push({ path: "/acta" });
         }
-      })
+      });
     },
     onCancel() {
-      this.$router.push({ path: '/rol' })
+      this.$router.push({ path: "/acta" });
     },
     handleRemove(file, fileList) {
-      console.log(file, fileList)
+      console.log(file, fileList);
+      console.log("handleRemove");
+      console.log(file);
+      console.log(fileList);
     },
     handlePreview(file) {
-      console.log(file)
+      console.log("handlePreview");
+      console.log(file);
     },
     handleExceed(files, fileList) {
-
+      console.log("handleExceed");
+      console.log(file);
+      console.log(fileList);
       this.$message.warning(
         `El límite es 3, haz seleccionado ${
           files.length
         } archivos esta vez, añade hasta ${files.length + fileList.length}`
-      )
-    }
-  }
-}
+      );
+    },
+    beforeUpload(file) {
+      console.log("beforeUpload");
+      console.log(file);
+    },
+    handleSuccess(res, file) {
+      console.log("handleSuccess");
+      console.log(res.file);
+      this.actaCreateForm.file_id = res.file.id
+    },
+  },
+};
 </script>
 <style scoped>
 img.row_avatar {
