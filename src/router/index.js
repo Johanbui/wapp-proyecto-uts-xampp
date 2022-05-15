@@ -187,6 +187,41 @@ export const constantRoutes = [
   },
 
   {
+    path: '/idea',
+    component: Layout,
+    meta: { title: 'Ideas', icon: 'el-icon-setting', code: 'IDEA-INDEX' },
+    children: [
+      {
+        path: '',
+        name: 'Index',
+        component: () => import('@/views/ideas/index'),
+        meta: { title: 'Ideas', icon: 'el-icon-setting', code: 'IDEA-INDEX' }
+      },
+      {
+        path: 'create',
+        name: 'Idea Create',
+        component: () => import('@/views/ideas/create'),
+        meta: { title: 'Create', icon: 'el-icon-setting', code: 'IDEA-CREATE' },
+        hidden: true
+      },
+      {
+        path: 'edit/:id',
+        name: 'Idea Edit',
+        component: () => import('@/views/ideas/edit'),
+        meta: { title: 'Edit', icon: 'el-icon-setting', code: 'IDEA-EDIT' },
+        hidden: true
+      },
+      {
+        path: ':id',
+        name: 'Idea',
+        component: () => import('@/views/ideas/one'),
+        meta: { title: 'Idea', icon: 'el-icon-setting', code: 'IDEA-ONE' },
+        hidden: true
+      }
+    ]
+  },
+
+  {
     path: '/trabajodegrado',
     component: Layout,
     meta: { title: 'trabajodegrado', icon: 'form', code: 'TRABAJOGRADO-INDEX' },
