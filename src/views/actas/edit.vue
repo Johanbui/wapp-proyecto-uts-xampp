@@ -30,6 +30,19 @@
 
       <el-row :gutter="30">
         <el-col :span="24">
+          <el-form-item prop="fecha" label="Fecha">
+            <el-date-picker
+              v-model="actaEditForm.fecha"
+              type="date"
+              placeholder="Fecha"
+            >
+            </el-date-picker>
+          </el-form-item>
+        </el-col>
+      </el-row>
+
+      <el-row :gutter="30">
+        <el-col :span="24">
           <el-form-item prop="url_archivo" label="url_archivo">
             <el-upload
               class="upload-demo"
@@ -72,12 +85,14 @@ export default {
       pageLoading: true,
       actaEditForm: {
         codigo: '',
-        file_id:0
+        file_id: 0,
+        fecha: ''
       },
       fileList: [],
       actaRules: {
         codigo: [{ required: true }],
-        fileList: [{ required: true }]
+        fileList: [{ required: true }],
+        fecha: [{ required: true }]
       }
     }
   },
