@@ -43,13 +43,13 @@
 
       <el-table-column label="Modalidad">
         <template slot-scope="scope">
-          {{ scope.row.modalidad }}
+          {{ scope.row.nombreModalidad }}
         </template>
       </el-table-column>
 
       <el-table-column label="Línea Investigación">
         <template slot-scope="scope">
-          {{ scope.row.linea_investigacion }}
+          {{ scope.row.nombreLineaInvestigacion }}
         </template>
       </el-table-column>
 

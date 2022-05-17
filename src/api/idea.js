@@ -7,7 +7,6 @@ export function getAll(params) {
     method: 'get',
     headers: { 'Authorization': 'Bearer ' + getToken() },
     params: params
-
   })
 }
 
@@ -35,6 +34,22 @@ export function getOne(id) {
     method: 'get',
     headers: { 'Authorization': 'Bearer ' + getToken() },
     params: { id }
+  })
+}
+
+export function getModalidades() {
+  return request({
+    url: '/idea/getModalidades',
+    method: 'get',
+    headers: { 'Authorization': 'Bearer ' + getToken() }
+  })
+}
+
+export function getLineasInvestigacion() {
+  return request({
+    url: '/idea/getLineasInvestigacion',
+    method: 'get',
+    headers: { 'Authorization': 'Bearer ' + getToken() }
   })
 }
 

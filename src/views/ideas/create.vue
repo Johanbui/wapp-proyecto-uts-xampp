@@ -9,7 +9,7 @@
       label-position="left"
     >
       <div class="title-container">
-        <h3 class="title">Idea Create</h3>
+        <h3 class="title">Crear Idea</h3>
       </div>
 
       <el-row :gutter="30">
@@ -34,9 +34,24 @@
             <el-select v-model="ideaCreateForm.modalidad" placeholder="Modalidad">
               <el-option
                 v-for="item in modalidades"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
+                :key="item.id"
+                :label="item.nombre"
+                :value="item.id"
+              />
+            </el-select>
+          </el-form-item>
+        </el-col>
+      </el-row>
+
+      <el-row :gutter="30">
+        <el-col :span="24">
+          <el-form-item prop="linea_investigacion" label="Linea Investigación">
+            <el-select v-model="ideaCreateForm.linea_investigacion" placeholder="Linea Investigación">
+              <el-option
+                v-for="item in lineasInvestigacion"
+                :key="item.id"
+                :label="item.nombre"
+                :value="item.id"
               />
             </el-select>
           </el-form-item>
@@ -68,38 +83,58 @@
 </template>
 
 <script>
-import { create } from '@/api/idea'
+import { create, getModalidades, getLineasInvestigacion } from '@/api/idea'
 
 export default {
+  name: 'CreateIdea',
   data() {
     return {
       pageLoading: true,
       ideaCreateForm: {
         titulo: '',
         max_estudiantes: 0,
-        modalidad: ''
+        modalidad: '',
+        linea_investigacion: ''
       },
       modalidades: [],
+      lineasInvestigacion: [],
       ideaRules: {
         titulo: [{ required: true }],
-        max_estudiantes: [{ required: true }]
+        max_estudiantes: [{ required: true }],
+        modalidad: [{ required: true }],
+        linea_investigacion: [{ required: true }]
       }
     }
   },
 
   created() {},
 
+  beforeMount() {
+    getModalidades().then(({ type, data }) => {
+      if (type === 'success') {
+        this.modalidades = data
+      }
+    })
+
+    getLineasInvestigacion().then(({ type, data }) => {
+      if (type === 'success') {
+        this.lineasInvestigacion = data
+      }
+    })
+  },
+
   methods: {
     onSubmit() {
       const params = { ...this.ideaCreateForm }
 
-      create(params).then((response) => {
+      create(params).then(({ type, message }) => {
         this.$message({
           showClose: true,
-          message: response.message,
-          type: response.type
+          message,
+          type
         })
-        if (response.type === 'success') {
+
+        if (type === 'success') {
           this.$router.push({ path: '/idea' })
         }
       })
@@ -108,5 +143,6 @@ export default {
       this.$router.push({ path: '/idea' })
     }
   }
+
 }
 </script>

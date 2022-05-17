@@ -1,25 +1,25 @@
 <template>
   <div class="app-container">
     <el-form
-      ref="actaEditForm"
-      :model="actaEditForm"
+      ref="ideaEditForm"
+      :model="ideaEditForm"
       :rules="actaRules"
       class="login-form"
       auto-complete="on"
       label-position="left"
     >
       <div class="title-container">
-        <h3 class="title">User Edit</h3>
+        <h3 class="title">Idea Editar</h3>
       </div>
 
       <el-row :gutter="30">
         <el-col :span="24">
-          <el-form-item prop="codigo" label="Codigo">
+          <el-form-item prop="titulo" label="Título">
             <el-input
-              ref="codigo"
-              v-model="actaEditForm.codigo"
-              placeholder="Codigo"
-              name="codigo"
+              ref="titulo"
+              v-model="ideaEditForm.titulo"
+              placeholder="Título"
+              name="titulo"
               type="text"
               tabindex="1"
               auto-complete="on"
@@ -30,26 +30,46 @@
 
       <el-row :gutter="30">
         <el-col :span="24">
-          <el-form-item prop="url_archivo" label="url_archivo">
-            <el-upload
-              class="upload-demo"
-              drag
-              action="http://apiproyectouts.local/api/files/push"
-              :on-preview="handlePreview"
-              :on-remove="handleRemove"
-              :file-list="fileList"
-              :before-upload="beforeUpload"
-              :on-success="handleSuccess"
-              :limit="1"
-            >
-              <i class="el-icon-upload" />
-              <div class="el-upload__text">
-                Suelta tu archivo aquí o <em>haz clic para cargar</em>
-              </div>
-              <div slot="tip" class="el-upload__tip">
-                Solo archivos jpg/png con un tamaño menor de 500kb
-              </div>
-            </el-upload>
+          <el-form-item prop="modalidad" label="Modalidad">
+            <el-select v-model="ideaEditForm.modalidad" placeholder="Modalidad">
+              <el-option
+                v-for="item in modalidades"
+                :key="item.id"
+                :label="item.nombre"
+                :value="item.id"
+              />
+            </el-select>
+          </el-form-item>
+        </el-col>
+      </el-row>
+
+      <el-row :gutter="30">
+        <el-col :span="24">
+          <el-form-item prop="linea_investigacion" label="Linea Investigación">
+            <el-select v-model="ideaEditForm.linea_investigacion" placeholder="Linea Investigación">
+              <el-option
+                v-for="item in lineasInvestigacion"
+                :key="item.id"
+                :label="item.nombre"
+                :value="item.id"
+              />
+            </el-select>
+          </el-form-item>
+        </el-col>
+      </el-row>
+
+      <el-row :gutter="30">
+        <el-col :span="24">
+          <el-form-item prop="max_estudiantes" label="Max Estudiantes">
+            <el-input
+              ref="max_estudiantes"
+              v-model="ideaEditForm.max_estudiantes"
+              placeholder="Max Estudiantes"
+              name="max_estudiantes"
+              type="number"
+              tabindex="1"
+              auto-complete="on"
+            />
           </el-form-item>
         </el-col>
       </el-row>
@@ -63,21 +83,27 @@
 </template>
 
 <script>
-import { getOne, update } from '@/api/acta'
+import { getOne, getModalidades, getLineasInvestigacion, update } from '@/api/idea'
 
 export default {
   data() {
     return {
       id: 0,
       pageLoading: true,
-      actaEditForm: {
-        codigo: '',
-        file_id:0
+      ideaEditForm: {
+        titulo: '',
+        modalidad: '',
+        linea_investigacion: '',
+        max_estudiantes: ''
       },
+      modalidades: [],
+      lineasInvestigacion: [],
       fileList: [],
       actaRules: {
-        codigo: [{ required: true }],
-        fileList: [{ required: true }]
+        titulo: [{ required: true }],
+        modalidad: [{ required: true }],
+        linea_investigacion: [{ required: true }],
+        max_estudiantes: [{ required: true }]
       }
     }
   },
@@ -92,6 +118,19 @@ export default {
   created() {
     this.fetchData()
   },
+  beforeMount() {
+    getModalidades().then(({ type, data }) => {
+      if (type === 'success') {
+        this.modalidades = data
+      }
+    })
+
+    getLineasInvestigacion().then(({ type, data }) => {
+      if (type === 'success') {
+        this.lineasInvestigacion = data
+      }
+    })
+  },
   methods: {
     fetchData() {
       this.pageLoading = true
@@ -99,12 +138,12 @@ export default {
         response.data.enable = response.data.enable === 1
         // this.user = response.data
         this.pageLoading = false
-        this.actaEditForm = { ...response.data }
-        this.fileList.push(this.actaEditForm.file)
+        this.ideaEditForm = { ...response.data }
+        this.fileList.push(this.ideaEditForm.file)
       })
     },
     onSubmit() {
-      const params = { ...this.actaEditForm }
+      const params = { ...this.ideaEditForm }
       params.enable = params.enable ? 1 : 0
       console.log(params)
       update(params).then((response) => {
@@ -113,41 +152,12 @@ export default {
           message: 'Created Succefully!',
           type: 'success'
         })
-        this.$router.push({ path: '/acta' })
+        this.$router.push({ path: '/idea' })
       })
     },
     onCancel() {
-      this.$router.push({ path: '/acta' })
-    },
-   handleRemove(file, fileList) {
-      console.log(file, fileList);
-      console.log("handleRemove");
-      console.log(file);
-      console.log(fileList);
-    },
-    handlePreview(file) {
-      console.log("handlePreview");
-      console.log(file);
-    },
-    handleExceed(files, fileList) {
-      console.log("handleExceed");
-      console.log(file);
-      console.log(fileList);
-      this.$message.warning(
-        `El límite es 3, haz seleccionado ${
-          files.length
-        } archivos esta vez, añade hasta ${files.length + fileList.length}`
-      );
-    },
-    beforeUpload(file) {
-      console.log("beforeUpload");
-      console.log(file);
-    },
-    handleSuccess(res, file) {
-      console.log("handleSuccess");
-      console.log(res.file);
-      this.actaEditForm.file_id = res.file.id
-    },
+      this.$router.push({ path: '/idea' })
+    }
   }
 }
 </script>
