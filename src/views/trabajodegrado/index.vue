@@ -23,7 +23,7 @@
 
     <el-row v-if="active == 1">
       <el-col :span="24">
-        <step-2 @continuar="continuar" @atras="atras" />
+        <step-2 :ideaSelected="ideaSelected" @continuar="continuar" @atras="atras" />
       </el-col>
     </el-row>
 
@@ -79,12 +79,16 @@ export default {
   data() {
     return {
       // activeName: '0',
-      active: 0
+      active: 0,
+      ideaSelected: ''
 
     }
   },
   methods: {
-    continuar() {
+    continuar(ideaSelected) {
+      if (ideaSelected) {
+        this.ideaSelected = ideaSelected
+      }
       const active = parseInt(this.active)
       // this.activeName = (active + 1).toString()
       this.active = active + 1

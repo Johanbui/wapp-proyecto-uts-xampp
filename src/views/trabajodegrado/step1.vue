@@ -60,13 +60,10 @@
 
         <template slot-scope="scope">
           <div class="td-actions">
-            <div v-if="findPermission('ROL-TOGGLE')">
-              <el-switch
-                v-model="scope.row.enable"
-                active-color="#13ce66"
-                inactive-color="#ff4949"
-                @change="handleEnable(scope.$index, scope.row)"
-              />
+            <div>
+              <el-button-group>
+                <el-button type="primary" @click="continuar(scope.row)">Continuar</el-button>
+              </el-button-group>
             </div>
 
           </div>
@@ -87,10 +84,6 @@
         @current-change="handleCurrentChange"
       />
     </div>
-
-    <el-button-group>
-      <el-button type="primary" @click="continuar">Continuar</el-button>
-    </el-button-group>
 
   </div>
 </template>
@@ -176,8 +169,8 @@ export default {
       }
       return false
     },
-    continuar() {
-      this.$emit('continuar')
+    continuar(ideaSelected) {
+      this.$emit('continuar', ideaSelected)
     }
   }
 }

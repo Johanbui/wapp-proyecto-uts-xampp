@@ -32,7 +32,8 @@ export default {
   data() {
     return {
       activeName: 'first',
-      fileList: {}
+      fileList: [],
+      form: {}
     }
   },
   methods: {

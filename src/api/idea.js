@@ -53,3 +53,11 @@ export function getLineasInvestigacion() {
   })
 }
 
+export function getDirectores() {
+  return request({
+    url: '/idea/getDirectores',
+    method: 'get',
+    headers: { 'Authorization': 'Bearer ' + getToken() }
+  })
+}
+

@@ -117,7 +117,8 @@
 export default {
   data() {
     return {
-      fileList: {}
+      fileList: [],
+      form: {}
     }
   },
   methods: {

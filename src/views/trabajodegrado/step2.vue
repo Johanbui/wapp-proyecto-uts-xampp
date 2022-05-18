@@ -5,7 +5,7 @@
       <el-form-item label="Trabajo de Grado">
         <el-col :span="11">
 
-          <el-input v-model="input" placeholder="Please input" />
+          <span>{{ ideaSelected.titulo }}</span>
         </el-col>
       </el-form-item>
 
@@ -28,29 +28,27 @@
 
       <el-form-item label="Director de Trabajo de Grado">
 
-        <el-select v-model="value" filterable placeholder="Select">
+        <el-select v-model="form.director" filterable placeholder="Director de Trabajo de Grado">
           <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
+            v-for="item in directores"
+            :key="item.id"
+            :label="item.name + ' ' + item.last_name"
+            :value="item.id"
           />
         </el-select>
       </el-form-item>
 
+      <el-form-item label="Co-Director de Trabajo de Grado">
 
-      <el-form-item label="CO-Director de Trabajo de Grado">
-
-        <el-select v-model="value" filterable placeholder="Select">
+        <el-select v-model="form.codirector" filterable placeholder="Co-Director de Trabajo de Grado">
           <el-option
-            v-for="item in options"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
+            v-for="item in codirectores"
+            :key="item.id"
+            :label="item.name + ' ' + item.last_name"
+            :value="item.id"
           />
         </el-select>
       </el-form-item>
-
 
       <el-button-group>
         <el-button type="primary" @click="atras">Atras</el-button>
@@ -62,14 +60,38 @@
 </template>
 
 <script>
+import { getDirectores } from '@/api/idea'
+
 export default {
+  name: 'Step2',
+  props: {
+    ideaSelected: {
+      type: Object,
+      default: function() {
+        return {}
+      }
+    }
+  },
   data() {
     return {
       activeName: 'first',
       input: '',
-      fileList: {}
-
+      fileList: [],
+      form: {
+        director: '',
+        codirector: ''
+      },
+      directores: '',
+      codirectores: ''
     }
+  },
+  mounted() {
+    getDirectores().then(({ type, data }) => {
+      if (type === 'success') {
+        this.directores = data
+        this.codirectores = data
+      }
+    })
   },
   methods: {
     handleClick(tab, event) {
