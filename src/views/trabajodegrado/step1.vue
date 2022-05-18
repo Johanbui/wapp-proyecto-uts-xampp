@@ -29,15 +29,27 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="Code">
+      <el-table-column label="Título">
         <template slot-scope="scope">
-          {{ scope.row.code }}
+          {{ scope.row.titulo }}
         </template>
       </el-table-column>
 
-      <el-table-column label="Name" align="center">
+      <el-table-column label="Modalidad">
         <template slot-scope="scope">
-          <span>{{ scope.row.name }}</span>
+          {{ scope.row.nombreModalidad }}
+        </template>
+      </el-table-column>
+
+      <el-table-column label="Línea Investigación">
+        <template slot-scope="scope">
+          {{ scope.row.nombreLineaInvestigacion }}
+        </template>
+      </el-table-column>
+
+      <el-table-column label="Max. Estudiantes">
+        <template slot-scope="scope">
+          {{ scope.row.max_estudiantes }}
         </template>
       </el-table-column>
 
@@ -84,7 +96,8 @@
 </template>
 
 <script>
-import { getAll, toggleEnable } from '@/api/rol'
+import { toggleEnable } from '@/api/rol'
+import { getAll } from '@/api/idea'
 import { mapGetters } from 'vuex'
 
 export default {
