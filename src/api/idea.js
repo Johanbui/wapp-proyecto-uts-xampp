@@ -94,3 +94,20 @@ export function getUsuariosIdeas(codigoListaGrupo, idIdea) {
     params: { codigoListaGrupo, idIdea }
   })
 }
+
+export function getEstudiantes() {
+  return request({
+    url: '/idea/getEstudiantes',
+    method: 'get',
+    headers: { 'Authorization': 'Bearer ' + getToken() }
+  })
+}
+export function createEstudiantesIdeas(estudiantes, idIdea) {
+  return request({
+    url: '/idea/createEstudiantesIdeas',
+    method: 'post',
+    headers: { 'Authorization': 'Bearer ' + getToken() },
+    params: { estudiantes, idIdea }
+  })
+}
+

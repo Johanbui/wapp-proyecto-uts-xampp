@@ -8,6 +8,27 @@
         </el-col>
       </el-form-item>
 
+      <el-form-item
+        v-for="i in ideaSelected.max_estudiantes "
+        :label="'Estudiantes'+ i"
+      >
+        <el-select
+          v-model="usuarios[i-1].id"
+          filterable
+          :placeholder="'Estudiante '+i "
+          :disabled="i == 1 || bloqueo"
+        >
+          <el-option
+            v-for="item in estudiantes"
+            v-if="item.id != user_id || i == 1"
+            :key="item.id"
+            :label="item.name + ' ' + item.last_name +' ' +item.id"
+            :value="item.id"
+          />
+        </el-select>
+
+      </el-form-item>
+
       <el-form-item :label="pago.nombre">
 
         <el-upload
@@ -33,6 +54,7 @@
           v-model="form.director"
           filterable
           placeholder="Director de Trabajo de Grado"
+          :disabled="bloqueoDir"
         >
           <el-option
             v-for="item in directores"
@@ -49,6 +71,7 @@
           v-model="form.codirector"
           filterable
           placeholder="Co-Director de Trabajo de Grado"
+          :disabled="bloqueoCoDir"
         >
           <el-option
             v-for="item in codirectores"
@@ -72,6 +95,7 @@
 import { getDirectores } from '@/api/idea'
 import { getListaOne } from '@/api/lista'
 import { createArchivoIdeas, getArchivoIdeas, getUsuariosIdeas, createUsuariosIdeas } from '@/api/idea'
+import { getEstudiantes, createEstudiantesIdeas } from '@/api/idea'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -79,7 +103,8 @@ export default {
   computed: {
     ...mapGetters([
       'user_id',
-      'users_roles'
+      'users_roles',
+      'user'
     ])
   },
   props: {
@@ -102,7 +127,14 @@ export default {
       directores: '',
       codirectores: '',
       pago: {},
-      id_file: 0
+      id_file: 0,
+      estudiantes: [],
+      usuarios: [
+
+      ],
+      bloqueo: false,
+      bloqueoDir: false,
+      bloqueoCoDir: false
 
     }
   },
@@ -110,6 +142,34 @@ export default {
     await this.fecthGetDirectores()
     await this.fetchDataPago('APRIDEA')
     await this.fetchDataUsuarios('TIPIDU')
+    await this.fecthGetEstudiantes()
+    if (this.user.rol_id === 4 && typeof this.usuarios[0] === 'undefined') {
+      const usuario = {
+        id: this.user.user_id,
+        name: this.user.name,
+        last_name: this.user.last_name,
+        tipoUsuario: 10
+
+      }
+
+      const usuarios = []
+      usuarios.push(usuario)
+      for (
+        let index = 1;
+        index < this.ideaSelected.max_estudiantes;
+        index++
+      ) {
+        usuarios.push(
+          {
+            id: '',
+            name: '',
+            last_name: '',
+            tipoUsuario: 10
+          }
+        )
+      }
+      this.usuarios = [...usuarios]
+    }
   },
   methods: {
     async carguePago() {
@@ -117,8 +177,8 @@ export default {
       const id_archivo = this.id_file
       const id_codigo_archivo = this.pago.id
 
-      const id_usuario = this.user_id
-      const tipoUsuario = 10
+      // const id_usuario = this.user_id
+      // const tipoUsuario = 10
 
       if (id_archivo === 0) {
         this.$message.warning(`Se debe agregar archivo de pago`)
@@ -132,22 +192,43 @@ export default {
       }
       await createArchivoIdeas(objCarguePago).then(({ type, data }) => {
         if (type === 'success') {
-          this.directores = data
-          this.codirectores = data
+          // this.directores = data
+          // this.codirectores = data
         }
       })
-
-      const ideasUsuarios = {
-        id_idea: id_idea,
-        id_usuario: id_usuario,
-        tipoUsuario: tipoUsuario
-      }
-      await createUsuariosIdeas(ideasUsuarios).then(({ type, data }) => {
+      const estudiantes = this.usuarios
+      await createEstudiantesIdeas(estudiantes, id_idea).then(({ type, data }) => {
         if (type === 'success') {
-          this.directores = data
-          this.codirectores = data
+          // this.usuario = data
         }
       })
+      const directivos = []
+
+      if (this.form.director !== '') {
+        directivos.push(
+          {
+            id: this.form.director,
+            tipoUsuario: 11
+          }
+        )
+      }
+
+      if (this.form.codirector !== '') {
+        directivos.push(
+          {
+            id: this.form.codirector,
+            tipoUsuario: 12
+          }
+        )
+      }
+
+      if (directivos.length > 0) {
+        await createEstudiantesIdeas(directivos, id_idea).then(({ type, data }) => {
+          if (type === 'success') {
+          // this.usuario = data
+          }
+        })
+      }
 
       this.$emit('continuar')
     },
@@ -156,6 +237,17 @@ export default {
         if (type === 'success') {
           this.directores = data
           this.codirectores = data
+        }
+      })
+    },
+    async fecthGetEstudiantes() {
+      await getEstudiantes().then(({ type, data }) => {
+        if (type === 'success') {
+          for (let index = 0; index < data.length; index++) {
+            const element = data[index]
+            element.tipoUsuario = 10
+          }
+          this.estudiantes = data
         }
       })
     },
@@ -168,8 +260,11 @@ export default {
       })
       await getArchivoIdeas(codigo, this.ideaSelected.id).then((response) => {
         this.pageLoading = false
-        this.fileList = [[...response.data][0].file]
-        this.id_file = [...response.data][0].file.id
+        const data = [...response.data]
+        if (data !== null && data.length > 0) {
+          this.fileList = [data[0].file]
+          this.id_file = data[0].file.id
+        }
       })
     },
     async fetchDataUsuarios(codigo) {
@@ -181,7 +276,24 @@ export default {
         for (let index = 0; index < array.length; index++) {
           const element = array[index]
           if (element.tipoUsuarioObj.codigo === 'DIR') {
-            this.director = element.id_usuarioObj
+            this.form.director = element.id_usuarioObj.id
+            this.bloqueoDir = true
+          }
+          if (element.tipoUsuarioObj.codigo === 'CODIR') {
+            this.form.codirector = element.id_usuarioObj.id
+            this.bloqueoCoDir = true
+          }
+
+          if (element.tipoUsuarioObj.codigo === 'EST') {
+            this.usuarios.push(
+              {
+                id: element.id_usuarioObj.id,
+                name: element.id_usuarioObj.name,
+                last_name: element.id_usuarioObj.last_name,
+                tipoUsuario: 10
+              }
+            )
+            this.bloqueo = true
           }
         }
       })
