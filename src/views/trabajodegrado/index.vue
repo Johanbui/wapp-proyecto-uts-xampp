@@ -4,7 +4,7 @@
     <el-row>
       <el-col :span="24">
         <el-steps :active="active" finish-status="success">
-          <el-step title="Banco de Ideas" icon="el-icon-tickets" @click="alert()" />
+          <el-step title="Banco de Ideas" icon="el-icon-tickets" />
           <el-step title="Aprobacion de Idea" icon="el-icon-wallet" />
           <el-step title="Propuesta Trabajo de Grado" icon="el-icon-document" />
           <el-step title="Evaluacion Propuesta" icon="el-icon-wallet" />
@@ -23,7 +23,7 @@
 
     <el-row v-if="active == 1">
       <el-col :span="24">
-        <step-2 :ideaSelected="ideaSelected" @continuar="continuar" @atras="atras" />
+        <step-2 :idea-selected="ideaSelected" @continuar="continuar" @atras="atras" />
       </el-col>
     </el-row>
 
@@ -69,6 +69,7 @@ import step4 from './step4.vue'
 import step5 from './step5.vue'
 
 export default {
+  name: 'Index',
   components: {
     step1,
     step2,

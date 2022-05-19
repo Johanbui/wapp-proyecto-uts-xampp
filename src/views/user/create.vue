@@ -1,7 +1,13 @@
 <template>
   <div class="app-container">
-    <el-form ref="userCreateForm" :model="userCreateForm" :rules="userEditRules" class="login-form" auto-complete="on" label-position="left">
-
+    <el-form
+      ref="userCreateForm"
+      :model="userCreateForm"
+      :rules="userEditRules"
+      class="login-form"
+      auto-complete="on"
+      label-position="left"
+    >
       <div class="title-container">
         <h3 class="title">User Edit</h3>
       </div>
@@ -39,7 +45,10 @@
       <el-row :gutter="30">
         <el-col :span="12">
           <el-form-item label="Gender" prop="gender">
-            <el-select v-model="userCreateForm.gender" placeholder="please select your gender">
+            <el-select
+              v-model="userCreateForm.gender"
+              placeholder="please select your gender"
+            >
               <el-option label="Male" value="1" />
               <el-option label="Female" value="2" />
             </el-select>
@@ -56,12 +65,35 @@
       <el-row :gutter="30">
         <el-col :span="12">
           <el-form-item label="Rol" prop="rol">
-            <el-select v-model="userCreateForm.rol_id" placeholder="please select your Rol">
-              <el-option v-for="rol in roles" :key="rol.id" :label="rol.name" :value="rol.id" />
+            <el-select
+              v-model="userCreateForm.rol_id"
+              placeholder="please select your Rol"
+            >
+              <el-option
+                v-for="rol in roles"
+                :key="rol.id"
+                :label="rol.name"
+                :value="rol.id"
+              />
             </el-select>
           </el-form-item>
         </el-col>
-
+        <el-col :span="12">
+          <el-form-item label="Coordinacion" prop="coordinacion">
+            <el-select
+              v-model="userCreateForm.id_coordinacion"
+              placeholder="Por favor seleccione coordinación"
+            >
+              <template v-for="coordinacion in coordinaciones">
+                <el-option
+                  :key="coordinacion.id"
+                  :label="coordinacion.nombre"
+                  :value="coordinacion.id"
+                />
+              </template>
+            </el-select>
+          </el-form-item>
+        </el-col>
       </el-row>
 
       <el-row :gutter="30">
@@ -130,9 +162,7 @@
         <el-button type="primary" @click="onSubmit">Create</el-button>
         <el-button @click="onCancel">Cancel</el-button>
       </el-form-item>
-
     </el-form>
-
   </div>
 </template>
 
@@ -140,6 +170,7 @@
 import { create } from '@/api/user'
 import { getAll } from '@/api/rol'
 import { validEmail } from '@/utils/validate'
+import { getListaOne } from '@/api/lista'
 
 export default {
   data() {
@@ -158,13 +189,14 @@ export default {
       userCreateForm: {
         name: '',
         last_name: '',
-        gender: 1,
-        enable: 1,
+        gender: '1',
+        enable: true,
         email: '',
         avatar: '',
         password: '',
         repassword: '',
-        rol_id: ''
+        rol_id: '',
+        id_coordinacion: ''
       },
       userEditRules: {
         email: [{ required: true, trigger: 'blur', validator: validateEmail }],
@@ -173,7 +205,6 @@ export default {
         avatar: [{ required: true }],
         gender: [{ required: true }],
         enable: [{ required: true }]
-
       }
     }
   },
@@ -185,19 +216,28 @@ export default {
       immediate: true
     }
   },
-  created() {
-    this.getRoles()
+  async created() {
+    await this.getRoles()
+    await this.fetchDataListas()
   },
   methods: {
+    fetchDataListas() {
+      this.pageLoading = getListaOne('COORD').then((response) => {
+        response.data.enable = response.data.enable === 1
+        // this.user = response.data
+        this.pageLoading = false
+        this.coordinaciones = [...response.data]
+      })
+    },
     getRoles() {
       this.listLoading = true
       const params = {
         limit: this.numberItems,
         page: this.currentPage
       }
-      getAll(params).then(response => {
+      getAll(params).then((response) => {
         this.roles = response.data.map(function(x) {
-          x.enable = (x.enable === 1)
+          x.enable = x.enable === 1
           return x
         })
         this.listLoading = false
@@ -205,16 +245,14 @@ export default {
     },
     onSubmit() {
       const params = { ...this.userCreateForm }
-      params.enable = (params.enable) ? 1 : 0
+      params.enable = params.enable ? 1 : 0
 
-      create(params).then(response => {
-        this.$message(
-          {
-            showClose: true,
-            message: response.message,
-            type: response.type
-          }
-        )
+      create(params).then((response) => {
+        this.$message({
+          showClose: true,
+          message: response.message,
+          type: response.type
+        })
         if (response.type === 'success') {
           this.$router.push({ path: '/user' })
         }
@@ -227,7 +265,7 @@ export default {
 }
 </script>
 <style scoped>
-img.row_avatar{
+img.row_avatar {
   width: 35px;
   border-radius: 50%;
 }

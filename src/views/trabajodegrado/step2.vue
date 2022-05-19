@@ -4,7 +4,6 @@
 
       <el-form-item label="Trabajo de Grado">
         <el-col :span="11">
-
           <span>{{ ideaSelected.titulo }}</span>
         </el-col>
       </el-form-item>

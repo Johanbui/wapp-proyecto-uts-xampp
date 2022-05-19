@@ -63,6 +63,15 @@
             </el-select>
           </el-form-item>
         </el-col>
+        <el-col :span="12">
+          <el-form-item label="Coordinacion" prop="coordinacion">
+            <el-select v-model="userEditForm.id_coordinacion" placeholder="please select your Rol">
+              <template v-for="coordinacion in coordinaciones">
+                <el-option :key="coordinacion.id" :label="coordinacion.nombre" :value="coordinacion.id" />
+              </template>
+            </el-select>
+          </el-form-item>
+        </el-col>
 
       </el-row>
 
@@ -113,6 +122,7 @@
 import { getOne, update } from '@/api/user'
 import { validEmail } from '@/utils/validate'
 import { getAll } from '@/api/rol'
+import { getListaOne } from '@/api/lista'
 
 export default {
   data() {
@@ -135,8 +145,8 @@ export default {
         avatar: [{ required: true }],
         gender: [{ required: true }],
         enable: [{ required: true }]
-
-      }
+      },
+      coordinaciones: []
     }
   },
   watch: {
@@ -150,8 +160,19 @@ export default {
   async created() {
     await this.getRoles()
     await this.fetchData()
+    await this.fetchDataListas()
   },
   methods: {
+    fetchDataListas() {
+      this.pageLoading =
+      getListaOne('COORD').then((response) => {
+        response.data.enable = response.data.enable === 1
+        // this.user = response.data
+        this.pageLoading = false
+        this.coordinaciones = [...response.data]
+      })
+    },
+
     async getRoles() {
       this.listLoading = true
       const params = {

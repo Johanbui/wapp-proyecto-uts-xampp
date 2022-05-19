@@ -94,6 +94,7 @@ import { getAll } from '@/api/idea'
 import { mapGetters } from 'vuex'
 
 export default {
+  name: 'Step1',
   data() {
     return {
       list: null,
