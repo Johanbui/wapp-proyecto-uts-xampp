@@ -1,8 +1,8 @@
 import request from '@/utils/request'
 import { getToken } from '@/utils/auth'
 
-export function getListaOne(codigo) {
-  return request({
+export async function getListaOne(codigo) {
+  return await request({
     url: '/listas/getOne',
     method: 'get',
     headers: { 'Authorization': 'Bearer ' + getToken() },

@@ -164,7 +164,7 @@ export default {
   },
   methods: {
     fetchDataListas() {
-      this.pageLoading =
+      this.pageLoading = true
       getListaOne('COORD').then((response) => {
         response.data.enable = response.data.enable === 1
         // this.user = response.data

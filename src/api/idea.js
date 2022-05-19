@@ -61,3 +61,36 @@ export function getDirectores() {
   })
 }
 
+export function createArchivoIdeas(ideasArchivo) {
+  return request({
+    url: '/idea/createArchivoIdeas',
+    method: 'post',
+    headers: { 'Authorization': 'Bearer ' + getToken() },
+    params: ideasArchivo
+  })
+}
+export function getArchivoIdeas(codigoListaGrupo, idIdea) {
+  return request({
+    url: '/idea/getArchivoIdeas',
+    method: 'get',
+    headers: { 'Authorization': 'Bearer ' + getToken() },
+    params: { codigoListaGrupo, idIdea }
+  })
+}
+
+export function createUsuariosIdeas(ideasUsuarios) {
+  return request({
+    url: '/idea/createUsuariosIdeas',
+    method: 'post',
+    headers: { 'Authorization': 'Bearer ' + getToken() },
+    params: ideasUsuarios
+  })
+}
+export function getUsuariosIdeas(codigoListaGrupo, idIdea) {
+  return request({
+    url: '/idea/getUsuariosIdeas',
+    method: 'get',
+    headers: { 'Authorization': 'Bearer ' + getToken() },
+    params: { codigoListaGrupo, idIdea }
+  })
+}
