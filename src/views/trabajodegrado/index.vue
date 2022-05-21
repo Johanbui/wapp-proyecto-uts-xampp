@@ -29,13 +29,13 @@
 
     <el-row v-if="active == 2">
       <el-col :span="24">
-        <step-3 @continuar="continuar" @atras="atras" />
+        <step-3 :idea-selected="ideaSelected" @continuar="continuar" @atras="atras" />
       </el-col>
     </el-row>
 
     <el-row>
       <el-col v-if="active == 3" :span="24">
-        <step-3 @continuar="continuar" @atras="atras" />
+        <step-3 :id-file-propuesta="idFilePropuesta" :idea-selected="ideaSelected" :evaluacion="true" @continuar="continuar" @atras="atras" />
         <!-- este step debe ser el del profesor con : Observaciones generales, Concepto Final, Y nuevo FDC-124-->
       </el-col>
     </el-row>
@@ -81,14 +81,18 @@ export default {
     return {
       // activeName: '0',
       active: 0,
-      ideaSelected: ''
-
+      ideaSelected: '',
+      idFilePropuesta: 0
     }
   },
   methods: {
-    continuar(ideaSelected) {
+    continuar({ ideaSelected = 0, idFilePropuesta = 0 }) {
       if (ideaSelected) {
         this.ideaSelected = ideaSelected
+      }
+
+      if (idFilePropuesta) {
+        this.idFilePropuesta = idFilePropuesta
       }
       const active = parseInt(this.active)
       // this.activeName = (active + 1).toString()

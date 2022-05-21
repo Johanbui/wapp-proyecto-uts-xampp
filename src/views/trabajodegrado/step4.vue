@@ -135,7 +135,7 @@ export default {
       this.$message.warning(`El límite es 3, haz seleccionado ${files.length} archivos esta vez, añade hasta ${files.length + fileList.length}`)
     },
     continuar() {
-      this.$emit('continuar')
+      this.$emit('continuar', {})
     },
     atras() {
       this.$emit('atras')

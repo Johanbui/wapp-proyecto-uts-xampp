@@ -62,7 +62,7 @@
           <div class="td-actions">
             <div>
               <el-button-group>
-                <el-button type="primary" @click="continuar(scope.row)">Continuar</el-button>
+                <el-button type="primary" @click="continuar({ ideaSelected: scope.row })">Continuar</el-button>
               </el-button-group>
             </div>
 

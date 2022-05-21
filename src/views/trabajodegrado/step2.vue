@@ -9,22 +9,25 @@
       </el-form-item>
 
       <el-form-item
-        v-for="i in ideaSelected.max_estudiantes "
-        :label="'Estudiantes'+ i"
+        v-for="i in ideaSelected.max_estudiantes"
+        :key="i"
+        :label="'Estudiante ' + i"
       >
         <el-select
           v-model="usuarios[i-1].id"
           filterable
-          :placeholder="'Estudiante '+i "
+          :placeholder="'Estudiante ' + i"
           :disabled="i == 1 || bloqueo"
         >
-          <el-option
-            v-for="item in estudiantes"
-            v-if="item.id != user_id || i == 1"
-            :key="item.id"
-            :label="item.name + ' ' + item.last_name +' ' +item.id"
-            :value="item.id"
-          />
+          <template v-for="item in estudiantes">
+            <el-option
+              v-if="item.id != user_id || i == 1"
+              :key="item.id"
+              :label="item.name + ' ' + item.last_name + ' ' +item.id"
+              :value="item.id"
+            />
+          </template>
+
         </el-select>
 
       </el-form-item>
@@ -94,19 +97,12 @@
 <script>
 import { getDirectores } from '@/api/idea'
 import { getListaOne } from '@/api/lista'
-import { createArchivoIdeas, getArchivoIdeas, getUsuariosIdeas, createUsuariosIdeas } from '@/api/idea'
+import { createArchivoIdeas, getArchivoIdeas, getUsuariosIdeas } from '@/api/idea'
 import { getEstudiantes, createEstudiantesIdeas } from '@/api/idea'
 import { mapGetters } from 'vuex'
 
 export default {
   name: 'Step2',
-  computed: {
-    ...mapGetters([
-      'user_id',
-      'users_roles',
-      'user'
-    ])
-  },
   props: {
     ideaSelected: {
       type: Object,
@@ -137,6 +133,13 @@ export default {
       bloqueoCoDir: false
 
     }
+  },
+  computed: {
+    ...mapGetters([
+      'user_id',
+      'users_roles',
+      'user'
+    ])
   },
   async mounted() {
     await this.fecthGetDirectores()
@@ -230,7 +233,7 @@ export default {
         })
       }
 
-      this.$emit('continuar')
+      this.$emit('continuar', {})
     },
     async fecthGetDirectores() {
       await getDirectores().then(({ type, data }) => {
