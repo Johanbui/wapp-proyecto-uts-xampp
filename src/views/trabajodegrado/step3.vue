@@ -15,6 +15,7 @@
             :on-success="handleSuccess"
             :file-list="fileList"
             limit="1"
+            :disabled="(!evaluacion && user.rol_id !=4) || (evaluacion && user.rol_id ==4)"
           >
             <i class="el-icon-upload" />
             <div class="el-upload__text">Suelta tu archivo aquí o <em>haz clic para cargar</em></div>
@@ -35,6 +36,7 @@
 <script>
 import { getListaOne } from '@/api/lista'
 import { createArchivoIdeas, createArchivoIdeasEvaluacion, getArchivoIdeas } from '@/api/idea'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'Step3',
@@ -53,6 +55,13 @@ export default {
       type: Number,
       default: 0
     }
+  },
+  computed: {
+    ...mapGetters([
+      'user_id',
+      'users_roles',
+      'user'
+    ])
   },
   data() {
     return {
@@ -110,6 +119,11 @@ export default {
       console.log(file, fileList)
     },
     handlePreview(file) {
+      if (typeof file.url !== 'undefined') {
+        window.open(file.url)
+      } else {
+        window.open('http://apiproyectouts.local/api/files/' + file.response.file.id)
+      }
       console.log(file)
     },
     handleExceed(files, fileList) {

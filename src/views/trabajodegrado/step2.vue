@@ -21,7 +21,13 @@
         >
           <template v-for="item in estudiantes">
             <el-option
-              v-if="(item.id != user_id || i == 1 || bloqueo)"
+              v-if="(
+                ( item.id != user_id && item.cant ==0) ||
+                i == 1 ||
+                bloqueo ||
+                ( !bloqueo && item.cant ==0)
+
+              )"
               :key="item.id"
               :label="item.name + ' ' + item.last_name + ' ' +item.id"
               :value="item.id"
@@ -43,6 +49,7 @@
           :file-list="fileList"
           :on-success="handleSuccess"
           :limit="1"
+          :disabled="user.rol_id !=4"
         >
           <i class="el-icon-upload" />
           <div class="el-upload__text">Suelta tu archivo aquí o <em>haz clic para cargar</em></div>
@@ -323,6 +330,11 @@ export default {
       console.log(file, fileList)
     },
     handlePreview(file) {
+      if (typeof file.url !== 'undefined') {
+        window.open(file.url)
+      } else {
+        window.open('http://apiproyectouts.local/api/files/' + file.response.file.id)
+      }
       console.log(file)
     },
     handleExceed(files, fileList) {
@@ -333,6 +345,7 @@ export default {
       console.log(res.file)
       this.id_file = res.file.id
     },
+
     continuar() {
       this.carguePago()
     },
