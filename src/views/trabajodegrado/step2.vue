@@ -157,6 +157,8 @@ export default {
 
       const usuarios = []
       usuarios.push(usuario)
+      console.log(usuario)
+
       for (
         let index = 1;
         index < this.ideaSelected.max_estudiantes;

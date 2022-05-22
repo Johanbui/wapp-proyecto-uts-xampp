@@ -121,3 +121,29 @@ export function createEstudiantesIdeas(estudiantes, idIdea) {
   })
 }
 
+export function createArrArchivoIdeas(archivos, idIdea) {
+  return request({
+    url: '/idea/createArrArchivoIdeas',
+    method: 'post',
+    headers: { 'Authorization': 'Bearer ' + getToken() },
+    params: { archivos, idIdea }
+  })
+}
+
+export function createArrArchivoIdeasEvaluacion(archivos, idIdea) {
+  return request({
+    url: '/idea/createArrArchivoIdeasEvaluacion',
+    method: 'post',
+    headers: { 'Authorization': 'Bearer ' + getToken() },
+    params: { archivos, idIdea }
+  })
+}
+
+export function getArrArchivoIdeas(codigoListaGrupo, idIdea) {
+  return request({
+    url: '/idea/getArrArchivoIdeas',
+    method: 'get',
+    headers: { 'Authorization': 'Bearer ' + getToken() },
+    params: { codigoListaGrupo, idIdea }
+  })
+}

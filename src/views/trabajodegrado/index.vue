@@ -42,13 +42,13 @@
 
     <el-row>
       <el-col v-if="active == 4" :span="24">
-        <step-4 @continuar="continuar" @atras="atras" />
+        <step-4 :idea-selected="ideaSelected" @continuar="continuar" @atras="atras" />
       </el-col>
     </el-row>
 
     <el-row>
       <el-col v-if="active == 5" :span="24">
-        <step-4 @continuar="continuar" @atras="atras" />
+        <step-4 :id-file-propuesta="idFilePropuesta" :idea-selected="ideaSelected" :evaluacion="true" @continuar="continuar" @atras="atras" />
       </el-col>
     </el-row>
 

@@ -14,6 +14,7 @@
             :on-remove="handleRemove"
             :on-success="handleSuccess"
             :file-list="fileList"
+            limit="1"
           >
             <i class="el-icon-upload" />
             <div class="el-upload__text">Suelta tu archivo aquí o <em>haz clic para cargar</em></div>

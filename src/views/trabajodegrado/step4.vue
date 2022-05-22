@@ -1,127 +1,149 @@
 <template>
   <div class="app-step4">
     <el-form ref="form" :model="form" label-width="130px">
+      <template v-for="(formato, index) in propuesta">
+        <el-form-item :key="formato.id_codigo_archivo" :label="formato.listaNombre">
+          <el-upload
+            v-if="!evaluacion"
+            class="upload-demo"
+            drag
+            :action="
+              'http://apiproyectouts.local/api/files/pushLista?lista=' +
+                formato.id +
+                '&index=' +
+                index
+            "
+            :on-preview="handlePreview"
+            :on-remove="handleRemove"
+            :on-success="handleSuccess"
+            :file-list="[...formato.file]"
+          >
+            <i class="el-icon-upload" />
+            <div class="el-upload__text">
+              Suelta tu archivo aquí o <em>haz clic para cargar</em>
+            </div>
+            <div slot="tip" class="el-upload__tip">
+              Solo archivos jpg/png con un tamaño menor de 500kb
+            </div>
+          </el-upload>
 
-      <el-form-item label="Informe Final Trabajo de Grado F-DC-125">
-
-        <el-upload
-          class="upload-demo"
-          drag
-          action="https://jsonplaceholder.typicode.com/posts/"
-          :on-preview="handlePreview"
-          :on-remove="handleRemove"
-          :file-list="fileList"
-        >
-          <i class="el-icon-upload" />
-          <div class="el-upload__text">Suelta tu archivo aquí o <em>haz clic para cargar</em></div>
-          <div slot="tip" class="el-upload__tip">Solo archivos jpg/png con un tamaño menor de 500kb</div>
-        </el-upload>
-
-      </el-form-item>
-
-      <el-form-item label="Rejilla de Evaluación F-DC-129">
-
-        <el-upload
-          class="upload-demo"
-          drag
-          action="https://jsonplaceholder.typicode.com/posts/"
-          :on-preview="handlePreview"
-          :on-remove="handleRemove"
-          :file-list="fileList"
-        >
-          <i class="el-icon-upload" />
-          <div class="el-upload__text">Suelta tu archivo aquí o <em>haz clic para cargar</em></div>
-          <div slot="tip" class="el-upload__tip">Solo archivos jpg/png con un tamaño menor de 500kb</div>
-        </el-upload>
-
-      </el-form-item>
-
-      <el-form-item label="Licencia de Autorizacion Interna F-GC-01">
-
-        <el-upload
-          class="upload-demo"
-          drag
-          action="https://jsonplaceholder.typicode.com/posts/"
-          :on-preview="handlePreview"
-          :on-remove="handleRemove"
-          :file-list="fileList"
-        >
-          <i class="el-icon-upload" />
-          <div class="el-upload__text">Suelta tu archivo aquí o <em>haz clic para cargar</em></div>
-          <div slot="tip" class="el-upload__tip">Solo archivos jpg/png con un tamaño menor de 500kb</div>
-        </el-upload>
-
-      </el-form-item>
-
-      <el-form-item label="Ficha de Metadatos F-GC-02">
-
-        <el-upload
-          class="upload-demo"
-          drag
-          action="https://jsonplaceholder.typicode.com/posts/"
-          :on-preview="handlePreview"
-          :on-remove="handleRemove"
-          :file-list="fileList"
-        >
-          <i class="el-icon-upload" />
-          <div class="el-upload__text">Suelta tu archivo aquí o <em>haz clic para cargar</em></div>
-          <div slot="tip" class="el-upload__tip">Solo archivos jpg/png con un tamaño menor de 500kb</div>
-        </el-upload>
-
-      </el-form-item>
-
-      <el-form-item label="Exposicion Trabajos de Grado">
-
-        <el-upload
-          class="upload-demo"
-          drag
-          action="https://jsonplaceholder.typicode.com/posts/"
-          :on-preview="handlePreview"
-          :on-remove="handleRemove"
-          :file-list="fileList"
-        >
-          <i class="el-icon-upload" />
-          <div class="el-upload__text">Suelta tu archivo aquí o <em>haz clic para cargar</em></div>
-          <div slot="tip" class="el-upload__tip">Solo archivos jpg/png con un tamaño menor de 500kb</div>
-        </el-upload>
-
-      </el-form-item>
-
-      <el-form-item label="Sustentacion Trabajos de Grado">
-
-        <el-upload
-          class="upload-demo"
-          drag
-          action="https://jsonplaceholder.typicode.com/posts/"
-          :on-preview="handlePreview"
-          :on-remove="handleRemove"
-          :file-list="fileList"
-        >
-          <i class="el-icon-upload" />
-          <div class="el-upload__text">Suelta tu archivo aquí o <em>haz clic para cargar</em></div>
-          <div slot="tip" class="el-upload__tip">Solo archivos jpg/png con un tamaño menor de 500kb</div>
-        </el-upload>
-
-      </el-form-item>
-
+          <el-upload
+            v-if="evaluacion"
+            class="upload-demo"
+            drag
+            :action="
+              'http://apiproyectouts.local/api/files/pushLista?lista=' +
+                formato.id +
+                '&index=' +
+                index
+            "
+            :on-preview="handlePreview"
+            :on-remove="handleRemove"
+            :on-success="handleSuccess"
+            :file-list="[...formato.fileConfirmation]"
+          >
+            <i class="el-icon-upload" />
+            <div class="el-upload__text">
+              Suelta tu archivo aquí o <em>haz clic para cargar</em>
+            </div>
+            <div slot="tip" class="el-upload__tip">
+              Solo archivos jpg/png con un tamaño menor de 500kb
+            </div>
+          </el-upload>
+        </el-form-item>
+      </template>
       <el-button-group>
         <el-button type="primary" @click="atras">Atras</el-button>
         <el-button type="primary" @click="continuar">Continuar</el-button>
       </el-button-group>
-
     </el-form>
   </div>
 </template>
 
 <script>
+
+import { getArrArchivoIdeas } from '@/api/idea'
+import { createArrArchivoIdeas, createArrArchivoIdeasEvaluacion } from '@/api/idea'
+
 export default {
+  name: 'Step4',
+  props: {
+    ideaSelected: {
+      type: Object,
+      default: function() {
+        return {}
+      }
+    },
+    evaluacion: {
+      type: Boolean,
+      default: false
+    },
+    idFilePropuesta: {
+      type: Number,
+      default: 0
+    }
+  },
   data() {
     return {
       fileList: [],
+      listFiles: {},
+      propuesta: [],
       form: {}
     }
   },
+  async mounted() {
+    await this.fetchDataPropuesta('FRTOFIN')
+  },
   methods: {
+    async carguePropuesta() {
+      if (!this.evaluacion) {
+        const { type } = await createArrArchivoIdeas(
+          this.fileList,
+          this.ideaSelected.id
+        )
+
+        if (type === 'success') {
+          this.$emit('continuar', {})
+        }
+      } else {
+        const { type } = await createArrArchivoIdeasEvaluacion(
+          this.fileList,
+          this.ideaSelected.id
+        )
+        if (type === 'success') {
+          this.$emit('continuar', {})
+        }
+      }
+    },
+    async fetchDataPropuesta(codigo) {
+      /* const response = await getListaOne(codigo)
+
+      response.data.enable = response.data.enable === 1
+      this.propuesta = [...response.data]
+
+      */
+
+      const response2 = await getArrArchivoIdeas(codigo, this.ideaSelected.id)
+
+      const data = [...response2.data]
+      if (data !== null && data.length > 0) {
+        this.propuesta = [...data]
+        const fileList = []
+
+        for (let index = 0; index < this.propuesta.length; index++) {
+          const element = this.propuesta[index]
+
+          fileList.push({
+            id_file: element.id,
+            id_codigo_archivo: element.id_codigo_archivo,
+            id_file_propuesta: element.id_file_confirmation
+          })
+        }
+
+        this.fileList = [...fileList]
+        // this.id_file = data[0].fileConfirmation.id
+      }
+    },
     handleClick(tab, event) {
       console.log(tab, event)
     },
@@ -132,11 +154,25 @@ export default {
       console.log(file)
     },
     handleExceed(files, fileList) {
-      this.$message.warning(`El límite es 3, haz seleccionado ${files.length} archivos esta vez, añade hasta ${files.length + fileList.length}`)
+      this.$message.warning(
+        `El límite es 3, haz seleccionado ${
+          files.length
+        } archivos esta vez, añade hasta ${files.length + fileList.length}`
+      )
     },
     continuar() {
-      this.$emit('continuar', {})
+      this.carguePropuesta()
     },
+    handleSuccess(res, file) {
+      console.log('handleSuccess')
+      console.log(res.file)
+      if (!this.evaluacion) {
+        this.fileList[res.file.index].id_file = res.file.id
+      } else {
+        this.fileList[res.file.index].id_file_propuesta = res.file.id
+      }
+    },
+
     atras() {
       this.$emit('atras')
     }
@@ -145,7 +181,7 @@ export default {
 </script>
 
 <style scoped>
-.line{
+.line {
   text-align: center;
 }
 </style>
