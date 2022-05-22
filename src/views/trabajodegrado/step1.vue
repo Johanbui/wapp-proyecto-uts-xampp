@@ -61,7 +61,13 @@
         <template slot-scope="scope">
           <div class="td-actions">
             <div>
-              <el-button-group>
+              <el-button-group
+                v-if="
+                  (user.rol_id === 4 && ideaUsuario == null && scope.row.cantidadUsuarios == 0) ||
+                    (user.rol_id === 4 && ideaUsuario == scope.row.id) ||
+                    (user.rol_id !== 4 && scope.row.cantidadUsuarios > 0 )
+                "
+              >
                 <el-button type="primary" @click="continuar({ ideaSelected: scope.row })">Continuar</el-button>
               </el-button-group>
             </div>
@@ -90,7 +96,7 @@
 
 <script>
 import { toggleEnable } from '@/api/rol'
-import { getAll } from '@/api/idea'
+import { getAll, getIdeaUsuario } from '@/api/idea'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -103,14 +109,16 @@ export default {
       currentPage: 1,
       numberItems: 5,
       countItems: 0,
-      userId: 0
+      userId: 0,
+      ideaUsuario: 0
 
     }
   },
   computed: {
     ...mapGetters([
       'user_id',
-      'users_roles'
+      'users_roles',
+      'user'
 
     ])
   },
@@ -136,7 +144,7 @@ export default {
         page: this.currentPage,
         search: this.search
       }
-      console.log(params)
+
       getAll(params).then(response => {
         this.list = response.data.map(function(x) {
           x.enable = (x.enable === 1)
@@ -144,6 +152,16 @@ export default {
         })
         this.countItems = response.count
         this.listLoading = false
+      })
+
+      getIdeaUsuario(this.user_id).then(({ data }) => {
+        const response = { ...data }
+        console.log(response.id_idea)
+        if (typeof response.id_idea !== 'undefined') {
+          this.ideaUsuario = response.id_idea
+        } else {
+          this.ideaUsuario = null
+        }
       })
     },
 

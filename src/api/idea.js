@@ -147,3 +147,12 @@ export function getArrArchivoIdeas(codigoListaGrupo, idIdea) {
     params: { codigoListaGrupo, idIdea }
   })
 }
+
+export function getIdeaUsuario(id_usuario) {
+  return request({
+    url: '/idea/getIdeaUsuario',
+    method: 'get',
+    headers: { 'Authorization': 'Bearer ' + getToken() },
+    params: { id_usuario }
+  })
+}

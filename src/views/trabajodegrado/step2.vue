@@ -21,7 +21,7 @@
         >
           <template v-for="item in estudiantes">
             <el-option
-              v-if="item.id != user_id || i == 1"
+              v-if="(item.id != user_id || i == 1 || bloqueo)"
               :key="item.id"
               :label="item.name + ' ' + item.last_name + ' ' +item.id"
               :value="item.id"
@@ -51,7 +51,10 @@
 
       </el-form-item>
 
-      <el-form-item label="Director de Trabajo de Grado">
+      <el-form-item
+        v-if="user.rol_id!=4"
+        label="Director de Trabajo de Grado"
+      >
 
         <el-select
           v-model="form.director"
@@ -68,7 +71,10 @@
         </el-select>
       </el-form-item>
 
-      <el-form-item label="Co-Director de Trabajo de Grado">
+      <el-form-item
+        v-if="user.rol_id!=4"
+        label="Co-Director de Trabajo de Grado"
+      >
 
         <el-select
           v-model="form.codirector"
@@ -146,6 +152,7 @@ export default {
     await this.fetchDataPago('APRIDEA')
     await this.fetchDataUsuarios('TIPIDU')
     await this.fecthGetEstudiantes()
+
     if (this.user.rol_id === 4 && typeof this.usuarios[0] === 'undefined') {
       const usuario = {
         id: this.user.user_id,
@@ -195,44 +202,49 @@ export default {
         id_archivo: id_archivo,
         id_codigo_archivo: id_codigo_archivo
       }
-      await createArchivoIdeas(objCarguePago).then(({ type, data }) => {
-        if (type === 'success') {
+
+      if (this.user.rol_id === 4) {
+        await createArchivoIdeas(objCarguePago).then(({ type, data }) => {
+          if (type === 'success') {
           // this.directores = data
           // this.codirectores = data
-        }
-      })
-      const estudiantes = this.usuarios
-      await createEstudiantesIdeas(estudiantes, id_idea).then(({ type, data }) => {
-        if (type === 'success') {
-          // this.usuario = data
-        }
-      })
-      const directivos = []
-
-      if (this.form.director !== '') {
-        directivos.push(
-          {
-            id: this.form.director,
-            tipoUsuario: 11
           }
-        )
-      }
-
-      if (this.form.codirector !== '') {
-        directivos.push(
-          {
-            id: this.form.codirector,
-            tipoUsuario: 12
-          }
-        )
-      }
-
-      if (directivos.length > 0) {
-        await createEstudiantesIdeas(directivos, id_idea).then(({ type, data }) => {
+        })
+        const estudiantes = this.usuarios
+        await createEstudiantesIdeas(estudiantes, id_idea).then(({ type, data }) => {
           if (type === 'success') {
           // this.usuario = data
           }
         })
+      }
+      if (this.user.rol_id !== 4) {
+        const directivos = []
+
+        if (this.form.director !== '') {
+          directivos.push(
+            {
+              id: this.form.director,
+              tipoUsuario: 11
+            }
+          )
+        }
+
+        if (this.form.codirector !== '') {
+          directivos.push(
+            {
+              id: this.form.codirector,
+              tipoUsuario: 12
+            }
+          )
+        }
+
+        if (directivos.length > 0) {
+          await createEstudiantesIdeas(directivos, id_idea).then(({ type, data }) => {
+            if (type === 'success') {
+              // this.usuario = data
+            }
+          })
+        }
       }
 
       this.$emit('continuar', {})

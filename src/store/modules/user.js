@@ -8,7 +8,8 @@ const getDefaultState = () => {
     name: '',
     avatar: '',
     users_rols: [],
-    user_id: 0
+    user_id: 0,
+    rol_id: 0
   }
 }
 
@@ -69,7 +70,6 @@ const actions = {
         }
 
         const { name, avatar, users_rols, id, last_name, rol_id } = data
-
         commit('SET_NAME', name)
         commit('SET_LAST_NAME', last_name)
         commit('SET_AVATAR', avatar)
