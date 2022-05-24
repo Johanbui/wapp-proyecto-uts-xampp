@@ -103,7 +103,7 @@ export default {
       if (idFilePropuesta) {
         this.idFilePropuesta = idFilePropuesta
       }
-
+      console.log(estado)
       if (estado !== '') {
         if (this.user.rol_id !== 4) {
           const responseObj = await this.fetchIdeaEstado(estado, this.ideaSelected.id)
@@ -113,7 +113,9 @@ export default {
             await this.openActa(estado)
           }
         } else {
-          await this.pasarTab()
+          await this.insertEstado(estado, '')
+
+          // await this.pasarTab()
         }
       } else {
         await this.insertEstado(estado, '')
@@ -141,11 +143,12 @@ export default {
     },
 
     insertEstado(estado, acta) {
+      console.log('Acta:' + acta)
       if (estado === '' && acta === '') {
         return this.pasarTab()
       }
-
-      if (acta === null || acta === '') {
+      debugger
+      if (acta === null) {
         return this.openActa(estado)
       }
 
@@ -154,6 +157,7 @@ export default {
         codigo_estado: estado,
         acta
       }).then(({ exist, data, message }) => {
+        debugger
         if (exist && data) {
           return this.pasarTab()
         } else {
