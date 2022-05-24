@@ -56,7 +56,7 @@
       </template>
 
       <el-form-item
-        v-if="user.rol_id!=4"
+        v-if="user.rol_id!=4 && evaluacion"
         label="Resultado Proyecto"
       >
 
@@ -66,7 +66,7 @@
           placeholder="Asigne resultado del proyecto"
           :disabled="bloqueoDir"
         >
-          <template v-if="user.rol_id!==4">
+          <template>
             <el-option
               v-for="item in optionsResultado"
               :key="item.value"

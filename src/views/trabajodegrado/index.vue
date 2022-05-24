@@ -108,7 +108,6 @@ export default {
         if (this.user.rol_id !== 4) {
           this.openActa(estado)
         } else {
-          alert()
           this.pasarTab()
         }
       } else {
@@ -137,8 +136,6 @@ export default {
       if (acta === null || acta === '') {
         return this.openActa(estado)
       }
-
-      console.log(estado, acta)
 
       createIdeaEstado({
         id_idea: this.ideaSelected.id,
