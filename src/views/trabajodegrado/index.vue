@@ -67,6 +67,7 @@ import step2 from './step2.vue'
 import step3 from './step3.vue'
 import step4 from './step4.vue'
 import step5 from './step5.vue'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'Index',
@@ -77,6 +78,13 @@ export default {
     step4,
     step5
   },
+  computed: {
+    ...mapGetters([
+      'user_id',
+      'users_roles',
+      'user'
+    ])
+  },
   data() {
     return {
       // activeName: '0',
@@ -86,7 +94,7 @@ export default {
     }
   },
   methods: {
-    continuar({ ideaSelected = 0, idFilePropuesta = 0 }) {
+    continuar({ ideaSelected = 0, idFilePropuesta = 0, estado = '' }) {
       if (ideaSelected) {
         this.ideaSelected = ideaSelected
       }
@@ -94,9 +102,41 @@ export default {
       if (idFilePropuesta) {
         this.idFilePropuesta = idFilePropuesta
       }
+
+      if (estado !== '') {
+        if (this.user.rol_id !== 4) {
+          this.openActa(estado)
+        } else {
+          this.pasarTab()
+        }
+      } else {
+        this.insertEstado(estado, '')
+      }
+    },
+    openActa(estado) {
+      this.$prompt('Ingrese Codigo de Acta', 'Tip', {
+        confirmButtonText: 'OK',
+        cancelButtonText: 'Cancel'
+      }).then(({ value }) => {
+        this.insertEstado(estado, value)
+      }).catch(() => {
+
+      })
+    },
+    pasarTab() {
       const active = parseInt(this.active)
-      // this.activeName = (active + 1).toString()
       this.active = active + 1
+    },
+    insertEstado(estado, acta) {
+      // aqui va peticion a guardar/no insertarlo estado y numero de acta
+      // y notificacion
+      /*
+        this.$message({
+          type: 'success',
+          message: 'Your email is:' + value
+        })
+        */
+      this.pasarTab()
     },
     atras() {
       const active = parseInt(this.active)

@@ -54,6 +54,28 @@
           </el-upload>
         </el-form-item>
       </template>
+
+      <el-form-item
+        v-if="user.rol_id!=4"
+        label="Resultado Proyecto"
+      >
+
+        <el-select
+          v-model="resultado"
+          filterable
+          placeholder="Asigne resultado del proyecto"
+          :disabled="bloqueoDir"
+        >
+          <el-option
+            v-for="item in optionsResultado"
+            v-if="user.rol_id!==4"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"
+          />
+        </el-select>
+      </el-form-item>
+
       <el-button-group>
         <el-button type="primary" @click="atras">Atras</el-button>
         <el-button type="primary" @click="continuar">Continuar</el-button>
@@ -74,7 +96,9 @@ export default {
     ideaSelected: {
       type: Object,
       default: function() {
-        return {}
+        return {
+
+        }
       }
     },
     evaluacion: {
@@ -98,7 +122,12 @@ export default {
       fileList: [],
       listFiles: {},
       propuesta: [],
-      form: {}
+      resultado: null,
+      optionsResultado: [
+        { label: 'Cancelado', value: 'CANEIDEA' },
+        { label: 'Aprobado', value: 'APREIDEA' },
+        { label: 'Prorroga', value: 'PROEIDEA' }
+      ]
     }
   },
   async mounted() {
@@ -113,6 +142,14 @@ export default {
         )
 
         if (type === 'success') {
+          const obj = {}
+          if (this.user.rol_id !== 4) {
+            const obj = {}
+            obj.estado = ''
+          } else {
+            obj.estado = 'EVINFFIN'
+          }
+
           this.$emit('continuar', {})
         }
       } else {
@@ -121,7 +158,14 @@ export default {
           this.ideaSelected.id
         )
         if (type === 'success') {
-          this.$emit('continuar', {})
+          const obj = {}
+
+          if (this.user.rol_id !== 4) {
+            obj.estado = this.resultado
+          } else {
+            obj.estado = ''
+          }
+          this.$emit('continuar', obj)
         }
       }
     },

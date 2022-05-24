@@ -254,7 +254,13 @@ export default {
         }
       }
 
-      this.$emit('continuar', {})
+      const obj = {}
+      if (this.user.rol_id !== 4) {
+        obj.estado = 'PROIDEA'
+      } else {
+        obj.estado = 'APRIDEA'
+      }
+      this.$emit('continuar', obj)
     },
     async fecthGetDirectores() {
       await getDirectores().then(({ type, data }) => {

@@ -14,7 +14,7 @@
             :on-remove="handleRemove"
             :on-success="handleSuccess"
             :file-list="fileList"
-            limit="1"
+            :limit="1"
             :disabled="(!evaluacion && user.rol_id !=4) || (evaluacion && user.rol_id ==4)"
           >
             <i class="el-icon-upload" />
@@ -95,7 +95,15 @@ export default {
         const { type } = await createArchivoIdeas(objCarguePropuesta)
 
         if (type === 'success') {
-          this.$emit('continuar', { idFilePropuesta: id_archivo })
+          const obj = {}
+          if (this.user.rol_id !== 4) {
+            const obj = {}
+            obj.estado = ''
+          } else {
+            obj.estado = 'EVPROIDEA'
+          }
+          obj.idFilePropuesta = id_archivo
+          this.$emit('continuar', obj)
         }
       } else {
         const objCargueEvaluacion = {
@@ -108,7 +116,14 @@ export default {
         const { type } = await createArchivoIdeasEvaluacion(objCargueEvaluacion)
 
         if (type === 'success') {
-          this.$emit('continuar', {})
+          const obj = {}
+
+          if (this.user.rol_id !== 4) {
+            obj.estado = 'INFFIN'
+          } else {
+            obj.estado = ''
+          }
+          this.$emit('continuar', obj)
         }
       }
     },
