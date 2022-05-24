@@ -165,3 +165,12 @@ export function getIdeaUsuario(id_usuario) {
     params: { id_usuario }
   })
 }
+
+export function getIdeaEstado(codigo_estado, id_idea) {
+  return request({
+    url: '/ideaEstado/getIdeaEstado',
+    method: 'get',
+    headers: { 'Authorization': 'Bearer ' + getToken() },
+    params: { codigo_estado, id_idea }
+  })
+}

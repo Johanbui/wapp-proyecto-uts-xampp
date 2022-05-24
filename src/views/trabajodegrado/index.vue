@@ -68,7 +68,7 @@ import step3 from './step3.vue'
 import step4 from './step4.vue'
 import step5 from './step5.vue'
 import { mapGetters } from 'vuex'
-import { createIdeaEstado } from '@/api/idea'
+import { createIdeaEstado, getIdeaEstado } from '@/api/idea'
 
 export default {
   name: 'Index',
@@ -95,7 +95,7 @@ export default {
     ])
   },
   methods: {
-    continuar({ ideaSelected = 0, idFilePropuesta = 0, estado = '' }) {
+    async continuar({ ideaSelected = 0, idFilePropuesta = 0, estado = '' }) {
       if (ideaSelected) {
         this.ideaSelected = ideaSelected
       }
@@ -106,12 +106,17 @@ export default {
 
       if (estado !== '') {
         if (this.user.rol_id !== 4) {
-          this.openActa(estado)
+          const responseObj = await this.fetchIdeaEstado(estado, this.ideaSelected.id)
+          if (responseObj) {
+            await this.pasarTab()
+          } else {
+            await this.openActa(estado)
+          }
         } else {
-          this.pasarTab()
+          await this.pasarTab()
         }
       } else {
-        this.insertEstado(estado, '')
+        await this.insertEstado(estado, '')
       }
     },
     openActa(estado) {
@@ -128,6 +133,13 @@ export default {
       const active = parseInt(this.active)
       this.active = active + 1
     },
+    async fetchIdeaEstado(codigo_estado, id_idea) {
+      const { exist } = await getIdeaEstado(
+        codigo_estado, id_idea
+      )
+      return exist
+    },
+
     insertEstado(estado, acta) {
       if (estado === '' && acta === '') {
         return this.pasarTab()

@@ -61,10 +61,11 @@
       >
 
         <el-select
+          v-if="user.rol_id!=4 && evaluacion"
           v-model="resultado"
           filterable
           placeholder="Asigne resultado del proyecto"
-          :disabled="bloqueoDir"
+          :disabled="bloqueoResultado"
         >
           <template>
             <el-option
@@ -87,7 +88,7 @@
 
 <script>
 
-import { getArrArchivoIdeas } from '@/api/idea'
+import { getArrArchivoIdeas, getIdeaEstado } from '@/api/idea'
 import { createArrArchivoIdeas, createArrArchivoIdeasEvaluacion } from '@/api/idea'
 import { mapGetters } from 'vuex'
 
@@ -117,10 +118,11 @@ export default {
       listFiles: {},
       propuesta: [],
       resultado: null,
+      bloqueoResultado: false,
       optionsResultado: [
         { label: 'Cancelado', value: 'CANEIDEA' },
-        { label: 'Aprobado', value: 'APREIDEA' },
-        { label: 'Prorroga', value: 'PROEIDEA' }
+        { label: 'Aprobado', value: 'APREIDEA' }
+        // { label: 'Prorroga', value: 'PROEIDEA' }
       ]
     }
   },
@@ -133,8 +135,22 @@ export default {
   },
   async mounted() {
     await this.fetchDataPropuesta('FRTOFIN')
+    if (this.evaluacion) {
+      await this.fetchIdeaEstado('RESULTADO', this.ideaSelected.id)
+    }
   },
+
   methods: {
+    async fetchIdeaEstado(codigo_estado, id_idea) {
+      const { data } = await getIdeaEstado(
+        codigo_estado, id_idea
+      )
+      this.resultado = (typeof data.codigoEstado !== 'undefined' ? data.codigoEstado : '')
+      if (this.resultado !== '') {
+        this.bloqueoResultado = true
+      }
+      return data
+    },
     async carguePropuesta() {
       if (!this.evaluacion) {
         const { type } = await createArrArchivoIdeas(
@@ -160,7 +176,6 @@ export default {
         )
         if (type === 'success') {
           const obj = {}
-
           if (this.user.rol_id !== 4) {
             obj.estado = this.resultado
           } else {
