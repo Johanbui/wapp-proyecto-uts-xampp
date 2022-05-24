@@ -79,6 +79,15 @@ export function createArchivoIdeasEvaluacion(ideasArchivo) {
   })
 }
 
+export function createIdeaEstado(ideaEstado) {
+  return request({
+    url: '/ideaEstado/createIdeaEstado',
+    method: 'post',
+    headers: { 'Authorization': 'Bearer ' + getToken() },
+    params: ideaEstado
+  })
+}
+
 export function getArchivoIdeas(codigoListaGrupo, idIdea) {
   return request({
     url: '/idea/getArchivoIdeas',

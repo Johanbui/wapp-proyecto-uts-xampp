@@ -35,8 +35,7 @@
               v-model="actaEditForm.fecha"
               type="date"
               placeholder="Fecha"
-            >
-            </el-date-picker>
+            />
           </el-form-item>
         </el-col>
       </el-row>
@@ -134,35 +133,35 @@ export default {
     onCancel() {
       this.$router.push({ path: '/acta' })
     },
-   handleRemove(file, fileList) {
-      console.log(file, fileList);
-      console.log("handleRemove");
-      console.log(file);
-      console.log(fileList);
+    handleRemove(file, fileList) {
+      console.log(file, fileList)
+      console.log('handleRemove')
+      console.log(file)
+      console.log(fileList)
     },
     handlePreview(file) {
-      console.log("handlePreview");
-      console.log(file);
+      console.log('handlePreview')
+      console.log(file)
     },
     handleExceed(files, fileList) {
-      console.log("handleExceed");
-      console.log(file);
-      console.log(fileList);
+      console.log('handleExceed')
+      console.log(files)
+      console.log(fileList)
       this.$message.warning(
         `El límite es 3, haz seleccionado ${
           files.length
         } archivos esta vez, añade hasta ${files.length + fileList.length}`
-      );
+      )
     },
     beforeUpload(file) {
-      console.log("beforeUpload");
-      console.log(file);
+      console.log('beforeUpload')
+      console.log(file)
     },
     handleSuccess(res, file) {
-      console.log("handleSuccess");
-      console.log(res.file);
+      console.log('handleSuccess')
+      console.log(res.file)
       this.actaEditForm.file_id = res.file.id
-    },
+    }
   }
 }
 </script>

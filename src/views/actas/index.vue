@@ -49,7 +49,6 @@
         </template>
       </el-table-column>
 
-
       <el-table-column
         align="center"
         label="Actions"
@@ -180,7 +179,7 @@ export default {
     handlePermissions(index, row) {
       this.$router.push({ path: '/acta/' + row.id + '/permissions' })
     },
-    hrefFile(obj){
+    hrefFile(obj) {
       window.open(obj.file.url)
     }
   }

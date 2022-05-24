@@ -33,7 +33,6 @@
         <el-col :span="24">
           <el-form-item prop="Archivo" label="Archivo">
             <el-input
-              @click="hrefFile(actaForm)"
               ref="codigo"
               v-model="actaForm.file.name"
               placeholder="Archivo"
@@ -43,11 +42,12 @@
               auto-complete="on"
               disabled
               class="input-with-select"
-            >
-
-            </el-input>
-              <el-button type="primary" @click="hrefFile(actaForm)"
-                >Descargar</el-button>
+              @click="hrefFile(actaForm)"
+            />
+            <el-button
+              type="primary"
+              @click="hrefFile(actaForm)"
+            >Descargar</el-button>
           </el-form-item>
         </el-col>
 
@@ -57,7 +57,7 @@
 </template>
 
 <script>
-import { getOne } from "@/api/acta";
+import { getOne } from '@/api/acta'
 
 export default {
   data() {
@@ -65,45 +65,45 @@ export default {
       id: 0,
       pageLoading: true,
       actaForm: {
-        nombre: "",
-        codigo: "",
+        nombre: '',
+        codigo: '',
         file: {
-          url:'',
+          url: '',
           name: ''
         }
       },
       actaRules: {
         nombre: [{ required: true }],
-        codigo: [{ required: true }],
-      },
-    };
+        codigo: [{ required: true }]
+      }
+    }
   },
   watch: {
     $route: {
-      handler: function (route) {
-        this.id = route.params.id && route.params.id;
+      handler: function(route) {
+        this.id = route.params.id && route.params.id
       },
-      immediate: true,
-    },
+      immediate: true
+    }
   },
   created() {
-    this.fetchData();
+    this.fetchData()
   },
   methods: {
     fetchData() {
-      this.pageLoading = true;
+      this.pageLoading = true
       getOne(this.id).then((response) => {
-        response.data.enable = response.data.enable === 1;
+        response.data.enable = response.data.enable === 1
         // this.user = response.data
-        this.pageLoading = false;
-        this.actaForm = { ...response.data };
-      });
+        this.pageLoading = false
+        this.actaForm = { ...response.data }
+      })
     },
     hrefFile(obj) {
-      window.open(obj.file.url);
-    },
-  },
-};
+      window.open(obj.file.url)
+    }
+  }
+}
 </script>
 <style scoped>
 img.row_avatar {

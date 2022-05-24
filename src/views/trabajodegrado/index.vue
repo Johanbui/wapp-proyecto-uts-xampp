@@ -68,6 +68,7 @@ import step3 from './step3.vue'
 import step4 from './step4.vue'
 import step5 from './step5.vue'
 import { mapGetters } from 'vuex'
+import { createIdeaEstado } from '@/api/idea'
 
 export default {
   name: 'Index',
@@ -78,13 +79,6 @@ export default {
     step4,
     step5
   },
-  computed: {
-    ...mapGetters([
-      'user_id',
-      'users_roles',
-      'user'
-    ])
-  },
   data() {
     return {
       // activeName: '0',
@@ -92,6 +86,13 @@ export default {
       ideaSelected: '',
       idFilePropuesta: 0
     }
+  },
+  computed: {
+    ...mapGetters([
+      'user_id',
+      'users_roles',
+      'user'
+    ])
   },
   methods: {
     continuar({ ideaSelected = 0, idFilePropuesta = 0, estado = '' }) {
@@ -107,6 +108,7 @@ export default {
         if (this.user.rol_id !== 4) {
           this.openActa(estado)
         } else {
+          alert()
           this.pasarTab()
         }
       } else {
@@ -118,9 +120,9 @@ export default {
         confirmButtonText: 'OK',
         cancelButtonText: 'Cancel'
       }).then(({ value }) => {
-        this.insertEstado(estado, value)
-      }).catch(() => {
-
+        this.insertEstado(estado, value === null ? null : value.trim())
+      }).catch((err) => {
+        console.error(err)
       })
     },
     pasarTab() {
@@ -128,6 +130,34 @@ export default {
       this.active = active + 1
     },
     insertEstado(estado, acta) {
+      if (estado === '' && acta === '') {
+        return this.pasarTab()
+      }
+
+      if (acta === null || acta === '') {
+        return this.openActa(estado)
+      }
+
+      console.log(estado, acta)
+
+      createIdeaEstado({
+        id_idea: this.ideaSelected.id,
+        codigo_estado: estado,
+        acta
+      }).then(({ exist, data, message }) => {
+        if (exist && data) {
+          return this.pasarTab()
+        } else {
+          this.$message({
+            type: 'info',
+            message: message
+          })
+          return this.openActa(estado)
+        }
+      }).catch(() => {
+        return this.openActa(estado)
+      })
+
       // aqui va peticion a guardar/no insertarlo estado y numero de acta
       // y notificacion
       /*
@@ -136,12 +166,10 @@ export default {
           message: 'Your email is:' + value
         })
         */
-      this.pasarTab()
     },
     atras() {
-      const active = parseInt(this.active)
       // this.activeName = (active - 1).toString()
-      this.active = active - 1
+      this.active = parseInt(this.active) - 1
     }
 
   }

@@ -56,13 +56,6 @@ export default {
       default: 0
     }
   },
-  computed: {
-    ...mapGetters([
-      'user_id',
-      'users_roles',
-      'user'
-    ])
-  },
   data() {
     return {
       fileList: [],
@@ -70,6 +63,13 @@ export default {
       propuesta: '',
       id_file: 0
     }
+  },
+  computed: {
+    ...mapGetters([
+      'user_id',
+      'users_roles',
+      'user'
+    ])
   },
   async mounted() {
     await this.fetchDataPropuesta('FRTOPRO')

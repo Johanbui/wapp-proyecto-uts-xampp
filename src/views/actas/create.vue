@@ -35,8 +35,7 @@
               v-model="actaCreateForm.fecha"
               type="date"
               placeholder="Fecha"
-            >
-            </el-date-picker>
+            />
           </el-form-item>
         </el-col>
       </el-row>
@@ -76,7 +75,7 @@
 </template>
 
 <script>
-import { create } from "@/api/acta";
+import { create } from '@/api/acta'
 
 export default {
   data() {
@@ -84,7 +83,7 @@ export default {
       // id: 0,
       pageLoading: true,
       actaCreateForm: {
-        codigo: "",
+        codigo: '',
         file_id: 0,
         fecha: ''
       },
@@ -92,68 +91,68 @@ export default {
       actaRules: {
         codigo: [{ required: true }],
         file_id: [{ required: true }],
-        fecha: [{ required: true }],
-      },
-    };
+        fecha: [{ required: true }]
+      }
+    }
   },
   watch: {
     $route: {
-      handler: function (route) {
+      handler: function(route) {
         // this.id = route.params.id && route.params.id
       },
-      immediate: true,
-    },
+      immediate: true
+    }
   },
   created() {},
   methods: {
     onSubmit() {
-      const params = { ...this.actaCreateForm };
+      const params = { ...this.actaCreateForm }
 
       create(params).then((response) => {
         this.$message({
           showClose: true,
           message: response.message,
-          type: response.type,
-        });
-        if (response.type === "success") {
-          this.$router.push({ path: "/acta" });
+          type: response.type
+        })
+        if (response.type === 'success') {
+          this.$router.push({ path: '/acta' })
         }
-      });
+      })
     },
     onCancel() {
-      this.$router.push({ path: "/acta" });
+      this.$router.push({ path: '/acta' })
     },
     handleRemove(file, fileList) {
-      console.log(file, fileList);
-      console.log("handleRemove");
-      console.log(file);
-      console.log(fileList);
+      console.log(file, fileList)
+      console.log('handleRemove')
+      console.log(file)
+      console.log(fileList)
     },
     handlePreview(file) {
-      console.log("handlePreview");
-      console.log(file);
+      console.log('handlePreview')
+      console.log(file)
     },
     handleExceed(files, fileList) {
-      console.log("handleExceed");
-      console.log(file);
-      console.log(fileList);
+      console.log('handleExceed')
+      console.log(files)
+      console.log(fileList)
       this.$message.warning(
         `El límite es 3, haz seleccionado ${
           files.length
         } archivos esta vez, añade hasta ${files.length + fileList.length}`
-      );
+      )
     },
     beforeUpload(file) {
-      console.log("beforeUpload");
-      console.log(file);
+      console.log('beforeUpload')
+      console.log(file)
     },
     handleSuccess(res, file) {
-      console.log("handleSuccess");
-      console.log(res.file);
+      console.log('handleSuccess')
+      console.log(res.file)
       this.actaCreateForm.file_id = res.file.id
-    },
-  },
-};
+    }
+  }
+}
 </script>
 <style scoped>
 img.row_avatar {

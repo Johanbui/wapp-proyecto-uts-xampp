@@ -66,13 +66,14 @@
           placeholder="Asigne resultado del proyecto"
           :disabled="bloqueoDir"
         >
-          <el-option
-            v-for="item in optionsResultado"
-            v-if="user.rol_id!==4"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value"
-          />
+          <template v-if="user.rol_id!==4">
+            <el-option
+              v-for="item in optionsResultado"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </template>
         </el-select>
       </el-form-item>
 
@@ -110,13 +111,6 @@ export default {
       default: 0
     }
   },
-  computed: {
-    ...mapGetters([
-      'user_id',
-      'users_roles',
-      'user'
-    ])
-  },
   data() {
     return {
       fileList: [],
@@ -129,6 +123,13 @@ export default {
         { label: 'Prorroga', value: 'PROEIDEA' }
       ]
     }
+  },
+  computed: {
+    ...mapGetters([
+      'user_id',
+      'users_roles',
+      'user'
+    ])
   },
   async mounted() {
     await this.fetchDataPropuesta('FRTOFIN')
