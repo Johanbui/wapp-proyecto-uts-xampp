@@ -13,28 +13,31 @@
         :key="i"
         :label="'Estudiante ' + i"
       >
-        <el-select
-          v-model="usuarios[i-1].id"
-          filterable
-          :placeholder="'Estudiante ' + i"
-          :disabled="i == 1 || bloqueo"
-        >
-          <template v-for="item in estudiantes">
-            <el-option
-              v-if="(
-                ( item.id != user_id && item.cant ==0) ||
-                i == 1 ||
-                bloqueo ||
-                ( !bloqueo && item.cant ==0)
+        <template v-if="usuarios[i-1]">
+          <el-select
+            v-model="usuarios[i-1].id"
+            filterable
+            :placeholder="'Estudiante ' + i"
+            :disabled="i == 1 || bloqueo"
+          >
+            <template v-for="item in estudiantes">
+              <el-option
+                v-if="(
+                  ( item.id != user_id && item.cant ==0) ||
+                  i == 1 ||
+                  bloqueo ||
+                  ( !bloqueo && item.cant ==0)
 
-              )"
-              :key="item.id"
-              :label="item.name + ' ' + item.last_name + ' ' +item.id"
-              :value="item.id"
-            />
-          </template>
+                )"
+                :key="item.id"
+                :label="item.name + ' ' + item.last_name + ' ' +item.id"
+                :value="item.id"
+              />
+            </template>
 
-        </el-select>
+          </el-select>
+
+        </template>
 
       </el-form-item>
 
