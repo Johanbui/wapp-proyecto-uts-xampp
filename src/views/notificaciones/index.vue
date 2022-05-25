@@ -7,15 +7,24 @@
       border
       fit
       highlight-current-row
+      :row-class-name="tableRowClassName"
     >
 
-      <el-table-column align="center" label="#" width="50">
+      <el-table-column
+        align="center"
+        label="#"
+        width="50"
+        :header-row-style="{ backgroundColor: 'red' }"
+      >
         <template slot-scope="scope">
-          {{ (scope.$index + 1) + ( numberItems * (currentPage - 1)) }}
+
+          {{ (scope.$index + 1) /*+ ( numberItems * (currentPage - 1))*/ }}
         </template>
       </el-table-column>
 
-      <el-table-column label="Título">
+      <el-table-column
+        label="Título"
+      >
         <template slot-scope="scope">
           {{ scope.row.title }}
         </template>
@@ -38,6 +47,14 @@ export default {
       listLoading: true
     }
   },
+  methods: {
+    tableRowClassName({ row, rowIndex }) {
+      if (row.visto === 0) {
+        return 'warning-row'
+      }
+      return ''
+    }
+  },
   computed: {
     ...mapGetters([
       'user_id',
@@ -55,3 +72,13 @@ export default {
   }
 }
 </script>
+
+<style>
+  .el-table .warning-row {
+    background: oldlace;
+  }
+
+  .el-table .success-row {
+    background: #f0f9eb;
+  }
+</style>
