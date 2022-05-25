@@ -174,3 +174,12 @@ export function getIdeaEstado(codigo_estado, id_idea) {
     params: { codigo_estado, id_idea }
   })
 }
+export function getResultadoProyecto(id_idea) {
+  return request({
+    url: '/ideaEstado/getResultadoProyecto',
+    method: 'get',
+    headers: { 'Authorization': 'Bearer ' + getToken() },
+    params: { id_idea }
+  })
+}
+

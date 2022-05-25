@@ -54,7 +54,7 @@
 
     <el-row>
       <el-col v-if="active == 6" :span="24">
-        <step-5 @continuar="continuar" @atras="atras" />
+        <step-5 :idea-selected="ideaSelected" @continuar="continuar" @atras="atras" @inicio="inicio" />
       </el-col>
     </el-row>
   </div>
@@ -83,8 +83,9 @@ export default {
     return {
       // activeName: '0',
       active: 0,
-      ideaSelected: '',
-      idFilePropuesta: 0
+      ideaSelected: { 'id': 1, 'titulo': 'Desarrollo Software Trabajos de Grado', 'max_estudiantes': 2, 'nombreModalidad': 'Desarrollo de Software', 'nombreLineaInvestigacion': 'Desarrollo de Software Orientado a la WEB', 'cantidadUsuarios': 4, 'enable': false },
+      idFilePropuesta: 0,
+      estadoFinal: ''
     }
   },
   computed: {
@@ -158,6 +159,7 @@ export default {
         acta
       }).then(({ exist, data, message }) => {
         if (exist && data) {
+          this.estadoFinal = estado
           return this.pasarTab()
         } else {
           this.$message({
@@ -182,6 +184,10 @@ export default {
     atras() {
       // this.activeName = (active - 1).toString()
       this.active = parseInt(this.active) - 1
+    },
+    inicio() {
+      // this.activeName = (active - 1).toString()
+      this.active = 0
     }
 
   }
