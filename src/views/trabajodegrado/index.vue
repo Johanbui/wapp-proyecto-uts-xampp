@@ -147,7 +147,7 @@ export default {
       if (estado === '' && acta === '') {
         return this.pasarTab()
       }
-      debugger
+
       if (acta === null) {
         return this.openActa(estado)
       }
@@ -157,7 +157,6 @@ export default {
         codigo_estado: estado,
         acta
       }).then(({ exist, data, message }) => {
-        debugger
         if (exist && data) {
           return this.pasarTab()
         } else {

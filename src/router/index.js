@@ -224,13 +224,27 @@ export const constantRoutes = [
   {
     path: '/trabajodegrado',
     component: Layout,
-    meta: { title: 'trabajodegrado', icon: 'form', code: 'TRABAJOGRADO-INDEX' },
+    meta: { title: 'Trabajo de grado', icon: 'form', code: 'TRABAJOGRADO-INDEX' },
     children: [
       {
         path: 'index',
         name: 'Trabajo de Grado',
         component: () => import('@/views/trabajodegrado/index'),
-        meta: { title: 'trabajodegrado', icon: 'form', code: 'TRABAJOGRADO-INDEX' }
+        meta: { title: 'Trabajo de grado', icon: 'form', code: 'TRABAJOGRADO-INDEX' }
+      }
+    ]
+  },
+
+  {
+    path: '/notificaciones',
+    component: Layout,
+    meta: { title: 'Notificaciones', icon: 'form', code: 'NOTIFICACIONES-INDEX' },
+    children: [
+      {
+        path: 'index',
+        name: 'Notificaciones',
+        component: () => import('@/views/notificaciones/index'),
+        meta: { title: 'Notificaciones', icon: 'form', code: 'NOTIFICACIONES-INDEX' }
       }
     ]
   },
