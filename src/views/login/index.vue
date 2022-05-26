@@ -41,7 +41,8 @@
         </span>
       </el-form-item>
 
-      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">Login</el-button>
+      <el-button :loading="loading" type="primary" style="width:48.5%;margin-bottom:30px;" @click.native.prevent="handleLogin">Ingreso</el-button>
+      <el-button :loading="loading" type="primary" style="width:48.5%;margin-bottom:30px;" @click.native.prevent="handleRegister">Registro</el-button>
 
     </el-form>
   </div>
@@ -115,6 +116,9 @@ export default {
           return false
         }
       })
+    },
+    handleRegister() {
+      this.$router.push({ path: '/register' })
     }
   }
 }
@@ -164,6 +168,9 @@ $cursor: #fff;
     border-radius: 5px;
     color: #454545;
   }
+}
+.login-container .el-input{
+    width: auto !important;
 }
 </style>
 

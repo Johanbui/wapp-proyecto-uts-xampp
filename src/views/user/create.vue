@@ -9,7 +9,7 @@
       label-position="left"
     >
       <div class="title-container">
-        <h3 class="title">User Edit</h3>
+        <h3 class="title">User Create</h3>
       </div>
 
       <el-row :gutter="30">
