@@ -68,7 +68,7 @@ import step3 from './step3.vue'
 import step4 from './step4.vue'
 import step5 from './step5.vue'
 import { mapGetters } from 'vuex'
-import { createIdeaEstado, getIdeaEstado } from '@/api/idea'
+import { createIdeaEstado, getIdeaEstado, getLastEstadoProyecto } from '@/api/idea'
 
 export default {
   name: 'Index',
@@ -109,7 +109,7 @@ export default {
         if (this.user.rol_id !== 4) {
           const responseObj = await this.fetchIdeaEstado(estado, this.ideaSelected.id)
           if (responseObj) {
-            await this.pasarTab()
+            await this.pasarTab(estado)
           } else {
             await this.openActa(estado)
           }
@@ -132,9 +132,18 @@ export default {
         console.error(err)
       })
     },
-    pasarTab() {
+    async pasarTab(estado) {
       const active = parseInt(this.active)
-      this.active = active + 1
+      const { data } = await getLastEstadoProyecto(
+        this.ideaSelected.id
+      )
+      const estadoFinal = data.codigoEstado
+
+      if (estadoFinal === 'APRIDEA' && estado === 'APRIDEA') {
+        this.active = 0
+      } else {
+        this.active = active + 1
+      }
     },
     async fetchIdeaEstado(codigo_estado, id_idea) {
       const { exist } = await getIdeaEstado(
@@ -146,7 +155,7 @@ export default {
     insertEstado(estado, acta) {
       console.log('Acta:' + acta)
       if (estado === '' && acta === '') {
-        return this.pasarTab()
+        return this.pasarTab(estado)
       }
 
       if (acta === null) {
@@ -160,7 +169,7 @@ export default {
       }).then(({ exist, data, message }) => {
         if (exist && data) {
           this.estadoFinal = estado
-          return this.pasarTab()
+          return this.pasarTab(estado)
         } else {
           this.$message({
             type: 'info',

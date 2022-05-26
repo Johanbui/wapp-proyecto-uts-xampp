@@ -183,3 +183,11 @@ export function getResultadoProyecto(id_idea) {
   })
 }
 
+export function getLastEstadoProyecto(id_idea) {
+  return request({
+    url: '/idea/getLastEstadoProyecto',
+    method: 'get',
+    headers: { 'Authorization': 'Bearer ' + getToken() },
+    params: { id_idea }
+  })
+}
