@@ -137,10 +137,14 @@ export default {
       const { data } = await getLastEstadoProyecto(
         this.ideaSelected.id
       )
-      const estadoFinal = data.codigoEstado
+      if (data != null) {
+        const estadoFinal = data.codigoEstado
 
-      if (estadoFinal != null && estadoFinal === 'APRIDEA' && estado === 'APRIDEA') {
-        this.active = 0
+        if (estadoFinal === 'APRIDEA' && estado === 'APRIDEA') {
+          this.active = 0
+        } else {
+          this.active = active + 1
+        }
       } else {
         this.active = active + 1
       }
