@@ -139,7 +139,7 @@ export default {
       )
       const estadoFinal = data.codigoEstado
 
-      if (estadoFinal === 'APRIDEA' && estado === 'APRIDEA') {
+      if (estadoFinal != null && estadoFinal === 'APRIDEA' && estado === 'APRIDEA') {
         this.active = 0
       } else {
         this.active = active + 1
