@@ -38,7 +38,6 @@
 
 import { mapGetters } from 'vuex'
 import { getAll, markAsReaded } from '@/api/notificacion'
-import { sendEmail } from '@/api/email'
 
 export default {
   name: 'Index',
