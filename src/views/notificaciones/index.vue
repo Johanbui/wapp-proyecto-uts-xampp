@@ -1,7 +1,5 @@
 <template>
   <div class="app-container">
-    <el-button type="primary" @click="sendEmailRequest">Enviar correo</el-button>
-
     <el-table
       v-loading="listLoading"
       :data="list"
@@ -71,9 +69,6 @@ export default {
         return 'warning-row'
       }
       return ''
-    },
-    sendEmailRequest() {
-      sendEmail({ emails: 'crigiot@gmail.com' })
     }
   }
 }
