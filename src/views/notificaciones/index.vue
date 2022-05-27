@@ -1,5 +1,7 @@
 <template>
   <div class="app-container">
+    <el-button type="primary" @click="sendEmailRequest">Enviar correo</el-button>
+
     <el-table
       v-loading="listLoading"
       :data="list"
@@ -38,6 +40,7 @@
 
 import { mapGetters } from 'vuex'
 import { getAll, markAsReaded } from '@/api/notificacion'
+import { sendEmail } from '@/api/email'
 
 export default {
   name: 'Index',
@@ -45,14 +48,6 @@ export default {
     return {
       list: '',
       listLoading: true
-    }
-  },
-  methods: {
-    tableRowClassName({ row, rowIndex }) {
-      if (row.visto === 0) {
-        return 'warning-row'
-      }
-      return ''
     }
   },
   computed: {
@@ -69,6 +64,17 @@ export default {
     this.listLoading = false
 
     markAsReaded({ id_usuario: this.user_id })
+  },
+  methods: {
+    tableRowClassName({ row, rowIndex }) {
+      if (row.visto === 0) {
+        return 'warning-row'
+      }
+      return ''
+    },
+    sendEmailRequest() {
+      sendEmail({ emails: 'crigiot@gmail.com' })
+    }
   }
 }
 </script>
