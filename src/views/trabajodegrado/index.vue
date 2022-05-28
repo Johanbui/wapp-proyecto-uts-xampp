@@ -85,7 +85,8 @@ export default {
       active: 0,
       ideaSelected: { 'id': 1, 'titulo': 'Desarrollo Software Trabajos de Grado', 'max_estudiantes': 2, 'nombreModalidad': 'Desarrollo de Software', 'nombreLineaInvestigacion': 'Desarrollo de Software Orientado a la WEB', 'cantidadUsuarios': 4, 'enable': false },
       idFilePropuesta: 0,
-      estadoFinal: ''
+      estadoFinal: '',
+      comentario: ''
     }
   },
   computed: {
@@ -96,13 +97,22 @@ export default {
     ])
   },
   methods: {
-    async continuar({ ideaSelected = 0, idFilePropuesta = 0, estado = '' }) {
+    evaluacionEstado() {
+
+    },
+    async continuar(
+      { ideaSelected = 0, idFilePropuesta = 0, estado = '', comentario = '' }
+    ) {
       if (ideaSelected) {
         this.ideaSelected = ideaSelected
       }
 
       if (idFilePropuesta) {
         this.idFilePropuesta = idFilePropuesta
+      }
+
+      if (comentario) {
+        this.comentario = comentario
       }
       console.log(estado)
       if (estado !== '') {
@@ -114,12 +124,12 @@ export default {
             await this.openActa(estado)
           }
         } else {
-          await this.insertEstado(estado, '')
+          await this.insertEstado({ estado })
 
           // await this.pasarTab()
         }
       } else {
-        await this.insertEstado(estado, '')
+        await this.insertEstado({ estado })
       }
     },
     openActa(estado) {
@@ -127,7 +137,7 @@ export default {
         confirmButtonText: 'OK',
         cancelButtonText: 'Cancel'
       }).then(({ value }) => {
-        this.insertEstado(estado, value === null ? null : value.trim())
+        this.insertEstado({ estado, acta: value === null ? null : value.trim() })
       }).catch((err) => {
         console.error(err)
       })
@@ -156,7 +166,7 @@ export default {
       return exist
     },
 
-    insertEstado(estado, acta) {
+    insertEstado({ estado = '', acta = '' }) {
       console.log('Acta:' + acta)
       if (estado === '' && acta === '') {
         return this.pasarTab(estado)
@@ -169,7 +179,8 @@ export default {
       createIdeaEstado({
         id_idea: this.ideaSelected.id,
         codigo_estado: estado,
-        acta
+        acta,
+        comentario: this.comentario
       }).then(({ exist, data, message }) => {
         if (exist && data) {
           this.estadoFinal = estado

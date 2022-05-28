@@ -24,6 +24,22 @@
         </el-form-item>
       </template>
 
+      <el-form-item
+        v-if="evaluacion && user.rol_id != 4"
+        label="Comentario"
+      >
+        <el-input
+          ref="comentario"
+          v-model="comentario"
+          placeholder="Comentario"
+          name="comentario"
+          type="textarea"
+          :rows="2"
+          tabindex="1"
+          auto-complete="on"
+        />
+      </el-form-item>
+
       <el-button-group>
         <el-button type="primary" @click="atras">Atras</el-button>
         <el-button type="primary" @click="continuar">Continuar</el-button>
@@ -61,7 +77,8 @@ export default {
       fileList: [],
       form: {},
       propuesta: '',
-      id_file: 0
+      id_file: 0,
+      comentario: ''
     }
   },
   computed: {
@@ -99,6 +116,7 @@ export default {
           if (this.user.rol_id !== 4) {
             const obj = {}
             obj.estado = ''
+            obj.comentario = this.comentario
           } else {
             obj.estado = 'EVPROIDEA'
           }

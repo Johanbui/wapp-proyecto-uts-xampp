@@ -78,6 +78,22 @@
         </el-select>
       </el-form-item>
 
+      <el-form-item
+        v-if="evaluacion && user.rol_id != 4"
+        label="Comentario"
+      >
+        <el-input
+          ref="comentario"
+          v-model="comentario"
+          placeholder="Comentario"
+          name="comentario"
+          type="textarea"
+          :rows="2"
+          tabindex="1"
+          auto-complete="on"
+        />
+      </el-form-item>
+
       <el-button-group>
         <el-button type="primary" @click="atras">Atras</el-button>
         <el-button type="primary" @click="continuar">Continuar</el-button>
@@ -118,6 +134,7 @@ export default {
       listFiles: {},
       propuesta: [],
       resultado: null,
+      comentario: '',
       bloqueoResultado: false,
       optionsResultado: [
         { label: 'Cancelado', value: 'CANEIDEA' },
@@ -178,6 +195,7 @@ export default {
           const obj = {}
           if (this.user.rol_id !== 4) {
             obj.estado = this.resultado
+            obj.comentario = this.comentario
           } else {
             obj.estado = ''
           }

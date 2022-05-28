@@ -101,6 +101,22 @@
         </el-select>
       </el-form-item>
 
+      <el-form-item
+        v-if="user.rol_id != 4"
+        label="Comentario"
+      >
+        <el-input
+          ref="comentario"
+          v-model="form.comentario"
+          placeholder="Comentario"
+          name="comentario"
+          type="textarea"
+          :rows="2"
+          tabindex="1"
+          auto-complete="on"
+        />
+      </el-form-item>
+
       <el-button-group>
         <el-button type="primary" @click="atras">Atras</el-button>
         <el-button type="primary" @click="continuar">Continuar</el-button>
@@ -114,7 +130,7 @@
 import { getDirectores } from '@/api/idea'
 import { getListaOne } from '@/api/lista'
 import { createArchivoIdeas, getArchivoIdeas, getUsuariosIdeas } from '@/api/idea'
-import { getEstudiantes, createEstudiantesIdeas } from '@/api/idea'
+import { getEstudiantes, getIdeaEstado, createEstudiantesIdeas } from '@/api/idea'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -134,7 +150,8 @@ export default {
       fileList: [],
       form: {
         director: '',
-        codirector: ''
+        codirector: '',
+        comentario: ''
       },
       directores: '',
       codirectores: '',
@@ -260,6 +277,7 @@ export default {
       const obj = {}
       if (this.user.rol_id !== 4) {
         obj.estado = 'PROIDEA'
+        obj.comentario = this.form.comentario
       } else {
         obj.estado = 'APRIDEA'
       }
