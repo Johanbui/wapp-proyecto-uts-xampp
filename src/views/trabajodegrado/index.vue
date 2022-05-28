@@ -68,7 +68,7 @@ import step3 from './step3.vue'
 import step4 from './step4.vue'
 import step5 from './step5.vue'
 import { mapGetters } from 'vuex'
-import { createIdeaEstado, getIdeaEstado, getLastEstadoProyecto } from '@/api/idea'
+import { createIdeaEstado, getIdeaEstadoExist, getLastEstadoProyecto } from '@/api/idea'
 
 export default {
   name: 'Index',
@@ -117,7 +117,10 @@ export default {
       console.log(estado)
       if (estado !== '') {
         if (this.user.rol_id !== 4) {
-          const responseObj = await this.fetchIdeaEstado(estado, this.ideaSelected.id)
+          debugger
+          let responseObj = null
+          responseObj = await this.fetchIdeaEstado(estado, this.ideaSelected.id)
+          debugger
           if (responseObj) {
             await this.pasarTab(estado)
           } else {
@@ -160,9 +163,10 @@ export default {
       }
     },
     async fetchIdeaEstado(codigo_estado, id_idea) {
-      const { exist } = await getIdeaEstado(
+      const { exist } = await getIdeaEstadoExist(
         codigo_estado, id_idea
       )
+      debugger
       return exist
     },
 
