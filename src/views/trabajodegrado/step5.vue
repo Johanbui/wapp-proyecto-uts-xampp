@@ -2,10 +2,10 @@
   <div class="app-step5">
     <div class="container-img">
       <img v-if="estadoFinal ==='APREIDEA'" src="https://www.uts.edu.co/sitio/wp-content/uploads/2022/05/UTS5387.jpg">
-      <h2 v-if="estadoFinal ==='APREIDEA'"> Su Proyecto de Grado se encuentra en estado aprobado</h2>
+      <h2 v-if="estadoFinal ==='APREIDEA'"> Su trabajo de grado se encuentra en estado aprobado</h2>
 
       <img v-if="estadoFinal !=='APREIDEA' && estadoFinal !==''" src="https://www.uts.edu.co/sitio/wp-content/uploads/2022/05/UTS5387.jpg">
-      <h2 v-if="estadoFinal !=='APREIDEA' && estadoFinal !==''"> Su Proyecto de Grado se encuentra en estado cancelado</h2>
+      <h2 v-if="estadoFinal !=='APREIDEA' && estadoFinal !==''"> Su trabajo de grado se encuentra en estado cancelado</h2>
 
     </div>
 

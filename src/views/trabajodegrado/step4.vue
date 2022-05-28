@@ -57,15 +57,14 @@
 
       <el-form-item
         v-if="user.rol_id!=4 && evaluacion"
-        label="Resultado Proyecto"
+        label="Resultado Trabajo de Grado"
       >
 
         <el-select
           v-if="user.rol_id!=4 && evaluacion"
           v-model="resultado"
           filterable
-          placeholder="Asigne resultado del proyecto"
-          :disabled="bloqueoResultado"
+          placeholder="Asigne resultado del trabajo de grado"
         >
           <template>
             <el-option
@@ -137,8 +136,11 @@ export default {
       comentario: '',
       bloqueoResultado: false,
       optionsResultado: [
-        { label: 'Cancelado', value: 'CANEIDEA' },
-        { label: 'Aprobado', value: 'APREIDEA' }
+        { label: 'No Aprobado', value: 'CANEIDEA' },
+        { label: 'Aprobado', value: 'APREIDEA' },
+        { label: 'Prorroga', value: 'PRORROIDEA' },
+        { label: 'En Ejecucion', value: 'EJECIDEA' },
+        { label: 'Expirado', value: 'EXPIDEA' }
         // { label: 'Prorroga', value: 'PROEIDEA' }
       ]
     }
