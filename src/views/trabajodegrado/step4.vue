@@ -199,6 +199,14 @@ export default {
       'user'
     ])
   },
+  watch: {
+    // whenever question changes, this function will run
+    resultado(newQuestion, oldQuestion) {
+      if (oldQuestion !== null) {
+        this.comentario = ''
+      }
+    }
+  },
   async mounted() {
     const { data } = await getResultadoProyecto(
       this.ideaSelected.id
@@ -229,7 +237,9 @@ export default {
       this.resultado = (data !== null && typeof data.codigoEstado !== 'undefined' ? data.codigoEstado : '')
       if (this.resultado !== '') {
         this.bloqueoResultado = true
+        this.comentario = data.comentario
       }
+
       return data
     },
     async carguePropuesta() {

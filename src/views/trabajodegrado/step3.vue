@@ -52,6 +52,7 @@
 <script>
 import { getListaOne } from '@/api/lista'
 import { createArchivoIdeas, createArchivoIdeasEvaluacion, getArchivoIdeas } from '@/api/idea'
+import { getIdeaEstado } from '@/api/idea'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -90,8 +91,27 @@ export default {
   },
   async mounted() {
     await this.fetchDataPropuesta('FRTOPRO')
+    let estado = ''
+    if (this.user.rol_id !== 4) {
+      estado = 'INFFIN'
+    } else {
+      estado = 'EVPROIDEA'
+    }
+
+    await this.fetchIdeaEstado(estado, this.ideaSelected.id)
   },
   methods: {
+    async fetchIdeaEstado(codigo_estado, id_idea) {
+      const { data } = await getIdeaEstado(
+        codigo_estado, id_idea
+      )
+      const resultado = (data !== null && typeof data.codigoEstado !== 'undefined' ? data.codigoEstado : '')
+      if (resultado !== '') {
+        this.comentario = data.comentario
+      }
+
+      return data
+    },
     async carguePropuesta() {
       const id_idea = this.ideaSelected.id
       const id_archivo = this.id_file
