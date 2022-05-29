@@ -130,7 +130,7 @@
 import { getDirectores } from '@/api/idea'
 import { getListaOne } from '@/api/lista'
 import { createArchivoIdeas, getArchivoIdeas, getUsuariosIdeas } from '@/api/idea'
-import { getEstudiantes, getIdeaEstado, createEstudiantesIdeas } from '@/api/idea'
+import { getEstudiantes, createEstudiantesIdeas } from '@/api/idea'
 import { mapGetters } from 'vuex'
 
 export default {

@@ -27,7 +27,7 @@
         :on-remove="handleRemove"
         :on-success="handleSuccessProrroga"
         :file-list="[...propuesta[propuesta.length-1].file]"
-        :disabled="(!evaluacion && user.rol_id ==4) "
+        :disabled="(!evaluacion && user.rol_id !=4) "
       >
         <i class="el-icon-upload" />
         <div class="el-upload__text">
@@ -200,11 +200,10 @@ export default {
     ])
   },
   async mounted() {
-    debugger
     const { data } = await getResultadoProyecto(
       this.ideaSelected.id
     )
-    debugger
+
     if (data !== null) {
       this.estadoFinal = data.codigoEstado
     }
@@ -227,7 +226,7 @@ export default {
       const { data } = await getIdeaEstado(
         codigo_estado, id_idea
       )
-      this.resultado = (typeof data.codigoEstado !== 'undefined' ? data.codigoEstado : '')
+      this.resultado = (data !== null && typeof data.codigoEstado !== 'undefined' ? data.codigoEstado : '')
       if (this.resultado !== '') {
         this.bloqueoResultado = true
       }

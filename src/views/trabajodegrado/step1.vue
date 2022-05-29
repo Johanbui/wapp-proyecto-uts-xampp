@@ -63,8 +63,14 @@
             <div>
               <el-button-group
                 v-if="
-                  (user.rol_id === 4 && ideaUsuario == null && scope.row.cantidadUsuarios == 0) ||
-                    (user.rol_id === 4 && ideaUsuario == scope.row.id) ||
+                  (user.rol_id === 4
+                    &&
+                    ((scope.row.cantidadUsuarios == 0
+                      ||
+                      findIdeaUsuario(scope.row.id) )
+                      && !bloqueoIdea
+                    )) ||
+                    (user.rol_id === 4 && findIdeaUsuario(scope.row.id)) ||
                     (user.rol_id !== 4 && scope.row.cantidadUsuarios > 0 )
                 "
               >
@@ -110,7 +116,8 @@ export default {
       numberItems: 5,
       countItems: 0,
       userId: 0,
-      ideaUsuario: 0
+      ideaUsuario: [],
+      bloqueoIdea: false
 
     }
   },
@@ -133,10 +140,32 @@ export default {
       immediate: true
     }
   },
-  created() {
+  mounted() {
     this.fetchData()
   },
   methods: {
+
+    findIdeaUsuario(id_idea) {
+      if (this.ideaUsuario !== null) {
+        const ideaUsuario = this.ideaUsuario.find(element => element.id_idea === id_idea)
+        if (
+          typeof ideaUsuario !== 'undefined' &&
+        (
+          ideaUsuario.codigoLista === 27 ||
+          ideaUsuario.codigoLista === 28 ||
+          ideaUsuario.codigoLista === 30 ||
+          ideaUsuario.codigoLista === null
+        )
+        ) {
+          if (ideaUsuario.codigoLista === null) {
+            this.bloqueoIdea = true
+          }
+          return true
+        }
+      }
+
+      return false
+    },
     fetchData() {
       this.listLoading = true
       const params = {
@@ -155,13 +184,8 @@ export default {
       })
 
       getIdeaUsuario(this.user_id).then(({ data }) => {
-        const response = { ...data }
-        console.log(response.id_idea)
-        if (typeof response.id_idea !== 'undefined') {
-          this.ideaUsuario = response.id_idea
-        } else {
-          this.ideaUsuario = null
-        }
+        const response = [...data]
+        this.ideaUsuario = response
       })
     },
 

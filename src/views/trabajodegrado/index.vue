@@ -117,10 +117,9 @@ export default {
       console.log(estado)
       if (estado !== '') {
         if (this.user.rol_id !== 4) {
-          debugger
           let responseObj = null
           responseObj = await this.fetchIdeaEstado(estado, this.ideaSelected.id)
-          debugger
+
           if (responseObj) {
             await this.pasarTab(estado)
           } else {
@@ -166,7 +165,7 @@ export default {
       const { exist } = await getIdeaEstadoExist(
         codigo_estado, id_idea
       )
-      debugger
+
       return exist
     },
 
