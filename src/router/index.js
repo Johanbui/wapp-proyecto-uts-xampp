@@ -249,8 +249,25 @@ export const constantRoutes = [
         path: 'index',
         name: 'Notificaciones',
         component: () => import('@/views/notificaciones/index'),
-        meta: { title: 'Notificaciones', icon: 'form', code: 'NOTIFICACIONES-INDEX' }
+        meta: { title: 'Notificaciones', icon: 'form', code: 'NOTIFICACIONES-INDEX' },
+        hidden: true
+
       }
+    ]
+  },
+
+  {
+    path: '/informes',
+    component: Layout,
+    meta: { title: 'Informes', icon: 'el-icon-setting', code: 'INFORMES-INDEX' },
+    children: [
+      {
+        path: '',
+        name: 'Index',
+        component: () => import('@/views/informes/index'),
+        meta: { title: 'Informes', icon: 'el-icon-setting', code: 'INFORMES-INDEX' }
+      },
+
     ]
   },
 
