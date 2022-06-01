@@ -68,7 +68,7 @@ import step3 from './step3.vue'
 import step4 from './step4.vue'
 import step5 from './step5.vue'
 import { mapGetters } from 'vuex'
-import { createIdeaEstado, getIdeaEstado, getLastEstadoProyecto } from '@/api/idea'
+import { createIdeaEstado, getIdeaEstadoExist, getLastEstadoProyecto } from '@/api/idea'
 
 export default {
   name: 'Index',
@@ -85,7 +85,8 @@ export default {
       active: 0,
       ideaSelected: { 'id': 1, 'titulo': 'Desarrollo Software Trabajos de Grado', 'max_estudiantes': 2, 'nombreModalidad': 'Desarrollo de Software', 'nombreLineaInvestigacion': 'Desarrollo de Software Orientado a la WEB', 'cantidadUsuarios': 4, 'enable': false },
       idFilePropuesta: 0,
-      estadoFinal: ''
+      estadoFinal: '',
+      comentario: ''
     }
   },
   computed: {
@@ -96,7 +97,12 @@ export default {
     ])
   },
   methods: {
-    async continuar({ ideaSelected = 0, idFilePropuesta = 0, estado = '' }) {
+    evaluacionEstado() {
+
+    },
+    async continuar(
+      { ideaSelected = 0, idFilePropuesta = 0, estado = '', comentario = '' }
+    ) {
       if (ideaSelected) {
         this.ideaSelected = ideaSelected
       }
@@ -104,22 +110,28 @@ export default {
       if (idFilePropuesta) {
         this.idFilePropuesta = idFilePropuesta
       }
+
+      if (comentario) {
+        this.comentario = comentario
+      }
       console.log(estado)
       if (estado !== '') {
         if (this.user.rol_id !== 4) {
-          const responseObj = await this.fetchIdeaEstado(estado, this.ideaSelected.id)
+          let responseObj = null
+          responseObj = await this.fetchIdeaEstado(estado, this.ideaSelected.id)
+
           if (responseObj) {
             await this.pasarTab(estado)
           } else {
             await this.openActa(estado)
           }
         } else {
-          await this.insertEstado(estado, '')
+          await this.insertEstado({ estado })
 
           // await this.pasarTab()
         }
       } else {
-        await this.insertEstado(estado, '')
+        await this.insertEstado({ estado })
       }
     },
     openActa(estado) {
@@ -127,7 +139,7 @@ export default {
         confirmButtonText: 'OK',
         cancelButtonText: 'Cancel'
       }).then(({ value }) => {
-        this.insertEstado(estado, value === null ? null : value.trim())
+        this.insertEstado({ estado, acta: value === null ? null : value.trim() })
       }).catch((err) => {
         console.error(err)
       })
@@ -150,13 +162,14 @@ export default {
       }
     },
     async fetchIdeaEstado(codigo_estado, id_idea) {
-      const { exist } = await getIdeaEstado(
+      const { exist } = await getIdeaEstadoExist(
         codigo_estado, id_idea
       )
+
       return exist
     },
 
-    insertEstado(estado, acta) {
+    insertEstado({ estado = '', acta = '' }) {
       console.log('Acta:' + acta)
       if (estado === '' && acta === '') {
         return this.pasarTab(estado)
@@ -169,7 +182,8 @@ export default {
       createIdeaEstado({
         id_idea: this.ideaSelected.id,
         codigo_estado: estado,
-        acta
+        acta,
+        comentario: this.comentario
       }).then(({ exist, data, message }) => {
         if (exist && data) {
           this.estadoFinal = estado

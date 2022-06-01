@@ -24,6 +24,22 @@
         </el-form-item>
       </template>
 
+      <el-form-item
+        v-if="evaluacion && user.rol_id != 4"
+        label="Comentario"
+      >
+        <el-input
+          ref="comentario"
+          v-model="comentario"
+          placeholder="Comentario"
+          name="comentario"
+          type="textarea"
+          :rows="2"
+          tabindex="1"
+          auto-complete="on"
+        />
+      </el-form-item>
+
       <el-button-group>
         <el-button type="primary" @click="atras">Atras</el-button>
         <el-button type="primary" @click="continuar">Continuar</el-button>
@@ -36,6 +52,7 @@
 <script>
 import { getListaOne } from '@/api/lista'
 import { createArchivoIdeas, createArchivoIdeasEvaluacion, getArchivoIdeas } from '@/api/idea'
+import { getIdeaEstado } from '@/api/idea'
 import { mapGetters } from 'vuex'
 
 export default {
@@ -61,7 +78,8 @@ export default {
       fileList: [],
       form: {},
       propuesta: '',
-      id_file: 0
+      id_file: 0,
+      comentario: ''
     }
   },
   computed: {
@@ -73,8 +91,27 @@ export default {
   },
   async mounted() {
     await this.fetchDataPropuesta('FRTOPRO')
+    let estado = ''
+    if (this.user.rol_id !== 4) {
+      estado = 'INFFIN'
+    } else {
+      estado = 'EVPROIDEA'
+    }
+
+    await this.fetchIdeaEstado(estado, this.ideaSelected.id)
   },
   methods: {
+    async fetchIdeaEstado(codigo_estado, id_idea) {
+      const { data } = await getIdeaEstado(
+        codigo_estado, id_idea
+      )
+      const resultado = (data !== null && typeof data.codigoEstado !== 'undefined' ? data.codigoEstado : '')
+      if (resultado !== '') {
+        this.comentario = data.comentario
+      }
+
+      return data
+    },
     async carguePropuesta() {
       const id_idea = this.ideaSelected.id
       const id_archivo = this.id_file
@@ -99,6 +136,7 @@ export default {
           if (this.user.rol_id !== 4) {
             const obj = {}
             obj.estado = ''
+            obj.comentario = this.comentario
           } else {
             obj.estado = 'EVPROIDEA'
           }

@@ -191,3 +191,12 @@ export function getLastEstadoProyecto(id_idea) {
     params: { id_idea }
   })
 }
+
+export function getIdeaEstadoExist(codigo_estado, id_idea) {
+  return request({
+    url: '/ideaEstado/getIdeaEstadoExist',
+    method: 'get',
+    headers: { 'Authorization': 'Bearer ' + getToken() },
+    params: { codigo_estado, id_idea }
+  })
+}

@@ -47,14 +47,6 @@ export default {
       listLoading: true
     }
   },
-  methods: {
-    tableRowClassName({ row, rowIndex }) {
-      if (row.visto === 0) {
-        return 'warning-row'
-      }
-      return ''
-    }
-  },
   computed: {
     ...mapGetters([
       'user_id',
@@ -69,6 +61,14 @@ export default {
     this.listLoading = false
 
     markAsReaded({ id_usuario: this.user_id })
+  },
+  methods: {
+    tableRowClassName({ row, rowIndex }) {
+      if (row.visto === 0) {
+        return 'warning-row'
+      }
+      return ''
+    }
   }
 }
 </script>

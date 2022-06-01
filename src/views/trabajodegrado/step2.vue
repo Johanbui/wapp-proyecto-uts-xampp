@@ -101,6 +101,22 @@
         </el-select>
       </el-form-item>
 
+      <el-form-item
+        v-if="user.rol_id != 4"
+        label="Comentario"
+      >
+        <el-input
+          ref="comentario"
+          v-model="form.comentario"
+          placeholder="Comentario"
+          name="comentario"
+          type="textarea"
+          :rows="2"
+          tabindex="1"
+          auto-complete="on"
+        />
+      </el-form-item>
+
       <el-button-group>
         <el-button type="primary" @click="atras">Atras</el-button>
         <el-button type="primary" @click="continuar">Continuar</el-button>
@@ -111,7 +127,7 @@
 </template>
 
 <script>
-import { getDirectores } from '@/api/idea'
+import { getDirectores, getIdeaEstado } from '@/api/idea'
 import { getListaOne } from '@/api/lista'
 import { createArchivoIdeas, getArchivoIdeas, getUsuariosIdeas } from '@/api/idea'
 import { getEstudiantes, createEstudiantesIdeas } from '@/api/idea'
@@ -134,7 +150,8 @@ export default {
       fileList: [],
       form: {
         director: '',
-        codirector: ''
+        codirector: '',
+        comentario: ''
       },
       directores: '',
       codirectores: '',
@@ -162,6 +179,14 @@ export default {
     await this.fetchDataPago('APRIDEA')
     await this.fetchDataUsuarios('TIPIDU')
     await this.fecthGetEstudiantes()
+    let estado = ''
+    if (this.user.rol_id !== 4) {
+      estado = 'PROIDEA'
+    } else {
+      estado = 'APRIDEA'
+    }
+
+    await this.fetchIdeaEstado(estado, this.ideaSelected.id)
 
     if (this.user.rol_id === 4 && typeof this.usuarios[0] === 'undefined') {
       const usuario = {
@@ -194,6 +219,17 @@ export default {
     }
   },
   methods: {
+    async fetchIdeaEstado(codigo_estado, id_idea) {
+      const { data } = await getIdeaEstado(
+        codigo_estado, id_idea
+      )
+      const resultado = (data !== null && typeof data.codigoEstado !== 'undefined' ? data.codigoEstado : '')
+      if (resultado !== '') {
+        this.form.comentario = data.comentario
+      }
+
+      return data
+    },
     async carguePago() {
       const id_idea = this.ideaSelected.id
       const id_archivo = this.id_file
@@ -260,6 +296,7 @@ export default {
       const obj = {}
       if (this.user.rol_id !== 4) {
         obj.estado = 'PROIDEA'
+        obj.comentario = this.form.comentario
       } else {
         obj.estado = 'APRIDEA'
       }
