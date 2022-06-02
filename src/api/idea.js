@@ -209,3 +209,12 @@ export function getIdeaEstadoExist(codigo_estado, id_idea) {
     params: { codigo_estado, id_idea }
   })
 }
+
+export function getIdeaEstadoActa(codigo_estado, id_idea) {
+  return request({
+    url: '/ideaEstado/getIdeaEstadoActa',
+    method: 'get',
+    headers: { 'Authorization': 'Bearer ' + getToken() },
+    params: { codigo_estado, id_idea }
+  })
+}

@@ -1,8 +1,10 @@
 <template>
   <div class="app-step4">
+    <flip-countdown v-if="mostrarCountDown" :deadline="fechaFinal" />
+
     <div class="button-prorrogra">
       <el-button
-        v-if="(!evaluacion && user.rol_id ==4)"
+        v-if="!evaluacion && user.rol_id == 4"
         type="primary"
         @click="centerDialogVisible = true"
       >Solicitar Prorroga</el-button>
@@ -19,15 +21,15 @@
         drag
         :action="
           'http://apiproyectouts.local/api/files/pushLista?lista=' +
-            propuesta[propuesta.length-1].id +
+            propuesta[propuesta.length - 1].id +
             '&index=' +
-            (propuesta.length-1)
+            (propuesta.length - 1)
         "
         :on-preview="handlePreview"
         :on-remove="handleRemove"
         :on-success="handleSuccessProrroga"
-        :file-list="[...propuesta[propuesta.length-1].file]"
-        :disabled="(!evaluacion && user.rol_id !=4) "
+        :file-list="[...propuesta[propuesta.length - 1].file]"
+        :disabled="!evaluacion && user.rol_id != 4"
       >
         <i class="el-icon-upload" />
         <div class="el-upload__text">
@@ -47,7 +49,9 @@
     <el-form ref="form" :model="form" label-width="130px">
       <template v-for="(formato, index) in propuesta">
         <el-form-item
-          v-if="(formato.listaCodigo !=='PRORROGA' && !evaluacion) || evaluacion "
+          v-if="
+            (formato.listaCodigo !== 'PRORROGA' && !evaluacion) || evaluacion
+          "
           :key="formato.id_codigo_archivo"
           :label="formato.listaNombre"
         >
@@ -65,7 +69,10 @@
             :on-remove="handleRemove"
             :on-success="handleSuccess"
             :file-list="[...formato.file]"
-            :disabled="(!evaluacion && user.rol_id !=4) || (evaluacion && user.rol_id ==4)"
+            :disabled="
+              (!evaluacion && user.rol_id != 4) ||
+                (evaluacion && user.rol_id == 4)
+            "
           >
             <i class="el-icon-upload" />
             <div class="el-upload__text">
@@ -90,7 +97,11 @@
             :on-remove="handleRemove"
             :on-success="handleSuccess"
             :file-list="[...formato.fileConfirmation]"
-            :disabled="(!evaluacion && user.rol_id !=4) || (evaluacion && user.rol_id ==4) || (evaluacion && formato.listaCodigo ==='PRORROGA')"
+            :disabled="
+              (!evaluacion && user.rol_id != 4) ||
+                (evaluacion && user.rol_id == 4) ||
+                (evaluacion && formato.listaCodigo === 'PRORROGA')
+            "
           >
             <i class="el-icon-upload" />
             <div class="el-upload__text">
@@ -104,16 +115,19 @@
       </template>
 
       <el-form-item
-        v-if="user.rol_id!=4 && evaluacion"
+        v-if="user.rol_id != 4 && evaluacion"
         label="Resultado Trabajo de Grado"
       >
-
         <el-select
-          v-if="user.rol_id!=4 && evaluacion"
+          v-if="user.rol_id != 4 && evaluacion"
           v-model="resultado"
           filterable
           placeholder="Asigne resultado del trabajo de grado"
-          :disabled=" estadoFinal ==='APREIDEA' || estadoFinal ==='CANEIDEA' || estadoFinal ==='EXPIDEA'"
+          :disabled="
+            estadoFinal === 'APREIDEA' ||
+              estadoFinal === 'CANEIDEA' ||
+              estadoFinal === 'EXPIDEA'
+          "
         >
           <template>
             <el-option
@@ -126,10 +140,7 @@
         </el-select>
       </el-form-item>
 
-      <el-form-item
-        v-if="evaluacion && user.rol_id != 4"
-        label="Comentario"
-      >
+      <el-form-item v-if="evaluacion && user.rol_id != 4" label="Comentario">
         <el-input
           ref="comentario"
           v-model="comentario"
@@ -154,10 +165,13 @@
 
 import { getArrArchivoIdeas, getIdeaEstado, getResultadoProyecto } from '@/api/idea'
 import { createArrArchivoIdeas, createArrArchivoIdeasEvaluacion } from '@/api/idea'
+import { getIdeaEstadoActa } from '@/api/idea'
 import { mapGetters } from 'vuex'
+import FlipCountdown from 'vue2-flip-countdown'
 
 export default {
   name: 'Step4',
+  components: { FlipCountdown },
   props: {
     ideaSelected: {
       type: Object,
@@ -189,7 +203,9 @@ export default {
 
       ],
       estadoFinal: '',
-      fileProrroga: null
+      fileProrroga: null,
+      mostrarCountDown: false,
+      fechaFinal: ''
     }
   },
   computed: {
@@ -217,6 +233,7 @@ export default {
     }
 
     await this.fetchDataPropuesta('FRTOFIN')
+    await this.fetchIdeaEstadoActa()
     if (this.evaluacion) {
       await this.fetchIdeaEstado('RESULTADO', this.ideaSelected.id)
     }
@@ -238,6 +255,33 @@ export default {
       if (this.resultado !== '') {
         this.bloqueoResultado = true
         this.comentario = data.comentario
+      }
+
+      return data
+    },
+    async fetchIdeaEstadoActa() {
+      const { data } = await getIdeaEstadoActa(
+        'INFFIN', this.ideaSelected.id
+      )
+      if (data !== null) {
+        this.mostrarCountDown = true
+        const mydate = new Date(data.fecha)
+        let numeroDias = 160
+        if (this.estadoFinal === 'PROEIDEA') {
+          numeroDias = 360
+        }
+
+        if (this.estadoFinal === 'APREIDEA' ||
+      this.estadoFinal === 'CANEIDEA' ||
+      this.estadoFinal === 'EXPIDEA') {
+          this.mostrarCountDown = false
+        }
+
+        mydate.setDate(mydate.getDate() + numeroDias)
+
+        const datestring = mydate.getFullYear() + '-' + (mydate.getMonth() + 1) + '-' + mydate.getDate() +
+          ' 00:00:00'
+        this.fechaFinal = datestring
       }
 
       return data
@@ -339,8 +383,6 @@ export default {
       this.carguePropuesta()
     },
     handleSuccess(res, file) {
-      console.log('handleSuccess')
-      console.log(res.file)
       if (!this.evaluacion) {
         this.fileList[res.file.index].id_file = res.file.id
       } else {
@@ -366,12 +408,12 @@ export default {
   text-align: center;
 }
 
-.button-prorrogra{
-    display: grid;
-    align-content: center;
-    justify-content: end;
-    align-items: center;
-    justify-items: center;
+.button-prorrogra {
+  display: grid;
+  align-content: center;
+  justify-content: end;
+  align-items: center;
+  justify-items: center;
 }
 </style>
 

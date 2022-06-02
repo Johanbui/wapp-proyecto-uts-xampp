@@ -188,7 +188,7 @@ export default {
       this.id_file = res.file.id
     },
     async fetchDataPropuesta(codigo) {
-      const response = await getListaOne(codigo)
+      const response = await getListaOne(codigo, this.ideaSelected.modalidad)
 
       response.data.enable = response.data.enable === 1
       this.propuesta = [...response.data]
