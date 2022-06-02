@@ -12,110 +12,147 @@
         />
       </el-col>
 
-        <el-col :span="24" style="margin-bottom:20px;    display:flex;flex-direction: row;    align-content: center;    justify-content: flex-start;  align-items: center;">
-          <h5 style="margin-right:20px"> Estados Fechas: </h5>
-           <el-date-picker
-              v-model="searching.fechaInicio"
-              type="date"
-              placeholder="Fecha Inicio"
-            />
+      <el-col :span="24" class="algo">
 
-            <el-date-picker
-              v-model="searching.fechaFin"
-              type="date"
-              placeholder="Fecha Fin"
-            />
-        </el-col>
+        <h5 style="margin-right:20px"> Estados Fechas: </h5>
 
+        <el-select
+          v-model="searching.estadoIdea"
+          placeholder="Estado Idea"
+          clearable
+          filterable
+          multiple
+          @change="fetchData"
+        >
+          <el-option
+            v-for="(ideaEstado, _i) in ideasEstados"
+            :key="_i"
+            :label="ideaEstado.nombre"
+            :value="ideaEstado.id"
+          />
+        </el-select>
 
-        <el-col :span="12">
-            <el-select v-model="searching.modalidad" placeholder="Modalidad">
-              <el-option
-                v-for="item in modalidades"
-                :key="item.id"
-                :label="item.nombre"
-                :value="item.id"
-              />
-            </el-select>
-        </el-col>
+        <el-date-picker
+          v-model="searching.fechaInicio"
+          type="date"
+          placeholder="Fecha Inicio"
+          @change="fetchData"
+        />
 
-        <el-col :span="12">
-            <el-select v-model="searching.linea_investigacion" placeholder="Linea Investigación">
-              <el-option
-                v-for="item in lineasInvestigacion"
-                :key="item.id"
-                :label="item.nombre"
-                :value="item.id"
-              />
-            </el-select>
-        </el-col>
+        <el-date-picker
+          v-model="searching.fechaFin"
+          type="date"
+          placeholder="Fecha Fin"
+          @change="fetchData"
+        />
+
+      </el-col>
+
+      <el-col :span="12">
+        <el-select
+          v-model="searching.estudiantes"
+          placeholder="Estudiantes"
+          multiple
+          filterable
+          @change="fetchData"
+        >
+          <el-option
+            v-for="item in listaEstudiantes"
+            :key="item.id"
+            :label="item.name + ' ' + item.last_name"
+            :value="item.id"
+          />
+        </el-select>
+      </el-col>
+
+      <el-col :span="12">
+        <el-select
+          v-model="searching.modalidad"
+          placeholder="Modalidad"
+          filterable
+          @change="fetchData"
+        >
+          <el-option
+            v-for="item in modalidades"
+            :key="item.id"
+            :label="item.nombre"
+            :value="item.id"
+          />
+        </el-select>
+      </el-col>
+
+      <el-col :span="12">
+        <el-select
+          v-model="searching.linea_investigacion"
+          placeholder="Linea Investigación"
+          filterable
+          @change="fetchData"
+        >
+          <el-option
+            v-for="item in lineasInvestigacion"
+            :key="item.id"
+            :label="item.nombre"
+            :value="item.id"
+          />
+        </el-select>
+      </el-col>
 
     </el-row>
 
     <el-row :gutter="30" style="margin-top:150px">
       <el-col :span="22">
 
-    <el-table
-      v-loading="listLoading"
-      :data="list"
-      element-loading-text="Loading"
-      border
-      fit
-      highlight-current-row
+        <el-table
+          v-loading="listLoading"
+          :data="list"
+          element-loading-text="Loading"
+          border
+          fit
+          highlight-current-row
+        >
 
-    >
+          <el-table-column align="center" label="#" width="50">
+            <template slot-scope="scope">
+              {{ (scope.$index + 1) + ( numberItems * (currentPage - 1)) }}
+            </template>
+          </el-table-column>
 
-      <el-table-column align="center" label="#" width="50">
-        <template slot-scope="scope">
-          {{ (scope.$index + 1) + ( numberItems * (currentPage - 1)) }}
-        </template>
-      </el-table-column>
+          <el-table-column label="Título">
+            <template slot-scope="scope">
+              {{ scope.row.titulo }}
+            </template>
+          </el-table-column>
 
-      <el-table-column label="Título">
-        <template slot-scope="scope">
-          {{ scope.row.titulo }}
-        </template>
-      </el-table-column>
+          <el-table-column label="Modalidad">
+            <template slot-scope="scope">
+              {{ scope.row.nombreModalidad }}
+            </template>
+          </el-table-column>
 
-      <el-table-column label="Modalidad">
-        <template slot-scope="scope">
-          {{ scope.row.nombreModalidad }}
-        </template>
-      </el-table-column>
+          <el-table-column label="Línea Investigación">
+            <template slot-scope="scope">
+              {{ scope.row.nombreLineaInvestigacion }}
+            </template>
+          </el-table-column>
 
-      <el-table-column label="Línea Investigación">
-        <template slot-scope="scope">
-          {{ scope.row.nombreLineaInvestigacion }}
-        </template>
-      </el-table-column>
-
-      <el-table-column label="Max. Estudiantes">
-        <template slot-scope="scope">
-          {{ scope.row.max_estudiantes }}
-        </template>
-      </el-table-column>
-    </el-table>
+          <el-table-column label="Max. Estudiantes">
+            <template slot-scope="scope">
+              {{ scope.row.max_estudiantes }}
+            </template>
+          </el-table-column>
+        </el-table>
       </el-col>
     </el-row>
 
-    <div class="block">
-      <el-pagination
-        :current-page.sync="currentPage"
-        :page-sizes="[5, 10, 20, 50,100]"
-        :page-size="numberItems"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="countItems"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-      />
-    </div>
   </div>
 </template>
 
 <script>
-import { getAll } from '@/api/idea'
+import { getAllInformes } from '@/api/idea'
 import { mapGetters } from 'vuex'
-import {  getModalidades, getLineasInvestigacion } from '@/api/idea'
+import { getModalidades, getLineasInvestigacion } from '@/api/idea'
+import { getEstados } from '@/api/lista'
+import { getAll as getAllUsers } from '@/api/user'
 
 export default {
   name: 'IndexInformes',
@@ -131,10 +168,14 @@ export default {
         fechaInicio: '',
         fechaFin: '',
         modalidad: '',
-        linea_investigacion: ''
+        linea_investigacion: '',
+        estadoIdea: '',
+        estudiantes: ''
       },
       modalidades: [],
-      lineasInvestigacion: []
+      lineasInvestigacion: [],
+      ideasEstados: [],
+      listaEstudiantes: []
     }
   },
   computed: {
@@ -167,6 +208,18 @@ export default {
         this.lineasInvestigacion = data
       }
     })
+
+    getEstados().then(({ type, data }) => {
+      if (type === 'success') {
+        this.ideasEstados = data
+      }
+    })
+
+    getAllUsers().then(({ type, data }) => {
+      if (type === 'success') {
+        this.listaEstudiantes = data
+      }
+    })
   },
   created() {
     this.fetchData()
@@ -177,9 +230,15 @@ export default {
       const params = {
         limit: this.numberItems,
         page: this.currentPage,
-        search: this.search
+        search: this.search,
+        estado_idea: this.searching.estadoIdea,
+        estudiantes: this.searching.estudiantes,
+        fecha_inicio: this.searching.fechaInicio,
+        fecha_fin: this.searching.fechaFin,
+        modalidad: this.searching.modalidad,
+        linea_investigacion: this.searching.linea_investigacion
       }
-      getAll(params).then(response => {
+      getAllInformes(params).then(response => {
         this.list = response.data.map(function(x) {
           x.enable = (x.enable === 1)
           return x
@@ -223,4 +282,11 @@ a.link{
   opacity: 0.8;
 }
 
+.algo {
+  margin-bottom:20px;
+  display:flex;flex-direction: row;
+  align-content: center;
+  justify-content: flex-start;
+  align-items: center;
+}
 </style>

@@ -10,6 +10,15 @@ export function getAll(params) {
   })
 }
 
+export function getAllInformes(params) {
+  return request({
+    url: '/idea/getAllInformes',
+    method: 'get',
+    headers: { 'Authorization': 'Bearer ' + getToken() },
+    params: params
+  })
+}
+
 export function create(params) {
   return request({
     url: '/idea/create',

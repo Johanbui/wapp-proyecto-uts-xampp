@@ -9,3 +9,12 @@ export async function getListaOne(codigo) {
     params: { codigo }
   })
 }
+
+export async function getEstados(codigo) {
+  return await request({
+    url: '/listas/getEstados',
+    method: 'get',
+    headers: { 'Authorization': 'Bearer ' + getToken() },
+    params: { codigo }
+  })
+}
