@@ -234,9 +234,17 @@ export default {
   },
   methods: {
     exportExcel() {
+      let today = new Date()
+      const dd = String(today.getDate()).padStart(2, '0')
+      const mm = String(today.getMonth() + 1).padStart(2, '0')
+      const sec = String(today.getSeconds()).padStart(2, '0')
+      const yyyy = today.getFullYear()
+
+      today = yyyy + '-' + mm + '-' + dd + '-' + sec
+
       saveExcel({
         data: this.list,
-        fileName: 'myFile',
+        fileName: 'informe_' + today,
         columns: [
           { field: 'titulo', title: 'Título' },
           { field: 'nombreModalidad', title: 'Modalidad' },
