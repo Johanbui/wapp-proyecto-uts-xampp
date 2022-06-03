@@ -1,5 +1,6 @@
 <template>
   <div class="app-container">
+    <modal-acta :visible="visibleActa" @accionModal="accionModal" />
 
     <el-row>
       <el-col :span="24">
@@ -69,6 +70,7 @@ import step4 from './step4.vue'
 import step5 from './step5.vue'
 import { mapGetters } from 'vuex'
 import { createIdeaEstado, getIdeaEstadoExist, getLastEstadoProyecto } from '@/api/idea'
+import modalActa from '../actas/modalActa.vue'
 
 export default {
   name: 'Index',
@@ -77,7 +79,8 @@ export default {
     step2,
     step3,
     step4,
-    step5
+    step5,
+    modalActa
   },
   data() {
     return {
@@ -86,7 +89,9 @@ export default {
       ideaSelected: { 'id': 1, 'titulo': 'Desarrollo Software Trabajos de Grado', 'max_estudiantes': 2, 'nombreModalidad': 'Desarrollo de Software', 'nombreLineaInvestigacion': 'Desarrollo de Software Orientado a la WEB', 'cantidadUsuarios': 4, 'enable': false },
       idFilePropuesta: 0,
       estadoFinal: '',
-      comentario: ''
+      comentario: '',
+      visibleActa: false,
+      estadoActa: ''
     }
   },
   computed: {
@@ -114,7 +119,6 @@ export default {
       if (comentario) {
         this.comentario = comentario
       }
-      console.log(estado)
       if (estado !== '') {
         if (this.user.rol_id !== 4) {
           let responseObj = null
@@ -135,14 +139,15 @@ export default {
       }
     },
     openActa(estado) {
-      this.$prompt('Ingrese Codigo de Acta', 'Tip', {
-        confirmButtonText: 'OK',
-        cancelButtonText: 'Cancel'
-      }).then(({ value }) => {
-        this.insertEstado({ estado, acta: value === null ? null : value.trim() })
-      }).catch((err) => {
-        console.error(err)
-      })
+      this.estadoActa = estado
+      this.visibleActa = true
+    },
+    accionModal({ accion = '', codigoActa = '' }) {
+      if (accion === 'CONFIRM' && codigoActa !== '') {
+        this.insertEstado({ estado: this.estadoActa,
+          acta: codigoActa === null ? null : codigoActa.trim() })
+      }
+      this.visibleActa = false
     },
     async pasarTab(estado) {
       const active = parseInt(this.active)

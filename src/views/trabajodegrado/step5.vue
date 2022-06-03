@@ -1,6 +1,7 @@
 <template>
   <div class="app-step5">
     <div class="container-img">
+
       <template v-if="estadoFinal ==='APREIDEA'">
         <img src="https://www.uts.edu.co/sitio/wp-content/uploads/2022/05/UTS5387.jpg">
         <h2> Su trabajo de grado se encuentra en estado aprobado</h2>
@@ -14,11 +15,14 @@
         <img src="https://www.uts.edu.co/sitio/wp-content/uploads/2022/05/UTS5387.jpg">
         <h2> Su trabajo de grado se encuentra en estado expirado</h2>
       </template>
-      <template v-else>
+      <template v-else-if="estado!==null">
         <img src="https://www.uts.edu.co/sitio/wp-content/uploads/2022/05/UTS5387.jpg">
         <h2> {{ estado.codigoNombre }}</h2>
       </template>
 
+      <template v-else>
+        <h2> Su trabajo de grado aun no tiene un resultado asignado</h2>
+      </template>
     </div>
 
     <el-button-group>
@@ -47,15 +51,17 @@ export default {
   data() {
     return {
       estadoFinal: '',
-      estado: {}
+      estado: null
     }
   },
   async mounted() {
     const { data } = await getResultadoProyecto(
       this.ideaSelected.id
     )
-    this.estadoFinal = data.codigoEstado
-    this.estado = data
+    if (typeof data.codigoEstado !== 'undefined') {
+      this.estadoFinal = data.codigoEstado
+      this.estado = data
+    }
   },
   methods: {
     atras() {
@@ -64,6 +70,9 @@ export default {
     inicio() {
       this.$emit('inicio')
     }
+  },
+  isEmpty(obj) {
+    return Object.keys(obj).length === 0
   }
 }
 </script>
