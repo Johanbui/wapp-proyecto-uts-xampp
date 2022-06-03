@@ -101,13 +101,13 @@
     </el-row>
 
     <el-row :gutter="30" style="margin-top:180px">
-      <el-col :span="22">
-        <el-button type="primary" @click="exportExcel">
+      <el-col :span="24">
+        <el-button type="primary" style="margin-bottom: 20px" @click="exportExcel">
           Download Excel <i class="el-icon-download el-icon-right" />
         </el-button>
       </el-col>
 
-      <el-col :span="22">
+      <el-col :span="24">
 
         <el-table
           v-loading="listLoading"
@@ -145,6 +145,18 @@
           <el-table-column label="Max. Estudiantes">
             <template slot-scope="scope">
               {{ scope.row.max_estudiantes }}
+            </template>
+          </el-table-column>
+
+          <el-table-column label="Usuarios">
+            <template slot-scope="scope">
+              {{ scope.row.usuarios }}
+            </template>
+          </el-table-column>
+
+          <el-table-column label="Estado actual">
+            <template slot-scope="scope">
+              {{ scope.row.ultimoEstado }}
             </template>
           </el-table-column>
         </el-table>
@@ -256,8 +268,6 @@ export default {
     fetchData() {
       this.listLoading = true
       const params = {
-        limit: this.numberItems,
-        page: this.currentPage,
         search: this.search,
         estado_idea: this.searching.estadoIdea,
         estudiantes: this.searching.estudiantes,
