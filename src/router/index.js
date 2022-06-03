@@ -266,7 +266,7 @@ export const constantRoutes = [
         name: 'Index',
         component: () => import('@/views/informes/index'),
         meta: { title: 'Informes', icon: 'el-icon-setting', code: 'INFORMES-INDEX' }
-      },
+      }
 
     ]
   },

@@ -95,11 +95,18 @@
             :value="item.id"
           />
         </el-select>
+
       </el-col>
 
     </el-row>
 
-    <el-row :gutter="30" style="margin-top:150px">
+    <el-row :gutter="30" style="margin-top:180px">
+      <el-col :span="22">
+        <el-button type="primary" @click="exportExcel">
+          Download Excel <i class="el-icon-download el-icon-right" />
+        </el-button>
+      </el-col>
+
       <el-col :span="22">
 
         <el-table
@@ -153,6 +160,7 @@ import { mapGetters } from 'vuex'
 import { getModalidades, getLineasInvestigacion } from '@/api/idea'
 import { getEstados } from '@/api/lista'
 import { getAll as getAllUsers } from '@/api/user'
+import { saveExcel } from '@progress/kendo-vue-excel-export'
 
 export default {
   name: 'IndexInformes',
@@ -225,6 +233,18 @@ export default {
     this.fetchData()
   },
   methods: {
+    exportExcel() {
+      saveExcel({
+        data: this.list,
+        fileName: 'myFile',
+        columns: [
+          { field: 'titulo', title: 'Título' },
+          { field: 'nombreModalidad', title: 'Modalidad' },
+          { field: 'nombreLineaInvestigacion', title: 'Línea Investigación' },
+          { field: 'max_estudiantes', title: 'Max. Estudiantes' }
+        ]
+      })
+    },
     fetchData() {
       this.listLoading = true
       const params = {
