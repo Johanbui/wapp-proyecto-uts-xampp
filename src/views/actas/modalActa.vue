@@ -30,7 +30,12 @@ import { getAll } from '@/api/acta'
 import { mapGetters } from 'vuex'
 
 export default {
-  props: ['visible'],
+  props: {
+    visible: {
+      type: Boolean,
+      default: false
+    }
+  },
   data() {
     return {
       list: null,
