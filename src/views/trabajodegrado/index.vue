@@ -1,63 +1,67 @@
 <template>
-  <div class="app-container">
-    <modal-acta :visible="visibleActa" @accionModal="accionModal" />
+  <div>
+    <div class="app-container">
+      <modal-acta :visible="visibleActa" @accionModal="accionModal" />
 
-    <el-row>
-      <el-col :span="24">
-        <el-steps :active="active" finish-status="success">
-          <el-step title="Banco de Ideas" icon="el-icon-tickets" />
-          <el-step title="Aprobacion de Idea" icon="el-icon-wallet" />
-          <el-step title="Propuesta Trabajo de Grado" icon="el-icon-document" />
-          <el-step title="Evaluacion Propuesta" icon="el-icon-wallet" />
-          <el-step title="Informe Final" icon="el-icon-folder-opened" />
-          <el-step title="Evaluacion Informe Final" icon="el-icon-folder-opened" />
-          <el-step title="Resultado" icon="el-icon-star-on" />
-        </el-steps>
-      </el-col>
-    </el-row>
+      <el-row>
+        <el-col :span="24">
+          <el-steps :active="active" finish-status="success">
+            <el-step title="Banco de Ideas" icon="el-icon-tickets" />
+            <el-step title="Aprobacion de Idea" icon="el-icon-wallet" />
+            <el-step title="Propuesta Trabajo de Grado" icon="el-icon-document" />
+            <el-step title="Evaluacion Propuesta" icon="el-icon-wallet" />
+            <el-step title="Informe Final" icon="el-icon-folder-opened" />
+            <el-step title="Evaluacion Informe Final" icon="el-icon-folder-opened" />
+            <el-step title="Resultado" icon="el-icon-star-on" />
+          </el-steps>
+        </el-col>
+      </el-row>
 
-    <el-row v-if="active == 0">
-      <el-col :span="24">
-        <step-1 @continuar="continuar" @atras="atras" />
-      </el-col>
-    </el-row>
+      <el-row v-if="active == 0">
+        <el-col :span="24">
+          <step-1 @continuar="continuar" @atras="atras" />
+        </el-col>
+      </el-row>
 
-    <el-row v-if="active == 1">
-      <el-col :span="24">
-        <step-2 :idea-selected="ideaSelected" @continuar="continuar" @atras="atras" />
-      </el-col>
-    </el-row>
+      <el-row v-if="active == 1">
+        <el-col :span="24">
+          <step-2 :idea-selected="ideaSelected" @continuar="continuar" @atras="atras" />
+        </el-col>
+      </el-row>
 
-    <el-row v-if="active == 2">
-      <el-col :span="24">
-        <step-3 :idea-selected="ideaSelected" @continuar="continuar" @atras="atras" />
-      </el-col>
-    </el-row>
+      <el-row v-if="active == 2">
+        <el-col :span="24">
+          <step-3 :idea-selected="ideaSelected" @continuar="continuar" @atras="atras" />
+        </el-col>
+      </el-row>
 
-    <el-row>
-      <el-col v-if="active == 3" :span="24">
-        <step-3 :id-file-propuesta="idFilePropuesta" :idea-selected="ideaSelected" :evaluacion="true" @continuar="continuar" @atras="atras" />
+      <el-row>
+        <el-col v-if="active == 3" :span="24">
+          <step-3 :id-file-propuesta="idFilePropuesta" :idea-selected="ideaSelected" :evaluacion="true" @continuar="continuar" @atras="atras" />
         <!-- este step debe ser el del profesor con : Observaciones generales, Concepto Final, Y nuevo FDC-124-->
-      </el-col>
-    </el-row>
+        </el-col>
+      </el-row>
 
-    <el-row>
-      <el-col v-if="active == 4" :span="24">
-        <step-4 :idea-selected="ideaSelected" @continuar="continuar" @atras="atras" />
-      </el-col>
-    </el-row>
+      <el-row>
+        <el-col v-if="active == 4" :span="24">
+          <step-4 :idea-selected="ideaSelected" @continuar="continuar" @atras="atras" />
+        </el-col>
+      </el-row>
 
-    <el-row>
-      <el-col v-if="active == 5" :span="24">
-        <step-4 :id-file-propuesta="idFilePropuesta" :idea-selected="ideaSelected" :evaluacion="true" @continuar="continuar" @atras="atras" />
-      </el-col>
-    </el-row>
+      <el-row>
+        <el-col v-if="active == 5" :span="24">
+          <step-4 :id-file-propuesta="idFilePropuesta" :idea-selected="ideaSelected" :evaluacion="true" @continuar="continuar" @atras="atras" />
+        </el-col>
+      </el-row>
 
-    <el-row>
-      <el-col v-if="active == 6" :span="24">
-        <step-5 :idea-selected="ideaSelected" @continuar="continuar" @atras="atras" @inicio="inicio" />
-      </el-col>
-    </el-row>
+      <el-row>
+        <el-col v-if="active == 6" :span="24">
+          <step-5 :idea-selected="ideaSelected" @continuar="continuar" @atras="atras" @inicio="inicio" />
+        </el-col>
+      </el-row>
+
+    </div>
+    <Footer :activar-bg="true" />
   </div>
 </template>
 
@@ -71,6 +75,7 @@ import step5 from './step5.vue'
 import { mapGetters } from 'vuex'
 import { createIdeaEstado, getIdeaEstadoExist, getLastEstadoProyecto } from '@/api/idea'
 import modalActa from '../actas/modalActa.vue'
+import Footer from '@/components/footer'
 
 export default {
   name: 'Index',
@@ -80,7 +85,8 @@ export default {
     step3,
     step4,
     step5,
-    modalActa
+    modalActa,
+    Footer
   },
   data() {
     return {

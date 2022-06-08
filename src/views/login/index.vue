@@ -2,8 +2,16 @@
   <div class="login-container">
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
 
-      <div class="title-container">
-        <h3 class="title">Login Form</h3>
+      <div
+        class="title-container"
+        style="    position: relative;
+    display: grid;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    justify-items: center;"
+      >
+        <img :src="logo" style="max-width:250px">
       </div>
 
       <el-form-item prop="username">
@@ -45,14 +53,18 @@
       <el-button :loading="loading" type="primary" style="width:48.5%;margin-bottom:30px;" @click.native.prevent="handleRegister">Registro</el-button>
 
     </el-form>
+    <Footer :activar-bg="false" />
   </div>
+
 </template>
 
 <script>
 import { validUsername } from '@/utils/validate'
-
+import logo from '@/assets/logoUTS.png'
+import Footer from '@/components/footer'
 export default {
   name: 'Login',
+  components: { Footer },
   data() {
     const validateUsername = (rule, value, callback) => {
       if (!validUsername(value)) {
@@ -69,6 +81,7 @@ export default {
       }
     }
     return {
+      logo,
       loginForm: {
         username: 'jahiranova@uts.edu.co',
         password: 'Uts2022'
@@ -236,4 +249,5 @@ $light_gray:#eee;
     user-select: none;
   }
 }
+
 </style>

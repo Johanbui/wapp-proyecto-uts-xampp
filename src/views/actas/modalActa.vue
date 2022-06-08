@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container">
+  <div class="app-containerModal">
     <el-dialog
       title="Seleccionar Acta"
       :visible.sync="visible"
