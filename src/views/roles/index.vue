@@ -1,122 +1,130 @@
 <template>
-  <div class="app-container">
+  <div>
+    <div class="app-container">
 
-    <el-row :gutter="30">
+      <el-row :gutter="30">
 
-      <el-col :span="22">
+        <el-col :span="22">
 
-        <el-input
-          v-model="search"
-          size="mini"
-          placeholder="Type to search"
-        />
-      </el-col>
-      <el-col :span="2">
-        <el-button
-          v-if="findPermission('ROL-CREATE')"
-          type="primary"
-          @click="handleCreate()"
-        >Create</el-button>
-      </el-col>
-    </el-row>
+          <el-input
+            v-model="search"
+            size="mini"
+            placeholder="Type to search"
+          />
+        </el-col>
+        <el-col :span="2">
+          <el-button
+            v-if="findPermission('ROL-CREATE')"
+            type="primary"
+            @click="handleCreate()"
+          >Create</el-button>
+        </el-col>
+      </el-row>
 
-    <el-table
-      v-loading="listLoading"
-      :data="list"
-      element-loading-text="Loading"
-      border
-      fit
-      highlight-current-row
-    >
-
-      <el-table-column align="center" label="#" width="50">
-        <template slot-scope="scope">
-          {{ (scope.$index + 1) + ( numberItems * (currentPage - 1)) }}
-        </template>
-      </el-table-column>
-
-      <el-table-column label="Code">
-        <template slot-scope="scope">
-          {{ scope.row.code }}
-        </template>
-      </el-table-column>
-
-      <el-table-column label="Name" align="center">
-        <template slot-scope="scope">
-          <span>{{ scope.row.name }}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column
-        align="center"
-        label="Actions"
+      <el-table
+        v-loading="listLoading"
+        :data="list"
+        element-loading-text="Loading"
+        border
+        fit
+        highlight-current-row
       >
 
-        <template slot-scope="scope">
-          <div class="td-actions">
+        <el-table-column align="center" label="#" width="50">
+          <template slot-scope="scope">
+            {{ (scope.$index + 1) + ( numberItems * (currentPage - 1)) }}
+          </template>
+        </el-table-column>
 
-            <div v-if="findPermission('ROL-ONE')">
-              <el-button
-                size="mini"
-                @click="handleConsult(scope.$index, scope.row)"
-              >
-                <i class="el-icon-view" />
-              </el-button>
+        <el-table-column label="Code">
+          <template slot-scope="scope">
+            {{ scope.row.code }}
+          </template>
+        </el-table-column>
+
+        <el-table-column label="Name" align="center">
+          <template slot-scope="scope">
+            <span>{{ scope.row.name }}</span>
+          </template>
+        </el-table-column>
+
+        <el-table-column
+          align="center"
+          label="Actions"
+        >
+
+          <template slot-scope="scope">
+            <div class="td-actions">
+
+              <div v-if="findPermission('ROL-ONE')">
+                <el-button
+                  size="mini"
+                  @click="handleConsult(scope.$index, scope.row)"
+                >
+                  <i class="el-icon-view" />
+                </el-button>
+              </div>
+
+              <div v-if="findPermission('ROL-EDIT')">
+                <el-button
+                  size="mini"
+                  @click="handleEdit(scope.$index, scope.row)"
+                >
+                  <i class="el-icon-edit" />
+                </el-button>
+              </div>
+
+              <div v-if="findPermission('ROL-PERMISSION')">
+                <el-button
+                  size="mini"
+                  @click="handlePermissions(scope.$index, scope.row)"
+                >
+                  <i class="el-icon-key" />
+                </el-button>
+              </div>
+
+              <div v-if="findPermission('ROL-TOGGLE')">
+                <el-switch
+                  v-model="scope.row.enable"
+                  active-color="#13ce66"
+                  inactive-color="#ff4949"
+                  @change="handleEnable(scope.$index, scope.row)"
+                />
+              </div>
+
             </div>
+          </template>
 
-            <div v-if="findPermission('ROL-EDIT')">
-              <el-button
-                size="mini"
-                @click="handleEdit(scope.$index, scope.row)"
-              >
-                <i class="el-icon-edit" />
-              </el-button>
-            </div>
+        </el-table-column>
 
-            <div v-if="findPermission('ROL-PERMISSION')">
-              <el-button
-                size="mini"
-                @click="handlePermissions(scope.$index, scope.row)"
-              >
-                <i class="el-icon-key" />
-              </el-button>
-            </div>
+      </el-table>
 
-            <div v-if="findPermission('ROL-TOGGLE')">
-              <el-switch
-                v-model="scope.row.enable"
-                active-color="#13ce66"
-                inactive-color="#ff4949"
-                @change="handleEnable(scope.$index, scope.row)"
-              />
-            </div>
-
-          </div>
-        </template>
-
-      </el-table-column>
-
-    </el-table>
-
-    <div class="block">
-      <el-pagination
-        :current-page.sync="currentPage"
-        :page-sizes="[5, 10, 20, 50,100]"
-        :page-size="numberItems"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="countItems"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-      />
+      <div class="block">
+        <el-pagination
+          :current-page.sync="currentPage"
+          :page-sizes="[5, 10, 20, 50,100]"
+          :page-size="numberItems"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="countItems"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+        />
+      </div>
     </div>
+
+    <Footer :activar-bg="true" />
   </div>
+
 </template>
 
 <script>
 import { getAll, toggleEnable } from '@/api/rol'
 import { mapGetters } from 'vuex'
+import Footer from '@/components/footer'
 
 export default {
+  components: { Footer },
+
   data() {
     return {
       list: null,

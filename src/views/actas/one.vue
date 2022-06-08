@@ -1,65 +1,72 @@
 <template>
-  <div class="app-container">
-    <el-form
-      ref="actaForm"
-      :model="actaForm"
-      :rules="actaRules"
-      class="login-form"
-      auto-complete="on"
-      label-position="left"
-    >
-      <div class="title-container">
-        <h3 class="title">User</h3>
-      </div>
+  <div>
+    <div class="app-container">
+      <el-form
+        ref="actaForm"
+        :model="actaForm"
+        :rules="actaRules"
+        class="login-form"
+        auto-complete="on"
+        label-position="left"
+      >
+        <div class="title-container">
+          <h3 class="title">User</h3>
+        </div>
 
-      <el-row :gutter="30">
-        <el-col :span="24">
-          <el-form-item prop="codigo" label="Codigo">
-            <el-input
-              ref="codigo"
-              v-model="actaForm.codigo"
-              placeholder="Codigo"
-              name="codigo"
-              type="text"
-              tabindex="1"
-              auto-complete="on"
-              disabled
-            />
-          </el-form-item>
-        </el-col>
-      </el-row>
+        <el-row :gutter="30">
+          <el-col :span="24">
+            <el-form-item prop="codigo" label="Codigo">
+              <el-input
+                ref="codigo"
+                v-model="actaForm.codigo"
+                placeholder="Codigo"
+                name="codigo"
+                type="text"
+                tabindex="1"
+                auto-complete="on"
+                disabled
+              />
+            </el-form-item>
+          </el-col>
+        </el-row>
 
-      <el-row :gutter="30">
-        <el-col :span="24">
-          <el-form-item prop="Archivo" label="Archivo">
-            <el-input
-              ref="codigo"
-              v-model="actaForm.file.name"
-              placeholder="Archivo"
-              name="archivo"
-              type="text"
-              tabindex="1"
-              auto-complete="on"
-              disabled
-              class="input-with-select"
-              @click="hrefFile(actaForm)"
-            />
-            <el-button
-              type="primary"
-              @click="hrefFile(actaForm)"
-            >Descargar</el-button>
-          </el-form-item>
-        </el-col>
+        <el-row :gutter="30">
+          <el-col :span="24">
+            <el-form-item prop="Archivo" label="Archivo">
+              <el-input
+                ref="codigo"
+                v-model="actaForm.file.name"
+                placeholder="Archivo"
+                name="archivo"
+                type="text"
+                tabindex="1"
+                auto-complete="on"
+                disabled
+                class="input-with-select"
+                @click="hrefFile(actaForm)"
+              />
+              <el-button
+                type="primary"
+                @click="hrefFile(actaForm)"
+              >Descargar</el-button>
+            </el-form-item>
+          </el-col>
 
-      </el-row>
-    </el-form>
+        </el-row>
+      </el-form>
+    </div>
+    <Footer :activar-bg="true" />
+
   </div>
 </template>
 
 <script>
 import { getOne } from '@/api/acta'
+import Footer from '@/components/footer'
 
 export default {
+  components: { Footer },
+
   data() {
     return {
       id: 0,

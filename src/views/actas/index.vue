@@ -1,106 +1,112 @@
 <template>
-  <div class="app-container">
+  <div>
+    <div class="app-container">
 
-    <el-row :gutter="30">
+      <el-row :gutter="30">
 
-      <el-col :span="22">
+        <el-col :span="22">
 
-        <el-input
-          v-model="search"
-          size="mini"
-          placeholder="Type to search"
-        />
-      </el-col>
-      <el-col :span="2">
-        <el-button
-          v-if="findPermission('ACTA-CREATE')"
-          type="primary"
-          @click="handleCreate()"
-        >Create</el-button>
-      </el-col>
-    </el-row>
+          <el-input
+            v-model="search"
+            size="mini"
+            placeholder="Type to search"
+          />
+        </el-col>
+        <el-col :span="2">
+          <el-button
+            v-if="findPermission('ACTA-CREATE')"
+            type="primary"
+            @click="handleCreate()"
+          >Create</el-button>
+        </el-col>
+      </el-row>
 
-    <el-table
-      v-loading="listLoading"
-      :data="list"
-      element-loading-text="Loading"
-      border
-      fit
-      highlight-current-row
-    >
-
-      <el-table-column align="center" label="#" width="50">
-        <template slot-scope="scope">
-          {{ (scope.$index + 1) + ( numberItems * (currentPage - 1)) }}
-        </template>
-      </el-table-column>
-
-      <el-table-column label="Codigo">
-        <template slot-scope="scope">
-          {{ scope.row.codigo }}
-        </template>
-      </el-table-column>
-
-      <el-table-column label="Url Archivo" align="center">
-        <template slot-scope="scope">
-          <a class="link" @click.stop.prevent="hrefFile(scope.row)">
-            {{ scope.row.file.name }}
-          </a>
-        </template>
-      </el-table-column>
-
-      <el-table-column
-        align="center"
-        label="Actions"
+      <el-table
+        v-loading="listLoading"
+        :data="list"
+        element-loading-text="Loading"
+        border
+        fit
+        highlight-current-row
       >
 
-        <template slot-scope="scope">
-          <div class="td-actions">
+        <el-table-column align="center" label="#" width="50">
+          <template slot-scope="scope">
+            {{ (scope.$index + 1) + ( numberItems * (currentPage - 1)) }}
+          </template>
+        </el-table-column>
 
-            <div v-if="findPermission('ACTA-ONE')">
-              <el-button
-                size="mini"
-                @click="handleConsult(scope.$index, scope.row)"
-              >
-                <i class="el-icon-view" />
-              </el-button>
+        <el-table-column label="Codigo">
+          <template slot-scope="scope">
+            {{ scope.row.codigo }}
+          </template>
+        </el-table-column>
+
+        <el-table-column label="Url Archivo" align="center">
+          <template slot-scope="scope">
+            <a class="link" @click.stop.prevent="hrefFile(scope.row)">
+              {{ scope.row.file.name }}
+            </a>
+          </template>
+        </el-table-column>
+
+        <el-table-column
+          align="center"
+          label="Actions"
+        >
+
+          <template slot-scope="scope">
+            <div class="td-actions">
+
+              <div v-if="findPermission('ACTA-ONE')">
+                <el-button
+                  size="mini"
+                  @click="handleConsult(scope.$index, scope.row)"
+                >
+                  <i class="el-icon-view" />
+                </el-button>
+              </div>
+
+              <div v-if="findPermission('ACTA-EDIT')">
+                <el-button
+                  size="mini"
+                  @click="handleEdit(scope.$index, scope.row)"
+                >
+                  <i class="el-icon-edit" />
+                </el-button>
+              </div>
+
             </div>
+          </template>
 
-            <div v-if="findPermission('ACTA-EDIT')">
-              <el-button
-                size="mini"
-                @click="handleEdit(scope.$index, scope.row)"
-              >
-                <i class="el-icon-edit" />
-              </el-button>
-            </div>
+        </el-table-column>
 
-          </div>
-        </template>
+      </el-table>
 
-      </el-table-column>
-
-    </el-table>
-
-    <div class="block">
-      <el-pagination
-        :current-page.sync="currentPage"
-        :page-sizes="[5, 10, 20, 50,100]"
-        :page-size="numberItems"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="countItems"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-      />
+      <div class="block">
+        <el-pagination
+          :current-page.sync="currentPage"
+          :page-sizes="[5, 10, 20, 50,100]"
+          :page-size="numberItems"
+          layout="total, sizes, prev, pager, next, jumper"
+          :total="countItems"
+          @size-change="handleSizeChange"
+          @current-change="handleCurrentChange"
+        />
+      </div>
     </div>
+    <Footer :activar-bg="true" />
+
   </div>
 </template>
 
 <script>
 import { getAll } from '@/api/acta'
 import { mapGetters } from 'vuex'
+import Footer from '@/components/footer'
 
 export default {
+  components: { Footer },
   data() {
     return {
       list: null,

@@ -1,71 +1,62 @@
 <template>
-  <div class="app-container">
-    <el-form ref="userEditForm" :model="changePasswordForm" class="login-form" auto-complete="on" label-position="left">
+  <div>
 
-      <div class="title-container">
-        <h3 class="title">User Edit</h3>
-      </div>
+    <div class="app-container">
+      <el-form ref="userEditForm" :model="changePasswordForm" class="login-form" auto-complete="on" label-position="left">
 
-      <el-row :gutter="30">
-        <el-col :span="12">
-          <el-form-item label="Password" prop="password">
-            <el-input
-              ref="password"
-              v-model="changePasswordForm.password"
-              placeholder="password"
-              name="password"
-              type="password"
-              tabindex="1"
-              auto-complete="on"
-            />
-          </el-form-item>
-        </el-col>
+        <div class="title-container">
+          <h3 class="title">User Edit</h3>
+        </div>
 
-        <el-col :span="12">
-          <el-form-item prop="repassword" label="Re-password">
-            <el-input
-              ref="repassword"
-              v-model="changePasswordForm.repassword"
-              placeholder="Re-Password"
-              name="repassword"
-              type="password"
-              tabindex="1"
-              auto-complete="on"
-            />
-          </el-form-item>
-        </el-col>
-      </el-row>
+        <el-row :gutter="30">
+          <el-col :span="12">
+            <el-form-item label="Password" prop="password">
+              <el-input
+                ref="password"
+                v-model="changePasswordForm.password"
+                placeholder="password"
+                name="password"
+                type="password"
+                tabindex="1"
+                auto-complete="on"
+              />
+            </el-form-item>
+          </el-col>
 
-      <el-row :gutter="30">
-        <el-col :span="24">
-          <el-form-item prop="newpassword" label="New Password">
-            <el-input
-              ref="newpassword"
-              v-model="changePasswordForm.newpassword"
-              placeholder="New Password"
-              name="newpassword"
-              type="password"
-              tabindex="1"
-              auto-complete="on"
-            />
-          </el-form-item>
-        </el-col>
-      </el-row>
+          <el-col :span="12">
+            <el-form-item prop="repassword" label="Re-password">
+              <el-input
+                ref="repassword"
+                v-model="changePasswordForm.repassword"
+                placeholder="Re-Password"
+                name="repassword"
+                type="password"
+                tabindex="1"
+                auto-complete="on"
+              />
+            </el-form-item>
+          </el-col>
+        </el-row>
 
-      <el-form-item>
-        <el-button type="primary" @click="onSubmit">Change Password</el-button>
-        <el-button @click="onCancel">Cancel</el-button>
-      </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="onSubmit">Change Password</el-button>
+          <el-button @click="onCancel">Cancel</el-button>
+        </el-form-item>
 
-    </el-form>
+      </el-form>
 
+    </div>
+    <Footer :activar-bg="true" />
   </div>
 </template>
 
 <script>
 import { changePassword } from '@/api/user'
+import Footer from '@/components/footer'
 
 export default {
+  components: { Footer },
+
   data() {
     return {
       id: 0,
@@ -116,12 +107,12 @@ export default {
           }
         )
         if (response.type === 'success') {
-          this.$router.push({ path: '/user/index' })
+          this.$router.push({ path: '/user' })
         }
       })
     },
     onCancel() {
-      this.$router.push({ path: '/user/index' })
+      this.$router.push({ path: '/user' })
     }
   }
 }

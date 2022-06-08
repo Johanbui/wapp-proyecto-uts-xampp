@@ -1,127 +1,149 @@
 <template>
   <div class="login-container">
-    <el-form
-      ref="userCreateForm"
-      :model="userCreateForm"
-      :rules="userEditRules"
-      class="login-form"
-      auto-complete="on"
-      label-position="left"
-    >
-      <div class="title-container">
-        <h3 class="title">Register</h3>
-      </div>
+    <div>
+      <el-form
+        ref="userCreateForm"
+        :model="userCreateForm"
+        :rules="userEditRules"
+        class="login-form"
+        auto-complete="on"
+        label-position="left"
+      >
+        <div class="title-container">
+          <h3 class="title">Registro</h3>
+        </div>
 
-      <el-form-item prop="name">
-        <el-input
-          ref="name"
-          v-model="userCreateForm.name"
-          placeholder="Nombre"
-          name="name"
-          type="text"
-          tabindex="1"
-          auto-complete="on"
-        />
-      </el-form-item>
+        <el-form-item prop="name">
+          <el-input
+            ref="name"
+            v-model="userCreateForm.name"
+            placeholder="Nombre"
+            name="name"
+            type="text"
+            tabindex="1"
+            auto-complete="on"
+          />
+        </el-form-item>
 
-      <el-form-item prop="last_name">
-        <el-input
-          ref="last_name"
-          v-model="userCreateForm.last_name"
-          placeholder="Apellidos"
-          name="last_name"
-          type="text"
-          tabindex="1"
-          auto-complete="on"
-        />
-      </el-form-item>
+        <el-form-item prop="last_name">
+          <el-input
+            ref="last_name"
+            v-model="userCreateForm.last_name"
+            placeholder="Apellidos"
+            name="last_name"
+            type="text"
+            tabindex="1"
+            auto-complete="on"
+          />
+        </el-form-item>
 
-      <el-form-item prop="gender">
-        <el-select
-          v-model="userCreateForm.gender"
-          placeholder="Porfavor seleccion su genero"
+        <el-form-item prop="gender">
+          <el-select
+            v-model="userCreateForm.gender"
+            placeholder="Porfavor seleccion su genero"
+          >
+            <el-option label="Masculino" value="1" />
+            <el-option label="Femenino" value="2" />
+          </el-select>
+        </el-form-item>
+
+        <el-form-item prop="coordinacion">
+          <el-select
+            v-model="userCreateForm.id_coordinacion"
+            placeholder="Por favor seleccione coordinación"
+          >
+            <template v-for="coordinacion in coordinaciones">
+              <el-option
+                :key="coordinacion.id"
+                :label="coordinacion.nombre"
+                :value="coordinacion.id"
+              />
+            </template>
+          </el-select>
+        </el-form-item>
+
+        <el-form-item prop="email">
+          <el-input
+            ref="email"
+            v-model="userCreateForm.email"
+            placeholder="Email"
+            name="email"
+            type="text"
+            tabindex="1"
+            auto-complete="on"
+          />
+        </el-form-item>
+
+        <el-form-item prop="avatar">
+          <el-input
+            ref="avatar"
+            v-model="userCreateForm.avatar"
+            placeholder="Url Imagen"
+            name="avatar"
+            type="text"
+            tabindex="1"
+            auto-complete="on"
+          />
+        </el-form-item>
+
+        <el-form-item prop="password">
+          <el-input
+            ref="password"
+            v-model="userCreateForm.password"
+            placeholder="Contraseña"
+            name="password"
+            type="password"
+            tabindex="1"
+            auto-complete="on"
+          />
+        </el-form-item>
+
+        <el-form-item prop="repassword">
+          <el-input
+            ref="repassword"
+            v-model="userCreateForm.repassword"
+            placeholder="Repetir Contraseña"
+            name="repassword"
+            type="password"
+            tabindex="1"
+            auto-complete="on"
+          />
+        </el-form-item>
+        <el-form-item prop="terminos" class="terminos">
+          <el-checkbox v-model="userCreateForm.terminosycondiciones">
+
+            <a @click.stop.prevent="terminos"> AceptarTerminos y Condiciones</a>
+          </el-checkbox>
+
+        </el-form-item>
+        <div
+          style="    display: flex;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    justify-items: center;"
         >
-          <el-option label="Masculino" value="1" />
-          <el-option label="Femenino" value="2" />
-        </el-select>
-      </el-form-item>
+          <el-button type="primary" style="width:40%" @click="onSubmit">Create</el-button>
+          <el-button style="width:40%" @click="onCancel">Cancel</el-button>
+        </div>
 
-      <el-form-item prop="coordinacion">
-        <el-select
-          v-model="userCreateForm.id_coordinacion"
-          placeholder="Por favor seleccione coordinación"
-        >
-          <template v-for="coordinacion in coordinaciones">
-            <el-option
-              :key="coordinacion.id"
-              :label="coordinacion.nombre"
-              :value="coordinacion.id"
-            />
-          </template>
-        </el-select>
-      </el-form-item>
-
-      <el-form-item prop="email">
-        <el-input
-          ref="email"
-          v-model="userCreateForm.email"
-          placeholder="Email"
-          name="email"
-          type="text"
-          tabindex="1"
-          auto-complete="on"
-        />
-      </el-form-item>
-
-      <el-form-item prop="avatar">
-        <el-input
-          ref="avatar"
-          v-model="userCreateForm.avatar"
-          placeholder="Url Imagen"
-          name="avatar"
-          type="text"
-          tabindex="1"
-          auto-complete="on"
-        />
-      </el-form-item>
-
-      <el-form-item prop="password">
-        <el-input
-          ref="password"
-          v-model="userCreateForm.password"
-          placeholder="Contraseña"
-          name="password"
-          type="password"
-          tabindex="1"
-          auto-complete="on"
-        />
-      </el-form-item>
-
-      <el-form-item prop="repassword">
-        <el-input
-          ref="repassword"
-          v-model="userCreateForm.repassword"
-          placeholder="Repetir Contraseña"
-          name="repassword"
-          type="password"
-          tabindex="1"
-          auto-complete="on"
-        />
-      </el-form-item>
-
-      <el-button type="primary" @click="onSubmit">Create</el-button>
-      <el-button @click="onCancel">Cancel</el-button>
-
-    </el-form>
+      </el-form>
+    </div>
+    <Footer :activar-bg="false" :position-absolute="false" />
   </div>
+
 </template>
 
 <script>
 import { create } from '@/api/user'
 import { validEmail } from '@/utils/validate'
 import { getListaOne } from '@/api/lista'
+import Footer from '@/components/footer'
+
 export default {
   name: 'Register',
+  components: { Footer },
+
   data() {
     const validateEmail = (rule, value, callback) => {
       if (!validEmail(value)) {
@@ -145,7 +167,8 @@ export default {
         password: '',
         repassword: '',
         rol_id: 4,
-        id_coordinacion: ''
+        id_coordinacion: '',
+        terminosycondiciones: false
       },
       userEditRules: {
         email: [{ required: true, trigger: 'blur', validator: validateEmail }],
@@ -153,7 +176,8 @@ export default {
         last_name: [{ required: true }],
         avatar: [{ required: true }],
         gender: [{ required: true }],
-        enable: [{ required: true }]
+        enable: [{ required: true }],
+        terminos: [{ }]
       }
     }
   },
@@ -163,6 +187,9 @@ export default {
     await this.fetchDataListas()
   },
   methods: {
+    terminos() {
+      window.open('https://www.uts.edu.co/sitio/terminos-y-condiciones-de-uso-del-portal-web/')
+    },
     fetchDataListas() {
       this.pageLoading = getListaOne('COORD').then((response) => {
         response.data.enable = response.data.enable === 1
@@ -176,6 +203,14 @@ export default {
       const params = { ...this.userCreateForm }
       params.enable = params.enable ? 1 : 0
 
+      if (!params.terminosycondiciones) {
+        this.$message({
+          showClose: true,
+          message: 'Debe aceptar los terminos y condiciones',
+          type: 'warning'
+        })
+        return
+      }
       create(params).then((response) => {
         this.$message({
           showClose: true,
@@ -305,4 +340,11 @@ $light_gray: #eee;
   }
 }
 
+.login-container .el-form-item.terminos{
+    border: 0;
+    background: transparent;
+    border-radius: 0;
+    color: #fff !important;
+    padding-left: 3px;
+}
 </style>

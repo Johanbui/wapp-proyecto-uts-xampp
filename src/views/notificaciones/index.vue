@@ -1,36 +1,39 @@
 <template>
-  <div class="app-container">
-    <el-table
-      v-loading="listLoading"
-      :data="list"
-      element-loading-text="Loading"
-      border
-      fit
-      highlight-current-row
-      :row-class-name="tableRowClassName"
-    >
-
-      <el-table-column
-        align="center"
-        label="#"
-        width="50"
-        :header-row-style="{ backgroundColor: 'red' }"
+  <div>
+    <div class="app-container">
+      <el-table
+        v-loading="listLoading"
+        :data="list"
+        element-loading-text="Loading"
+        border
+        fit
+        highlight-current-row
+        :row-class-name="tableRowClassName"
       >
-        <template slot-scope="scope">
 
-          {{ (scope.$index + 1) /*+ ( numberItems * (currentPage - 1))*/ }}
-        </template>
-      </el-table-column>
+        <el-table-column
+          align="center"
+          label="#"
+          width="50"
+          :header-row-style="{ backgroundColor: 'red' }"
+        >
+          <template slot-scope="scope">
 
-      <el-table-column
-        label="Título"
-      >
-        <template slot-scope="scope">
-          {{ scope.row.title }}
-        </template>
-      </el-table-column>
+            {{ (scope.$index + 1) /*+ ( numberItems * (currentPage - 1))*/ }}
+          </template>
+        </el-table-column>
 
-    </el-table>
+        <el-table-column
+          label="Título"
+        >
+          <template slot-scope="scope">
+            {{ scope.row.title }}
+          </template>
+        </el-table-column>
+
+      </el-table>
+    </div>
+    <Footer :activar-bg="true" />
   </div>
 </template>
 
@@ -38,9 +41,12 @@
 
 import { mapGetters } from 'vuex'
 import { getAll, markAsReaded } from '@/api/notificacion'
+import Footer from '@/components/footer'
 
 export default {
   name: 'Index',
+  components: { Footer },
+
   data() {
     return {
       list: '',

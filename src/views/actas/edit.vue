@@ -1,83 +1,88 @@
 <template>
-  <div class="app-container">
-    <el-form
-      ref="actaEditForm"
-      :model="actaEditForm"
-      :rules="actaRules"
-      class="login-form"
-      auto-complete="on"
-      label-position="left"
-    >
-      <div class="title-container">
-        <h3 class="title">User Edit</h3>
-      </div>
+  <div>
+    <div class="app-container">
+      <el-form
+        ref="actaEditForm"
+        :model="actaEditForm"
+        :rules="actaRules"
+        class="login-form"
+        auto-complete="on"
+        label-position="left"
+      >
+        <div class="title-container">
+          <h3 class="title">User Edit</h3>
+        </div>
 
-      <el-row :gutter="30">
-        <el-col :span="24">
-          <el-form-item prop="codigo" label="Codigo">
-            <el-input
-              ref="codigo"
-              v-model="actaEditForm.codigo"
-              placeholder="Codigo"
-              name="codigo"
-              type="text"
-              tabindex="1"
-              auto-complete="on"
-            />
-          </el-form-item>
-        </el-col>
-      </el-row>
+        <el-row :gutter="30">
+          <el-col :span="24">
+            <el-form-item prop="codigo" label="Codigo">
+              <el-input
+                ref="codigo"
+                v-model="actaEditForm.codigo"
+                placeholder="Codigo"
+                name="codigo"
+                type="text"
+                tabindex="1"
+                auto-complete="on"
+              />
+            </el-form-item>
+          </el-col>
+        </el-row>
 
-      <el-row :gutter="30">
-        <el-col :span="24">
-          <el-form-item prop="fecha" label="Fecha">
-            <el-date-picker
-              v-model="actaEditForm.fecha"
-              type="date"
-              placeholder="Fecha"
-            />
-          </el-form-item>
-        </el-col>
-      </el-row>
+        <el-row :gutter="30">
+          <el-col :span="24">
+            <el-form-item prop="fecha" label="Fecha">
+              <el-date-picker
+                v-model="actaEditForm.fecha"
+                type="date"
+                placeholder="Fecha"
+              />
+            </el-form-item>
+          </el-col>
+        </el-row>
 
-      <el-row :gutter="30">
-        <el-col :span="24">
-          <el-form-item prop="url_archivo" label="url_archivo">
-            <el-upload
-              class="upload-demo"
-              drag
-              action="http://apiproyectouts.local/api/files/push"
-              :on-preview="handlePreview"
-              :on-remove="handleRemove"
-              :file-list="fileList"
-              :before-upload="beforeUpload"
-              :on-success="handleSuccess"
-              :limit="1"
-            >
-              <i class="el-icon-upload" />
-              <div class="el-upload__text">
-                Suelta tu archivo aquí o <em>haz clic para cargar</em>
-              </div>
-              <div slot="tip" class="el-upload__tip">
-                Solo archivos jpg/png con un tamaño menor de 500kb
-              </div>
-            </el-upload>
-          </el-form-item>
-        </el-col>
-      </el-row>
+        <el-row :gutter="30">
+          <el-col :span="24">
+            <el-form-item prop="url_archivo" label="url_archivo">
+              <el-upload
+                class="upload-demo"
+                drag
+                action="http://apiproyectouts.local/api/files/push"
+                :on-preview="handlePreview"
+                :on-remove="handleRemove"
+                :file-list="fileList"
+                :before-upload="beforeUpload"
+                :on-success="handleSuccess"
+                :limit="1"
+              >
+                <i class="el-icon-upload" />
+                <div class="el-upload__text">
+                  Suelta tu archivo aquí o <em>haz clic para cargar</em>
+                </div>
+                <div slot="tip" class="el-upload__tip">
+                  Solo archivos jpg/png con un tamaño menor de 500kb
+                </div>
+              </el-upload>
+            </el-form-item>
+          </el-col>
+        </el-row>
 
-      <el-form-item>
-        <el-button type="primary" @click="onSubmit">Edit</el-button>
-        <el-button @click="onCancel">Cancel</el-button>
-      </el-form-item>
-    </el-form>
+        <el-form-item>
+          <el-button type="primary" @click="onSubmit">Edit</el-button>
+          <el-button @click="onCancel">Cancel</el-button>
+        </el-form-item>
+      </el-form>
+    </div>
+    <Footer :activar-bg="true" />
   </div>
 </template>
 
 <script>
 import { getOne, update } from '@/api/acta'
+import Footer from '@/components/footer'
 
 export default {
+  components: { Footer },
   data() {
     return {
       id: 0,

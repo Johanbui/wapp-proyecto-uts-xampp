@@ -1,23 +1,29 @@
 <template>
-  <div class="app-container">
-    <el-row :gutter="30">
+  <div>
 
-      <el-col :span="24">
-        <el-transfer
-          v-model="value"
-          :data="data"
-          :titles="['Inactivos', 'Activos']"
-        />
-      </el-col>
-    </el-row>
+    <div class="app-container">
+      <el-row :gutter="30">
+
+        <el-col :span="24">
+          <el-transfer
+            v-model="value"
+            :data="data"
+            :titles="['Inactivos', 'Activos']"
+          />
+        </el-col>
+      </el-row>
+    </div>
+    <Footer :activar-bg="true" />
   </div>
 </template>
 
 <script>
 import { getAll, update } from '@/api/permission'
 import { mapGetters } from 'vuex'
+import Footer from '@/components/footer'
 
 export default {
+  components: { Footer },
   data() {
     return {
       data: [],

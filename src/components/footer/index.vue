@@ -1,5 +1,10 @@
 <template>
-  <div :style="activarBg ? 'background-color: #212529':''" class="container-footer">
+  <div
+    :style="(activarBg ? 'background-color: #212529;':'')+
+      (positionAbsolute ? 'position: absolute;':'')"
+
+    class="container-footer"
+  >
     <footer>
       <div class="footer">
         <div
@@ -29,6 +34,11 @@ export default {
       type: Boolean,
       required: true,
       default: true
+    },
+    positionAbsolute: {
+      type: Boolean,
+      required: true,
+      default: true
     }
   },
   data() {
@@ -53,7 +63,7 @@ export default {
     align-content: center;
     justify-content: center;
     align-items: center;
-    position: absolute;
+
     bottom: 0;
     width: 100%;
 }
