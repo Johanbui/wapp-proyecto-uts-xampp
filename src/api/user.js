@@ -4,7 +4,7 @@ import { getToken } from '@/utils/auth'
 export function login(data) {
   return request({
     url: '/auth/login',
-    method: 'post',
+    method: 'get',
     data
   })
 }

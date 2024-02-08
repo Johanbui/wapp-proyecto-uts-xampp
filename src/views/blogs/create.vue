@@ -2,15 +2,15 @@
   <div>
     <div class="app-container">
       <el-form
-        ref="actaEditForm"
-        :model="actaEditForm"
-        :rules="actaRules"
+        ref="blogCreateForm"
+        :model="blogCreateForm"
+        :rules="blogRules"
         class="login-form"
         auto-complete="on"
         label-position="left"
       >
         <div class="title-container">
-          <h3 class="title">User Edit</h3>
+          <h3 class="title">Crear Noticia</h3>
         </div>
 
         <el-row :gutter="30">
@@ -18,9 +18,25 @@
             <el-form-item prop="codigo" label="Codigo">
               <el-input
                 ref="codigo"
-                v-model="actaEditForm.codigo"
-                placeholder="Codigo"
+                v-model="blogCreateForm.codigo"
+                placeholder="Titulo"
                 name="codigo"
+                type="text"
+                tabindex="1"
+                auto-complete="on"
+              />
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+        <el-row :gutter="30">
+          <el-col :span="24">
+            <el-form-item prop="noticia" label="noticia">
+              <el-input
+                ref="noticia"
+                v-model="blogCreateForm.noticia"
+                placeholder="Noticia"
+                name="noticia"
                 type="text"
                 tabindex="1"
                 auto-complete="on"
@@ -33,7 +49,7 @@
           <el-col :span="24">
             <el-form-item prop="fecha" label="Fecha">
               <el-date-picker
-                v-model="actaEditForm.fecha"
+                v-model="blogCreateForm.fecha"
                 type="date"
                 placeholder="Fecha"
               />
@@ -68,7 +84,7 @@
         </el-row>
 
         <el-form-item>
-          <el-button type="primary" @click="onSubmit">Edit</el-button>
+          <el-button type="primary" @click="onSubmit">Create</el-button>
           <el-button @click="onCancel">Cancel</el-button>
         </el-form-item>
       </el-form>
@@ -78,24 +94,26 @@
 </template>
 
 <script>
-import { getOne, update } from '@/api/acta'
-import Footer from '@/components/footer'
+import { create } from '@/api/blog'
+import Footer from '@/components/footer/index.vue'
 
 export default {
   components: { Footer },
   data() {
     return {
-      id: 0,
+      // id: 0,
       pageLoading: true,
-      actaEditForm: {
+      blogCreateForm: {
         codigo: '',
+        noticia: '',
         file_id: 0,
         fecha: ''
       },
       fileList: [],
-      actaRules: {
+      blogRules: {
         codigo: [{ required: true }],
-        fileList: [{ required: true }],
+        noticia: [{ required: true }],
+        file_id: [{ required: true }],
         fecha: [{ required: true }]
       }
     }
@@ -103,40 +121,28 @@ export default {
   watch: {
     $route: {
       handler: function(route) {
-        this.id = route.params.id && route.params.id
+        // this.id = route.params.id && route.params.id
       },
       immediate: true
     }
   },
-  created() {
-    this.fetchData()
-  },
+  created() { },
   methods: {
-    fetchData() {
-      this.pageLoading = true
-      getOne(this.id).then((response) => {
-        response.data.enable = response.data.enable === 1
-        // this.user = response.data
-        this.pageLoading = false
-        this.actaEditForm = { ...response.data }
-        this.fileList.push(this.actaEditForm.file)
-      })
-    },
     onSubmit() {
-      const params = { ...this.actaEditForm }
-      params.enable = params.enable ? 1 : 0
-      console.log(params)
-      update(params).then((response) => {
+      const params = { ...this.blogCreateForm }
+      create(params).then((response) => {
         this.$message({
           showClose: true,
-          message: 'Created Succefully!',
-          type: 'success'
+          message: response.message,
+          type: response.type
         })
-        this.$router.push({ path: '/acta' })
+        if (response.type === 'success') {
+          this.$router.push({ path: '/blog' })
+        }
       })
     },
     onCancel() {
-      this.$router.push({ path: '/acta' })
+      this.$router.push({ path: '/blog' })
     },
     handleRemove(file, fileList) {
       console.log(file, fileList)
@@ -152,11 +158,7 @@ export default {
       console.log('handleExceed')
       console.log(files)
       console.log(fileList)
-      this.$message.warning(
-        `El límite es 3, haz seleccionado ${
-          files.length
-        } archivos esta vez, añade hasta ${files.length + fileList.length}`
-      )
+      this.$message.warning(`El límite es 3, haz seleccionado ${files.length} archivos esta vez, añade hasta ${files.length + fileList.length}`)
     },
     beforeUpload(file) {
       console.log('beforeUpload')
@@ -165,7 +167,7 @@ export default {
     handleSuccess(res, file) {
       console.log('handleSuccess')
       console.log(res.file)
-      this.actaEditForm.file_id = res.file.id
+      this.blogCreateForm.file_id = res.file.id
     }
   }
 }

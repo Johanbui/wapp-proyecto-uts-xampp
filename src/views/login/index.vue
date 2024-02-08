@@ -1,5 +1,6 @@
 <template>
   <div class="login-container">
+
     <el-form ref="loginForm" :model="loginForm" :rules="loginRules" class="login-form" auto-complete="on" label-position="left">
 
       <div
@@ -49,19 +50,40 @@
         </span>
       </el-form-item>
 
-      <el-button :loading="loading" type="primary" style="width:48.5%;margin-bottom:30px;" @click.native.prevent="handleLogin">Ingreso</el-button>
-      <el-button :loading="loading" type="primary" style="width:48.5%;margin-bottom:30px;" @click.native.prevent="handleRegister">Registro</el-button>
+      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;" @click.native.prevent="handleLogin">Ingreso</el-button>
+
+
+
+      <el-button :loading="loading" type="primary" style="width:100%;margin-bottom:30px;margin-left: 0px;" @click="redirectToUrl">Ingreso Correo institucional</el-button>
+      <div v-if="mostrarVentana" class="ventana-flotante">
+      <div class="ventana-contenido">
+        <h2>Alerta</h2>
+        <p>{{ alerta }}</p>
+        <button @click="cerrarVentana">Cerrar</button>
+
+      </div>
+    </div>
 
     </el-form>
-    <Footer :activar-bg="false" />
+
+
+
+
+
+
   </div>
 
 </template>
 
 <script>
+import axios from 'axios';
 import { validUsername } from '@/utils/validate'
 import logo from '@/assets/logoUTS.png'
 import Footer from '@/components/footer'
+import { setToken} from '@/utils/auth'
+import store from '@/store'
+import Cookies from 'js-cookie'
+
 export default {
   name: 'Login',
   components: { Footer },
@@ -81,7 +103,10 @@ export default {
       }
     }
     return {
+      url: 'https://apiproyectouts.test/api/auth/login?login=1',
       logo,
+      mostrarVentana: false,
+      alerta: "",
       loginForm: {
         username: 'jahiranova@uts.edu.co',
         password: 'Uts2022'
@@ -95,6 +120,25 @@ export default {
       redirect: undefined
     }
   },
+  async mounted() {
+    debugger;
+    if(this.queryParams?.token ){
+      console.log(this.queryParams?.token);
+      Cookies.set('vue_admin_template_token', this.queryParams?.token)
+      debugger
+      location.href="/"
+
+    }
+
+    if(this.queryParams?.alerta ){
+
+      this.alerta = this.queryParams.alerta;
+      this.mostrarVentana = true;
+      debugger
+
+    }
+
+  },
   watch: {
     $route: {
       handler: function(route) {
@@ -104,6 +148,11 @@ export default {
     }
   },
   methods: {
+
+    cerrarVentana() {
+      this.mostrarVentana = false;
+    },
+
     showPwd() {
       if (this.passwordType === 'password') {
         this.passwordType = ''
@@ -114,26 +163,44 @@ export default {
         this.$refs.password.focus()
       })
     },
-    handleLogin() {
-      this.$refs.loginForm.validate(valid => {
-        if (valid) {
-          this.loading = true
-          this.$store.dispatch('user/login', this.loginForm).then(() => {
-            this.$router.push({ path: this.redirect || '/' })
-            this.loading = false
-          }).catch(() => {
-            this.loading = false
-          })
-        } else {
-          console.log('error submit!!')
-          return false
-        }
-      })
+    redirectToUrl() {
+      debugger;
+      const url = this.url;
+      console.log(url);
+    window.location.href =url ;
     },
+    handleLogin() {
+  this.$refs.loginForm.validate(valid => {
+    if (valid) {
+      const queryParams = new URLSearchParams();
+      queryParams.append('username', this.loginForm.username);
+      queryParams.append('password', this.loginForm.password);
+
+      const url = `${this.url}&${queryParams.toString()}`;
+      window.location.href = url;
+    } else {
+      console.log('error submit!!');
+      return false;
+    }
+  });
+},
     handleRegister() {
       this.$router.push({ path: '/register' })
     }
+  },
+  computed:{
+    queryParams() {
+      const params = new URLSearchParams(window.location.search)
+      let queryParam={};
+      for (const param of params) {
+        queryParam[param[0]] = param[1]
+      }
+      return queryParam
+    }
   }
+
+
+
 }
 </script>
 
@@ -184,6 +251,21 @@ $cursor: #fff;
 }
 .login-container .el-input{
     width: auto !important;
+}
+.ventana-flotante {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background-color: #43566d;
+  border: 1px solid #ccccccd4;
+  padding: 20px;
+  z-index: 9999;
+  box-shadow: 0 0 200px rgba(63, 63, 63, 0.3);
+}
+
+.ventana-contenido {
+  text-align: center;
 }
 </style>
 

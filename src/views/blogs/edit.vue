@@ -2,15 +2,15 @@
   <div>
     <div class="app-container">
       <el-form
-        ref="actaEditForm"
-        :model="actaEditForm"
-        :rules="actaRules"
+        ref="blogEditForm"
+        :model="blogEditForm"
+        :rules="blogRules"
         class="login-form"
         auto-complete="on"
         label-position="left"
       >
         <div class="title-container">
-          <h3 class="title">User Edit</h3>
+          <h3 class="title">Editar Noticia</h3>
         </div>
 
         <el-row :gutter="30">
@@ -18,9 +18,26 @@
             <el-form-item prop="codigo" label="Codigo">
               <el-input
                 ref="codigo"
-                v-model="actaEditForm.codigo"
+                v-model="blogEditForm.codigo"
                 placeholder="Codigo"
                 name="codigo"
+                type="text"
+                tabindex="1"
+                auto-complete="on"
+              />
+            </el-form-item>
+          </el-col>
+        </el-row>
+
+
+        <el-row :gutter="30">
+          <el-col :span="24">
+            <el-form-item prop="noticia" label="Noticia">
+              <el-input
+                ref="noticia"
+                v-model="blogEditForm.noticia"
+                placeholder="Noticia"
+                name="noticia"
                 type="text"
                 tabindex="1"
                 auto-complete="on"
@@ -33,7 +50,7 @@
           <el-col :span="24">
             <el-form-item prop="fecha" label="Fecha">
               <el-date-picker
-                v-model="actaEditForm.fecha"
+                v-model="blogEditForm.fecha"
                 type="date"
                 placeholder="Fecha"
               />
@@ -78,7 +95,7 @@
 </template>
 
 <script>
-import { getOne, update } from '@/api/acta'
+import { getOne, update } from '@/api/blog'
 import Footer from '@/components/footer'
 
 export default {
@@ -87,13 +104,13 @@ export default {
     return {
       id: 0,
       pageLoading: true,
-      actaEditForm: {
+      blogEditForm: {
         codigo: '',
         file_id: 0,
         fecha: ''
       },
       fileList: [],
-      actaRules: {
+      blogRules: {
         codigo: [{ required: true }],
         fileList: [{ required: true }],
         fecha: [{ required: true }]
@@ -118,12 +135,12 @@ export default {
         response.data.enable = response.data.enable === 1
         // this.user = response.data
         this.pageLoading = false
-        this.actaEditForm = { ...response.data }
-        this.fileList.push(this.actaEditForm.file)
+        this.blogEditForm = { ...response.data }
+        this.fileList.push(this.blogEditForm.file)
       })
     },
     onSubmit() {
-      const params = { ...this.actaEditForm }
+      const params = { ...this.blogEditForm }
       params.enable = params.enable ? 1 : 0
       console.log(params)
       update(params).then((response) => {
@@ -132,11 +149,11 @@ export default {
           message: 'Created Succefully!',
           type: 'success'
         })
-        this.$router.push({ path: '/acta' })
+        this.$router.push({ path: '/blog' })
       })
     },
     onCancel() {
-      this.$router.push({ path: '/acta' })
+      this.$router.push({ path: '/blog' })
     },
     handleRemove(file, fileList) {
       console.log(file, fileList)
@@ -165,7 +182,7 @@ export default {
     handleSuccess(res, file) {
       console.log('handleSuccess')
       console.log(res.file)
-      this.actaEditForm.file_id = res.file.id
+      this.blogEditForm.file_id = res.file.id
     }
   }
 }

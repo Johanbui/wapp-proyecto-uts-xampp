@@ -27,7 +27,7 @@ module.exports = [
   // user login
   {
     url: '/user/login',
-    type: 'post',
+    type: 'get',
     response: config => {
       const { username } = config.body
       const token = tokens[username]

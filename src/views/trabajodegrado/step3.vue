@@ -9,7 +9,7 @@
           <el-upload
             class="upload-demo"
             drag
-            action="http://apiproyectouts.local/api/files/push"
+            action="http://localhost/apiproyectouts/public/api/files/push"
             :on-preview="handlePreview"
             :on-remove="handleRemove"
             :on-success="handleSuccess"
@@ -175,7 +175,7 @@ export default {
       if (typeof file.url !== 'undefined') {
         window.open(file.url)
       } else {
-        window.open('http://apiproyectouts.local/api/files/' + file.response.file.id)
+        window.open('http://localhost/apiproyectouts/public/api/files/' + file.response.file.id)
       }
       console.log(file)
     },

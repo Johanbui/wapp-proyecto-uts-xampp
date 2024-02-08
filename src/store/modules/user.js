@@ -58,7 +58,19 @@ const actions = {
       })
     })
   },
+  setTokenAzure({ commit }, token){
+    debugger;
+    return new Promise((resolve, reject) => {
 
+      commit('SET_TOKEN', token)
+      setToken(token)
+      resolve()
+
+    }).catch(error => {
+      console.log(error)
+      reject(error)
+    })
+  },
   // get user info
   getInfo({ commit, state }) {
     return new Promise((resolve, reject) => {

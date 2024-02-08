@@ -37,8 +37,18 @@ export const constantRoutes = [
     hidden: true
   },
   {
+    path: '/holamundo',
+    component: () => import('@/views/login/index'),
+    hidden: true
+  },
+  {
     path: '/register',
     component: () => import('@/views/login/register'),
+    hidden: false
+  },
+  {
+    path: '/AzureToken',
+    component: () => import('@/views/login/azuretoken'),
     hidden: false
   },
   {
@@ -48,16 +58,90 @@ export const constantRoutes = [
   },
   {
     path: '/',
-    component: Layout,
-    redirect: '/dashboard',
-    meta: { title: 'Dashboard', icon: 'dashboard', code: 'DASHBOARD-ADMIN' },
-    children: [{
-      path: 'dashboard',
-      name: 'Dashboard',
-      component: () => import('@/views/dashboard/index'),
-      meta: { title: 'Dashboard', icon: 'dashboard', code: 'DASHBOARD-ADMIN' }
-    }]
+    redirect: '/blog',
+    hidden: true
   },
+
+  {
+    path: '/blog',
+    component: Layout,
+
+    meta: { title: 'Home', icon: 'dashboard', code: 'BLOG-INDEX' },
+    children: [
+      {
+      path: '',
+      name: 'Home',
+      component: () => import('@/views/blogs/index'),
+      meta: { title: 'Home', icon: 'dashboard', code: 'BLOG-INDEX' }
+    },
+    {
+      path: 'create',
+      name: 'Blog Create',
+      component: () => import('@/views/blogs/create'),
+      meta: { title: 'Create', icon: 'el-icon-setting', code: 'BLOG-CREATE' },
+      hidden: true
+
+    },
+
+    {
+      path: 'edit/:id',
+      name: 'Blog Edit',
+      component: () => import('@/views/blogs/edit'),
+      meta: { title: 'Edit', icon: 'el-icon-setting', code: 'BLOG-EDIT' },
+      hidden: true
+
+    },
+    {
+      path: ':id',
+      name: 'Blog',
+      component: () => import('@/views/blogs/one'),
+      meta: { title: 'Blog', icon: 'el-icon-setting', code: 'BLOG-ONE' },
+      hidden: true
+
+    }
+
+
+  ]
+  },
+/*{
+    path: '/',
+    component: Layout,
+    redirect: '/blog',
+    meta: { title: 'Home', icon: 'el-icon-setting', code: 'BLOG-INDEX' },
+    children: [
+      {
+        path: '',
+        name: 'Index',
+        component: () => import('@/views/blogs/index'),
+        meta: { title: 'HOME', icon: 'el-icon-setting', code: 'BLOG-INDEX' }
+
+      },
+      {
+        path: 'create',
+        name: 'Blog Create',
+        component: () => import('@/views/blogs/create'),
+        meta: { title: 'Create', icon: 'el-icon-setting', code: 'BLOG-CREATE' },
+        hidden: true
+
+      },
+      {
+        path: 'edit/:id',
+        name: 'Blog Edit',
+        component: () => import('@/views/blogs/edit'),
+        meta: { title: 'Edit', icon: 'el-icon-setting', code: 'BLOG-EDIT' },
+        hidden: true
+
+      },
+      {
+        path: ':id',
+        name: 'Blog',
+        component: () => import('@/views/blogs/one'),
+        meta: { title: 'Acta', icon: 'el-icon-setting', code: 'BLOG-ONE' },
+        hidden: true
+
+      }
+    ]
+  },*/
   {
     path: '/user',
     component: Layout,
@@ -190,6 +274,8 @@ export const constantRoutes = [
       }
     ]
   },
+
+
 
   {
     path: '/idea',
