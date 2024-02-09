@@ -1,6 +1,7 @@
 <template>
   <div>
     <div class="app-container">
+      <el-button @click="onCancel">Atras</el-button>
       <el-form
         ref="blogForm"
         :model="blogForm"
@@ -9,9 +10,7 @@
         auto-complete="on"
         label-position="left"
       >
-        <div class="title-container">
-          <h3 class="title">Noticia</h3>
-        </div>
+
 
         <!-- Contenedor para título, imagen y noticia -->
         <div class="content-container">
@@ -46,7 +45,7 @@
         </div> <!-- Fin del contenedor -->
 
         <el-form-item>
-          <el-button @click="onCancel">Atras</el-button>
+
         </el-form-item>
       </el-form>
     </div>
@@ -122,9 +121,12 @@ export default {
 /* Estilo para el título en negrita */
 .news-title {
   font-weight: bold;
-  max-width: 500px; /* Establece el ancho máximo */
+  font-size: 24px;
+  max-width: 800px; /* Establece el ancho máximo */
   margin: 0 auto; /* Ajusta el margen lateral para centrar horizontalmente */
   word-wrap: break-word; /* Rompe palabras largas si superan el ancho máximo */
+  text-align: justify; /* Justificar el texto para un aspecto más ordenado */
+
 }
 /* Oculta los subtítulos de código e imagen */
 .el-form-item__label {
@@ -138,9 +140,13 @@ img.row_avatar {
 
 /* Estilo para la noticia */
 .news-content {
-  color: rgb(0, 0, 0); /* Color del texto blanco */
-  max-width: 800px; /* Ajuste del ancho máximo */
-  margin: 0 auto; /* Centra horizontalmente */
+  white-space: pre-line; /* Permite que los saltos de línea se muestren */
+  color: rgb(0, 0, 0); /* Color del texto */
+  max-width: 800px; /* Ancho máximo */
+  margin: 0 auto; /* Centrado horizontalmente */
+  line-height: 1.5; /* Ajusta la altura de línea para mejorar la legibilidad */
+  text-align: justify; /* Justificar el texto para un aspecto más ordenado */
+
 }
 
 /* Ajustes de estilo para el contenedor */

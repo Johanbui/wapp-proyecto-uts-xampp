@@ -15,7 +15,7 @@
 
         <el-row :gutter="30">
           <el-col :span="24">
-            <el-form-item prop="codigo" label="Codigo">
+            <el-form-item prop="codigo" label="Título">
               <el-input
                 ref="codigo"
                 v-model="blogCreateForm.codigo"
@@ -31,15 +31,16 @@
 
         <el-row :gutter="30">
           <el-col :span="24">
-            <el-form-item prop="noticia" label="noticia">
+            <el-form-item prop="noticia" label="Noticia">
               <el-input
                 ref="noticia"
                 v-model="blogCreateForm.noticia"
                 placeholder="Noticia"
                 name="noticia"
-                type="text"
+                type="textarea"
                 tabindex="1"
                 auto-complete="on"
+                :rows="5"
               />
             </el-form-item>
           </el-col>
@@ -59,7 +60,7 @@
 
         <el-row :gutter="30">
           <el-col :span="24">
-            <el-form-item prop="url_archivo" label="url_archivo">
+            <el-form-item prop="url_archivo" label="Cargar imagen">
               <el-upload
                 class="upload-demo"
                 drag

@@ -3,12 +3,10 @@
     <div class="app-container">
 
       <el-row :gutter="30">
-
-        <el-col :span="22">
-
+        <el-col :md="22" :sm="24"> <!-- Ajusta el tamaño en dispositivos medianos y pequeños -->
           <el-input v-model="search" size="mini" placeholder="Type to search" />
         </el-col>
-        <el-col :span="2">
+        <el-col :md="2" :sm="24"> <!-- Ajusta el tamaño en dispositivos medianos -->
           <el-button v-if="findPermission('ACTA-CREATE')" type="primary" @click="handleCreate()">Create</el-button>
         </el-col>
       </el-row>
@@ -44,31 +42,29 @@
 
 
       <el-row :gutter="20">
-      <!-- Itera sobre los elementos y muestra cada uno en una tarjeta con tamaño fijo -->
-      <el-col v-for="(item, index) in list" :key="index" :span="8">
-        <el-card shadow="hover" class="card-item" style="width: 300px; height: 400px; margin-bottom: 20px;">
-          <img :src="item.file.url" alt="Imagen" class="card-image" />
-          <div class="card-content">
-            <h3>{{ item.codigo }}</h3>
-            <!-- Agrega cualquier otro contenido que desees mostrar en la tarjeta -->
-          </div>
-          <div class="card-actions">
-            <el-button v-if="findPermission('BLOG-ONE')" size="mini" @click="handleConsult(index, item)">
-              <i class="el-icon-view" />
-            </el-button>
-            <el-button v-if="findPermission('BLOG-EDIT')" size="mini" @click="handleEdit(index, item)">
-              <i class="el-icon-edit" />
-            </el-button>
-          </div>
-        </el-card>
-      </el-col>
-    </el-row>
+        <el-col :xl="5" :lg="8" :md="24" v-for="(item, index) in list" :key="index"> <!-- Ajusta el tamaño en dispositivos grandes, medianos y pequeños -->
+          <el-card shadow="hover" class="card-item">
+            <img :src="item.file.url" alt="Imagen" class="card-image" />
+            <div class="card-content">
+              <h3>{{ item.codigo }}</h3>
+            </div>
+            <div class="card-actions">
+              <el-button v-if="findPermission('BLOG-ONE')" size="mini" @click="handleConsult(index, item)">
+                <i class="el-icon-view" />
+              </el-button>
+              <el-button v-if="findPermission('BLOG-EDIT')" size="mini" @click="handleEdit(index, item)">
+                <i class="el-icon-edit" />
+              </el-button>
+            </div>
+          </el-card>
+        </el-col>
+      </el-row>
       <!-- Agrega margen superior a la paginación para evitar superposición -->
       <div class="block">
-      <el-pagination :current-page.sync="currentPage" :page-sizes="[6, 12, 18, 24, 30]" :page-size="numberItems"
-        layout="total, sizes, prev, pager, next, jumper" :total="countItems" @size-change="handleSizeChange"
-        @current-change="handleCurrentChange" />
-    </div>
+        <el-pagination :current-page.sync="currentPage" :page-sizes="[6, 12, 18, 24, 30]" :page-size="numberItems"
+          layout="total, sizes, prev, pager, next, jumper" :total="countItems" @size-change="handleSizeChange"
+          @current-change="handleCurrentChange" />
+      </div>
     </div>
     <Footer :activar-bg="true" />
   </div>
@@ -387,4 +383,6 @@ a.link {
   height: 200px; /* Ajusta la altura como desees */
   object-fit: cover; /* Asegura que la imagen se ajuste manteniendo las proporciones */
 }
+
+
 </style>
