@@ -15,7 +15,7 @@
             :on-success="handleSuccess"
             :file-list="fileList"
             :limit="1"
-            :disabled="(!evaluacion && user.rol_id !=4) || (evaluacion && user.rol_id ==4)"
+            :disabled="(!evaluacion && user.rol_id !=5) || (evaluacion && user.rol_id ==5)"
           >
             <i class="el-icon-upload" />
             <div class="el-upload__text">Suelta tu archivo aquí o <em>haz clic para cargar</em></div>
@@ -25,7 +25,7 @@
       </template>
 
       <el-form-item
-        v-if="evaluacion && user.rol_id != 4"
+        v-if="evaluacion && user.rol_id != 5"
         label="Comentario"
       >
         <el-input
@@ -92,7 +92,7 @@ export default {
   async mounted() {
     await this.fetchDataPropuesta('FRTOPRO')
     let estado = ''
-    if (this.user.rol_id !== 4) {
+    if (this.user.rol_id !== 5) {
       estado = 'INFFIN'
     } else {
       estado = 'EVPROIDEA'
@@ -133,7 +133,7 @@ export default {
 
         if (type === 'success') {
           const obj = {}
-          if (this.user.rol_id !== 4) {
+          if (this.user.rol_id !== 5) {
             const obj = {}
             obj.estado = ''
             obj.comentario = this.comentario
@@ -156,7 +156,7 @@ export default {
         if (type === 'success') {
           const obj = {}
 
-          if (this.user.rol_id !== 4) {
+          if (this.user.rol_id !== 5) {
             obj.estado = 'INFFIN'
           } else {
             obj.estado = ''

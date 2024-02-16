@@ -7,7 +7,7 @@
           <el-input v-model="search" size="mini" placeholder="Type to search" />
         </el-col>
         <el-col :md="2" :sm="24"> <!-- Ajusta el tamaño en dispositivos medianos -->
-          <el-button v-if="findPermission('ACTA-CREATE')" type="primary" @click="handleCreate()">Create</el-button>
+          <el-button v-if="findPermission('BLOG-CREATE')" type="primary" @click="handleCreate()">Create</el-button>
         </el-col>
       </el-row>
 

@@ -4,7 +4,7 @@
 
     <div class="button-prorrogra">
       <el-button
-        v-if="!evaluacion && user.rol_id == 4"
+        v-if="!evaluacion && user.rol_id == 5"
         type="primary"
         @click="centerDialogVisible = true"
       >Solicitar Prorroga</el-button>
@@ -29,7 +29,7 @@
         :on-remove="handleRemove"
         :on-success="handleSuccessProrroga"
         :file-list="[...propuesta[propuesta.length - 1].file]"
-        :disabled="!evaluacion && user.rol_id != 4"
+        :disabled="!evaluacion && user.rol_id != 5"
       >
         <i class="el-icon-upload" />
         <div class="el-upload__text">
@@ -70,8 +70,8 @@
             :on-success="handleSuccess"
             :file-list="[...formato.file]"
             :disabled="
-              (!evaluacion && user.rol_id != 4) ||
-                (evaluacion && user.rol_id == 4)
+              (!evaluacion && user.rol_id != 5) ||
+                (evaluacion && user.rol_id == 5)
             "
           >
             <i class="el-icon-upload" />
@@ -98,8 +98,8 @@
             :on-success="handleSuccess"
             :file-list="[...formato.fileConfirmation]"
             :disabled="
-              (!evaluacion && user.rol_id != 4) ||
-                (evaluacion && user.rol_id == 4) ||
+              (!evaluacion && user.rol_id != 5) ||
+                (evaluacion && user.rol_id == 5) ||
                 (evaluacion && formato.listaCodigo === 'PRORROGA')
             "
           >
@@ -115,11 +115,11 @@
       </template>
 
       <el-form-item
-        v-if="user.rol_id != 4 && evaluacion"
+        v-if="user.rol_id != 5 && evaluacion"
         label="Resultado Trabajo de Grado"
       >
         <el-select
-          v-if="user.rol_id != 4 && evaluacion"
+          v-if="user.rol_id != 5 && evaluacion"
           v-model="resultado"
           filterable
           placeholder="Asigne resultado del trabajo de grado"
@@ -140,7 +140,7 @@
         </el-select>
       </el-form-item>
 
-      <el-form-item v-if="evaluacion && user.rol_id != 4" label="Comentario">
+      <el-form-item v-if="evaluacion && user.rol_id != 5" label="Comentario">
         <el-input
           ref="comentario"
           v-model="comentario"
@@ -295,7 +295,7 @@ export default {
 
         if (type === 'success') {
           const obj = {}
-          if (this.user.rol_id !== 4) {
+          if (this.user.rol_id !== 5) {
             const obj = {}
             obj.estado = ''
           } else {
@@ -311,7 +311,7 @@ export default {
         )
         if (type === 'success') {
           const obj = {}
-          if (this.user.rol_id !== 4) {
+          if (this.user.rol_id !== 5) {
             obj.estado = this.resultado
             obj.comentario = this.comentario
           } else {

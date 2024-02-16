@@ -126,7 +126,7 @@ export default {
         this.comentario = comentario
       }
       if (estado !== '') {
-        if (this.user.rol_id !== 4) {
+        if (this.user.rol_id !== 5) {
           let responseObj = null
           responseObj = await this.fetchIdeaEstado(estado, this.ideaSelected.id)
 

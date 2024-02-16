@@ -108,8 +108,8 @@ export default {
       mostrarVentana: false,
       alerta: "",
       loginForm: {
-        username: 'jahiranova@uts.edu.co',
-        password: 'Uts2022'
+        username: '',
+        password: ''
       },
       loginRules: {
         username: [{ required: true, trigger: 'blur', validator: validateUsername }],

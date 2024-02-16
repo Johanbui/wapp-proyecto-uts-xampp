@@ -52,7 +52,7 @@
           :file-list="fileList"
           :on-success="handleSuccess"
           :limit="1"
-          :disabled="user.rol_id !=4"
+          :disabled="user.rol_id !=5"
         >
           <i class="el-icon-upload" />
           <div class="el-upload__text">Suelta tu archivo aquí o <em>haz clic para cargar</em></div>
@@ -62,7 +62,7 @@
       </el-form-item>
 
       <el-form-item
-        v-if="user.rol_id!=4"
+        v-if="user.rol_id!=5"
         label="Director de Trabajo de Grado"
       >
 
@@ -102,7 +102,7 @@
       </el-form-item>
 
       <el-form-item
-        v-if="user.rol_id != 4"
+        v-if="user.rol_id != 5"
         label="Comentario"
       >
         <el-input
@@ -180,7 +180,7 @@ export default {
     await this.fetchDataUsuarios('TIPIDU')
     await this.fecthGetEstudiantes()
     let estado = ''
-    if (this.user.rol_id !== 4) {
+    if (this.user.rol_id !== 5) {
       estado = 'PROIDEA'
     } else {
       estado = 'APRIDEA'
@@ -188,7 +188,7 @@ export default {
 
     await this.fetchIdeaEstado(estado, this.ideaSelected.id)
 
-    if (this.user.rol_id === 4 && typeof this.usuarios[0] === 'undefined') {
+    if (this.user.rol_id === 5 && typeof this.usuarios[0] === 'undefined') {
       const usuario = {
         id: this.user.user_id,
         name: this.user.name,
@@ -249,7 +249,7 @@ export default {
         id_codigo_archivo: id_codigo_archivo
       }
 
-      if (this.user.rol_id === 4) {
+      if (this.user.rol_id === 5) {
         await createArchivoIdeas(objCarguePago).then(({ type, data }) => {
           if (type === 'success') {
           // this.directores = data
@@ -263,7 +263,7 @@ export default {
           }
         })
       }
-      if (this.user.rol_id !== 4) {
+      if (this.user.rol_id !== 5) {
         const directivos = []
 
         if (this.form.director !== '') {
@@ -294,7 +294,7 @@ export default {
       }
 
       const obj = {}
-      if (this.user.rol_id !== 4) {
+      if (this.user.rol_id !== 5) {
         obj.estado = 'PROIDEA'
         obj.comentario = this.form.comentario
       } else {

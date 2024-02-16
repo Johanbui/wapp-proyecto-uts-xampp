@@ -63,15 +63,15 @@
             <div>
               <el-button-group
                 v-if="
-                  (user.rol_id === 4
+                  (user.rol_id === 5
                     &&
                     ((scope.row.cantidadUsuarios == 0
                       ||
                       findIdeaUsuario(scope.row.id) )
                       && !bloqueoIdea
                     )) ||
-                    (user.rol_id === 4 && findIdeaUsuario(scope.row.id)) ||
-                    (user.rol_id !== 4 && scope.row.cantidadUsuarios > 0 )
+                    (user.rol_id === 5 && findIdeaUsuario(scope.row.id)) ||
+                    (user.rol_id !== 5 && scope.row.cantidadUsuarios > 0 )
                 "
               >
                 <el-button type="primary" @click="continuar({ ideaSelected: scope.row })">Continuar</el-button>
