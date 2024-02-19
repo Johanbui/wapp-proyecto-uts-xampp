@@ -65,7 +65,7 @@
               <el-upload
                 class="upload-demo"
                 drag
-                action="http://localhost/apiproyectouts/public/api/files/push"
+                action="http://localhost:8080/apiproyectouts/public/api/files/push"
                 :on-preview="handlePreview"
                 :on-remove="handleRemove"
                 :file-list="fileList"

@@ -326,7 +326,7 @@ export const constantRoutes = [
     ]
   },
 
-  {
+ /* {
     path: '/notificaciones',
     component: Layout,
     meta: { title: 'Notificaciones', icon: 'form', code: 'NOTIFICACIONES-INDEX' },
@@ -340,7 +340,7 @@ export const constantRoutes = [
 
       }
     ]
-  },
+  },*/
 
   {
     path: '/informes',

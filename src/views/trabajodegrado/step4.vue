@@ -20,7 +20,7 @@
         class="upload-demo"
         drag
         :action="
-          'http://localhost/apiproyectouts/public/api/files/pushLista?lista=' +
+          'http://localhost:8080/apiproyectouts/public/api/files/pushLista?lista=' +
             propuesta[propuesta.length - 1].id +
             '&index=' +
             (propuesta.length - 1)
@@ -60,7 +60,7 @@
             class="upload-demo"
             drag
             :action="
-              'http://localhost/apiproyectouts/public/api/files/pushLista?lista=' +
+              'http://localhost:8080/apiproyectouts/public/api/files/pushLista?lista=' +
                 formato.id +
                 '&index=' +
                 index
@@ -88,7 +88,7 @@
             class="upload-demo"
             drag
             :action="
-              'http://localhost/apiproyectouts/public/api/files/pushLista?lista=' +
+              'http://localhost:8080/apiproyectouts/public/api/files/pushLista?lista=' +
                 formato.id +
                 '&index=' +
                 index
@@ -368,7 +368,7 @@ export default {
       if (typeof file.url !== 'undefined') {
         window.open(file.url)
       } else {
-        window.open('http://localhost/apiproyectouts/public/api/files/' + file.response.file.id)
+        window.open('http://localhost:8080/apiproyectouts/public/api/files/' + file.response.file.id)
       }
       console.log(file)
     },
