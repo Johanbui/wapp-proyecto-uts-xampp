@@ -103,7 +103,7 @@ export default {
       }
     }
     return {
-      url: 'https://apiproyectouts.test/api/auth/login?login=1',
+      url: 'http://localhost:8080/apiproyectouts/public/api/auth/login?login=1',
       logo,
       mostrarVentana: false,
       alerta: "",
