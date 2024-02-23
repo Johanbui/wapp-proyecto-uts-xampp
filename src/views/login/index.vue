@@ -103,7 +103,7 @@ export default {
       }
     }
     return {
-      url: 'http://localhost:8080/apiproyectouts/public/api/auth/login?login=1',
+      url: 'http://192.168.10.242/apiproyectouts/public/api/auth/login?login=1',
       logo,
       mostrarVentana: false,
       alerta: "",
@@ -178,6 +178,7 @@ export default {
 
       const url = `${this.url}&${queryParams.toString()}`;
       window.location.href = url;
+
     } else {
       console.log('error submit!!');
       return false;
