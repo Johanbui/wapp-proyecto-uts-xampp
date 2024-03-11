@@ -51,7 +51,7 @@
           :on-remove="handleRemove"
           :file-list="fileList"
           :on-success="handleSuccess"
-          :limit="1"
+          :limit="2"
           :disabled="user.rol_id !=5"
         >
           <i class="el-icon-upload" />
@@ -83,13 +83,14 @@
 
       <el-form-item
         v-if="user.rol_id!=4"
-        label="Co-Director de Trabajo de Grado"
+        label="Evaluador de Trabajo de Grado"
       >
+
 
         <el-select
           v-model="form.codirector"
           filterable
-          placeholder="Co-Director de Trabajo de Grado"
+          placeholder="Evaluador de Trabajo de Grado"
           :disabled="bloqueoCoDir"
         >
           <el-option
@@ -239,7 +240,7 @@ export default {
       // const tipoUsuario = 10
 
       if (id_archivo === 0) {
-        this.$message.warning(`Se debe agregar archivo de pago`)
+        this.$message.warning(`Se debe agregar archivo`)
         return
       }
 

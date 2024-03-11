@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <div class="app-container">
 
       <el-row :gutter="30">
@@ -13,9 +12,9 @@
             placeholder="Type to search"
           />
         </el-col>
-
         <el-col :span="2">
           <el-button
+            v-if="findPermission('DOCUMENTOS-CREATE')"
             type="primary"
             @click="handleCreate()"
           >Create</el-button>
@@ -37,41 +36,29 @@
           </template>
         </el-table-column>
 
-        <el-table-column label="Name" style="width: 20%">
+        <el-table-column label="Nombre del archivo">
           <template slot-scope="scope">
-            {{ scope.row.name }}
+            {{ scope.row.codigo }}
           </template>
         </el-table-column>
 
-        <el-table-column label="Last Name" align="center" style="width: 20%">
+        <el-table-column label="Url Archivo" align="center">
           <template slot-scope="scope">
-            <span>{{ scope.row.last_name }}</span>
+            <a class="link" @click.stop.prevent="hrefFile(scope.row)">
+              {{ scope.row.file.name }}
+            </a>
           </template>
         </el-table-column>
-
-        <el-table-column label="E-mail" align="center" style="width: 30%">
-          <template slot-scope="scope">
-            <span>{{ scope.row.email }}</span>
-          </template>
-        </el-table-column>
-
-        <el-table-column label="Avatar" align="center" style="width: 20%">
-  <template slot-scope="scope">
-    <img class="row_avatar" :src="scope.row.avatar" style="width: 35px; height: 35px;" />
-  </template>
-</el-table-column>
-
 
         <el-table-column
           align="center"
           label="Actions"
-          fixed="right"
-          style="width: 10%"
         >
+
           <template slot-scope="scope">
             <div class="td-actions">
 
-              <div v-if="findPermission('USER-ONE')">
+              <div v-if="findPermission('DOCUMENTOS-ONE')">
                 <el-button
                   size="mini"
                   @click="handleConsult(scope.$index, scope.row)"
@@ -80,7 +67,7 @@
                 </el-button>
               </div>
 
-              <div v-if="findPermission('USER-EDIT')">
+              <div v-if="findPermission('DOCUMENTOS-EDIT')">
                 <el-button
                   size="mini"
                   @click="handleEdit(scope.$index, scope.row)"
@@ -89,27 +76,9 @@
                 </el-button>
               </div>
 
-              <div v-if="findPermission('USER-KEY')">
-                <el-button
-                  size="mini"
-                  @click="handleKey(scope.$index, scope.row)"
-                >
-                  <i class="el-icon-key" />
-                </el-button>
-              </div>
-
-              <div v-if="findPermission('USER-TOGGLE')">
-                <el-switch
-                  v-model="scope.row.enable"
-                  active-color="#13ce66"
-                  inactive-color="#ff4949"
-                  @change="handleDelete(scope.$index, scope.row)"
-                />
-
-              </div>
-
             </div>
           </template>
+
         </el-table-column>
 
       </el-table>
@@ -126,39 +95,44 @@
         />
       </div>
     </div>
-
     <Footer :activar-bg="true" />
-  </div>
 
+  </div>
 </template>
 
 <script>
-import { getAll, toggleEnable } from '@/api/user'
+import { getAll } from '@/api/documentos'
 import { mapGetters } from 'vuex'
 import Footer from '@/components/footer'
 
 export default {
   components: { Footer },
-
   data() {
     return {
       list: null,
       listLoading: true,
       search: '',
       currentPage: 1,
-      numberItems: 5,
+      numberItems: 10,
       countItems: 0
     }
   },
   computed: {
     ...mapGetters([
+      'user_id',
       'users_roles'
+
     ])
   },
-
   watch: {
     search() {
       this.fetchData()
+    },
+    $route: {
+      handler: function(route) {
+        // this.userId = route.params.user_id && route.params.user_id
+      },
+      immediate: true
     }
   },
   created() {
@@ -172,6 +146,7 @@ export default {
         page: this.currentPage,
         search: this.search
       }
+      console.log(params)
       getAll(params).then(response => {
         this.list = response.data.map(function(x) {
           x.enable = (x.enable === 1)
@@ -181,28 +156,6 @@ export default {
         this.listLoading = false
       })
     },
-    handleEdit(index, row) {
-      this.$router.push({ path: '/user/edit/' + row.id })
-    },
-    handleConsult(index, row) {
-      this.$router.push({ path: '/user/index/' + row.id })
-    },
-    handleUsersRoles(index, row) {
-      this.$router.push({ path: '/user/user_roles/' + row.id })
-    },
-    handleCreate() {
-      this.$router.push({ path: '/user/create' })
-    },
-    handleKey(index, row) {
-      this.$router.push({ path: '/user/key/' + row.id })
-    },
-    handleDelete(index, row) {
-      const params = {
-        id: row.id,
-        enable: (row.enable) ? 1 : 0
-      }
-      toggleEnable(params)
-    },
     handleSizeChange(val) {
       this.numberItems = val
       this.fetchData()
@@ -211,6 +164,7 @@ export default {
       this.currentPage = val
       this.fetchData()
     },
+
     findPermission(permission) {
       const user_rols = this.users_roles
       const found = user_rols.find(element => element.code === permission)
@@ -218,12 +172,26 @@ export default {
         return true
       }
       return false
+    },
+    handleCreate() {
+      this.$router.push({ path: '/documentos/create' })
+    },
+    handleEdit(index, row) {
+      this.$router.push({ path: '/documentos/edit/' + row.id })
+    },
+    handleConsult(index, row) {
+      this.$router.push({ path: '/documentos/' + row.id })
+    },
+    handlePermissions(index, row) {
+      this.$router.push({ path: '/documentos/' + row.id + '/permissions' })
+    },
+    hrefFile(obj) {
+      window.open(obj.file.url)
     }
-
   }
 }
 </script>
-<style scoped>
+<style scoped lang="scss">
 img.row_avatar{
   width: 35px;
   border-radius: 50%;
@@ -232,4 +200,10 @@ img.row_avatar{
   height: 70px;
   margin-top: 50px;
 }
+
+a.link{
+  color: #C3D730;
+  opacity: 0.8;
+}
+
 </style>

@@ -115,20 +115,30 @@
         </el-row>
 
         <el-row :gutter="30">
-          <el-col :span="24">
-            <el-form-item prop="avatar" label="Avatar">
-              <el-input
-                ref="avatar"
-                v-model="userCreateForm.avatar"
-                placeholder="avatar"
-                name="avatar"
-                type="text"
-                tabindex="1"
-                auto-complete="on"
-              />
-            </el-form-item>
-          </el-col>
-        </el-row>
+    <el-col :span="24">
+      <el-form-item prop="avatar" label="Avatar">
+        <!-- Cambiar de el-input a el-upload para admitir la carga de imágenes -->
+        <el-upload
+          class="upload-demo"
+          action="http://192.168.10.242/apiproyectouts/public/api/files/push"
+          :on-preview="handlePreview"
+          :on-remove="handleRemoveAvatar"
+          :file-list="fileList"
+          :before-upload="beforeUploadAvatar"
+          :on-success="handleSuccessAvatar"
+          :limit="1"
+        >
+          <i class="el-icon-upload" />
+          <div class="el-upload__text">
+            Suelta tu avatar aquí o <em>haz clic para cargar</em>
+          </div>
+          <div slot="tip" class="el-upload__tip">
+            Solo archivos jpg/png con un tamaño menor de 500kb
+          </div>
+        </el-upload>
+      </el-form-item>
+    </el-col>
+  </el-row>
 
         <el-row :gutter="30">
           <el-col :span="12">
@@ -193,6 +203,7 @@ export default {
       pageLoading: true,
       roles: [],
       userCreateForm: {
+        fileList: [],
         name: '',
         last_name: '',
         gender: '1',
@@ -266,7 +277,28 @@ export default {
     },
     onCancel() {
       this.$router.push({ path: '/user' })
-    }
+    },
+    handleRemoveAvatar(file, fileList) {
+      console.log('handleRemoveAvatar', file, fileList);
+    },
+
+    handlePreview(file) {
+      console.log('handlePreview', file);
+    },
+
+    beforeUploadAvatar(file) {
+      console.log('beforeUploadAvatar', file);
+    },
+
+    handleSuccessAvatar(res, file) {
+  console.log('handleSuccessAvatar', res.file);
+  // Puedes manejar la respuesta del servidor después de cargar la imagen del avatar
+  // Asigna la ID de la imagen al campo avatar si es necesario
+  const avatarId = res.file.id;
+
+  // Construye la URL completa del avatar y asígnala al campo avatar
+  this.userCreateForm.avatar = `http://192.168.10.242/apiproyectouts/public/api/files/${avatarId}`;
+},
   }
 }
 </script>

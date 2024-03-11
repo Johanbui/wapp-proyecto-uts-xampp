@@ -277,6 +277,10 @@ export const constantRoutes = [
 
 
 
+
+
+
+
   {
     path: '/idea',
     component: Layout,
@@ -322,6 +326,45 @@ export const constantRoutes = [
         name: 'Trabajo de Grado',
         component: () => import('@/views/trabajodegrado/index'),
         meta: { title: 'Trabajo de grado', icon: 'form', code: 'TRABAJOGRADO-INDEX' }
+      }
+    ]
+  },
+
+  {
+    path: '/documentos',
+    component: Layout,
+    meta: { title: 'Documentos', icon: 'el-icon-setting', code: 'DOCUMENTOS-INDEX' },
+    children: [
+      {
+        path: '',
+        name: 'Index',
+        component: () => import('@/views/documentos/index'),
+        meta: { title: 'Documentos', icon: 'el-icon-setting', code: 'DOCUMENTOS-INDEX' }
+
+      },
+      {
+        path: 'create',
+        name: 'Documento Create',
+        component: () => import('@/views/documentos/create'),
+        meta: { title: 'Create', icon: 'el-icon-setting', code: 'DOCUMENTOS-CREATE' },
+        hidden: true
+
+      },
+      {
+        path: 'edit/:id',
+        name: 'Documento Edit',
+        component: () => import('@/views/documentos/edit'),
+        meta: { title: 'Edit', icon: 'el-icon-setting', code: 'DOCUMENTOS-EDIT' },
+        hidden: true
+
+      },
+      {
+        path: ':id',
+        name: 'Documento',
+        component: () => import('@/views/documentos/one'),
+        meta: { title: 'Documento', icon: 'el-icon-setting', code: 'DOCUMENTOS-ONE' },
+        hidden: true
+
       }
     ]
   },

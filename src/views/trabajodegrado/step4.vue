@@ -266,7 +266,7 @@ export default {
       if (data !== null) {
         this.mostrarCountDown = true
         const mydate = new Date(data.fecha)
-        let numeroDias = 160
+        let numeroDias = 180
         if (this.estadoFinal === 'PROEIDEA') {
           numeroDias = 360
         }

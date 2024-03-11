@@ -2,8 +2,14 @@
   <div>
 
     <div class="app-container">
-      <el-form ref="userEditForm" :model="userEditForm" :rules="userEditRules" class="login-form" auto-complete="on" label-position="left">
-
+      <el-form
+        ref="userEditForm"
+        :model="userEditForm"
+        :rules="userEditRules"
+        class="login-form"
+        auto-complete="on"
+        label-position="left"
+      >
         <div class="title-container">
           <h3 class="title">User Edit</h3>
         </div>
@@ -97,15 +103,25 @@
         <el-row :gutter="30">
           <el-col :span="24">
             <el-form-item prop="avatar" label="Avatar">
-              <el-input
-                ref="avatar"
-                v-model="userEditForm.avatar"
-                placeholder="avatar"
-                name="avatar"
-                type="text"
-                tabindex="1"
-                auto-complete="on"
-              />
+              <!-- Cambiar de el-input a el-upload para admitir la carga de imágenes -->
+              <el-upload
+                class="upload-demo"
+                action="http://192.168.10.242/apiproyectouts/public/api/files/push"
+                :on-preview="handlePreviewAvatar"
+                :on-remove="handleRemoveAvatar"
+                :file-list="fileListAvatar"
+                :before-upload="beforeUploadAvatar"
+                :on-success="handleSuccessAvatar"
+                :limit="1"
+              >
+                <i class="el-icon-upload" />
+                <div class="el-upload__text">
+                  Suelta tu avatar aquí o <em>haz clic para cargar</em>
+                </div>
+                <div slot="tip" class="el-upload__tip">
+                  Solo archivos jpg/png con un tamaño menor de 500kb
+                </div>
+              </el-upload>
             </el-form-item>
           </el-col>
         </el-row>
@@ -221,7 +237,29 @@ export default {
     },
     onCancel() {
       this.$router.push({ path: '/user' })
-    }
+    },
+
+    handleRemoveAvatar(file, fileList) {
+      console.log('handleRemoveAvatar', file, fileList);
+      // Puedes implementar la lógica de eliminación si es necesario
+    },
+
+    handlePreviewAvatar(file) {
+      console.log('handlePreviewAvatar', file);
+      // Puedes implementar la lógica de vista previa si es necesario
+    },
+
+    beforeUploadAvatar(file) {
+      console.log('beforeUploadAvatar', file);
+      // Puedes implementar la lógica antes de cargar la imagen si es necesario
+    },
+
+    handleSuccessAvatar(res, file) {
+      console.log('handleSuccessAvatar', res.file);
+      // Puedes manejar la respuesta del servidor después de cargar la imagen del avatar
+      // Asigna la ID de la imagen al campo avatar si es necesario
+      this.userEditForm.avatar = `http://192.168.10.242/apiproyectouts/public/api/files/${res.file.id}`;
+    },
   }
 }
 </script>
